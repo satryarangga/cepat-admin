@@ -7,6 +7,9 @@
         <li @if($page == 'dashboard') class="active" @endif>
           <a href="/"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
         </li>
+        <li @if($page == 'user') class="active" @endif >
+          <a href="{{route('user.index')}}"><i class="fa fa-user"></i> User Management</a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

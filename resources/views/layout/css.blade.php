@@ -8,6 +8,8 @@
 
   <link rel="stylesheet" href="{{ asset('lte') }}/dist/css/skins/skin-blue.css?v=0.1">
 
+  <link rel="stylesheet" href="{{ asset('lte') }}/dist/css/custom.css?v=0.1">
+
   <link rel="stylesheet" href="{{ asset('lte') }}/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
   <!-- Google Font -->
