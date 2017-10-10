@@ -4,14 +4,9 @@ namespace App\Http\Controllers\Master;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\User;
-use App\Models\UserLogs;
-// use App\Role;
-// use App\RoleUser;
+use App\Models\Customer;
 
-
-class UserController extends Controller
+class CustomerController extends Controller
 {
     /**
      * @var string
@@ -28,11 +23,10 @@ class UserController extends Controller
      */
     private $model;
 
-
     public function __construct() {
-        $this->model = new User();
-        $this->module = 'master.user';
-        $this->page = 'user';
+        $this->model = new Customer();
+        $this->module = 'master.customer';
+        $this->page = 'customer';
         $this->middleware('auth');
     }
 
@@ -41,12 +35,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $limit = ($request->input('limit')) ? $request->input('limit') : 10000000;
+        $offset = ($request->input('offset')) ? $request->input('offset') : 0;
         $data = [
-            'result' => $this->model->where('deleted_at', null)->get(),
-            'page' => $this->page
+            'result'  => $this->model->list(),
+            'page'    => $this->page
         ];
+
         return view($this->module . ".index", $data);
     }
 
@@ -59,7 +56,6 @@ class UserController extends Controller
     {
         $data = [
             'page' => $this->page,
-            // 'position' => Role::all(),
         ];
 
         return view($this->module.".create", $data);
@@ -76,28 +72,41 @@ class UserController extends Controller
         $this->validate($request,[
             'first_name'     => 'required',
             'last_name'     => 'required',
-            'username'     => 'required|unique:users',
-            'password' => 'required|string|min:4',
+            'email'     => 'required|unique:customers',
+            'phone'     => 'required',
+            'gender'     => 'required',
         ]);
 
         $create = [
             'first_name'  => $request->input('first_name'),
             'last_name'  => $request->input('last_name'),
-            'username'  => $request->input('username'),
             'email'  => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'created_by' => Auth::id()
+            'phone'  => $request->input('phone'),
+            'gender'  => $request->input('gender'),
+            'password' => bcrypt('cepat123'),
+            'addr_street'  => $request->input('addr_street'),
+            'addr_zipcode'  => $request->input('zipcode'),
+            'status'  => 1,
+            'birthdate'  => $request->input('birthdate')
         ];
 
         $user = $this->model->create($create);
 
-        logUser('Create User '.$create['first_name'].' '.$create['last_name']);
-
-        // $role = $request->input('roles');
-        // $this->assignRole($role, $user);
+        logUser('Create Customer '.$create['first_name'].' '.$create['last_name']);
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -106,14 +115,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function edit($id)
     {
-        $type = $request->input('type');
         $data = [
             'page' => $this->page,
-            'row' => $this->model->find($id),
-            'type' => $type,
-            // 'validRole' => RoleUser::getRoleForUser($id)
+            'row' => $this->model->find($id)
         ];
 
         return view($this->module.".edit", $data);
@@ -130,7 +136,9 @@ class UserController extends Controller
     {
         $this->validate($request,[
             'first_name'     => 'required',
-            'last_name'     => 'required'
+            'last_name'     => 'required',
+            'phone'         => 'required',
+            'gender'        => 'required'
         ]);
 
         $data = $this->model->find($id);
@@ -138,8 +146,11 @@ class UserController extends Controller
         $update = [
             'first_name'  => $request->input('first_name'),
             'last_name'  => $request->input('last_name'),
-            'email'  => $request->input('email'),
-            'updated_by' => Auth::id()
+            'phone'  => $request->input('phone'),
+            'gender'  => $request->input('gender'),
+            'addr_street'  => $request->input('addr_street'),
+            'addr_zipcode'  => $request->input('zipcode'),
+            'birthdate'  => $request->input('birthdate')
         ];
 
         if($request->input('password')) {
@@ -148,21 +159,9 @@ class UserController extends Controller
 
         $data->update($update);
 
-        logUser('Update User '.$update['first_name'] . ' ' . $update['last_name']);
-
-
-        // $role = $request->input('roles');
-        // $this->assignRole($role, $data);
-
-        $type = $request->input('type');
+        logUser('Update Customer '.$update['first_name'] . ' ' . $update['last_name']);
 
         $message = setDisplayMessage('success', "Success to update ".$this->page);
-
-        if($type == 'profile') {
-            $message = setDisplayMessage('success', "Success to update your profile");
-            return redirect(route($this->page.'.edit', ['id' => $id]).'?type=profile')->with('displayMessage', $message);
-        }
-
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
 
@@ -174,12 +173,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $data = $this->model->find($id);
-        $message = setDisplayMessage('success', "Success to delete ".$this->page);
-        logUser('Delete User '.$data->first_name . ' ' . $data->last_name);
-        $data->deleted_at = date('Y-m-d H:i:s');
-        $data->save();
-        return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+        //
     }
 
     /**
@@ -190,25 +184,18 @@ class UserController extends Controller
     public function changeStatus($id, $status) {
         $data = $this->model->find($id);
 
-        if($status == 1) { // ACTIVATE USER
-            $desc = 'activate';
+        if($status == 1) { // ACTIVATE CUSTOMER
+            $desc = 'unblock';
         } else {
-            $desc = 'suspend';
+            $desc = 'block';
         }
 
         $data->status = $status;
         $data->save();
 
-        logUser('Change Status User '.$data->first_name . ' ' . $data->last_name);
+        logUser('Change Status Customer '.$data->first_name . ' ' . $data->last_name);
 
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
-
-    // protected function assignRole($role, $user) {
-    //     RoleUser::where('user_id', $user->id)->delete();
-    //     foreach ($role as $key => $value) {
-    //         $user->attachRole($value);
-    //     }
-    // }
 }

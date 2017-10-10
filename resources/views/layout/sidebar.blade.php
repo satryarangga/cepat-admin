@@ -9,6 +9,7 @@
         </li>
         <li @if($page == 'user') class="active" @endif >
           <a href="{{route('user.index')}}"><i class="fa fa-user"></i> User Management</a>
+          <a href="{{route('customer.index')}}"><i class="fa fa-users"></i> Customer Management</a>
         </li>
       </ul>
     </section>
