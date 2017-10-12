@@ -75,6 +75,8 @@ class CustomerController extends Controller
             'email'     => 'required|unique:customers',
             'phone'     => 'required',
             'gender'     => 'required',
+            'city_id'     => 'required',
+            'province_id'     => 'required',
         ]);
 
         $create = [
@@ -85,6 +87,8 @@ class CustomerController extends Controller
             'gender'  => $request->input('gender'),
             'password' => bcrypt('cepat123'),
             'addr_street'  => $request->input('addr_street'),
+            'addr_province_id'  => $request->input('province_id'),
+            'addr_city_id'  => $request->input('city_id'),
             'addr_zipcode'  => $request->input('zipcode'),
             'status'  => 1,
             'birthdate'  => $request->input('birthdate')
@@ -138,7 +142,9 @@ class CustomerController extends Controller
             'first_name'     => 'required',
             'last_name'     => 'required',
             'phone'         => 'required',
-            'gender'        => 'required'
+            'gender'        => 'required',
+            'city_id'     => 'required',
+            'province_id'     => 'required',
         ]);
 
         $data = $this->model->find($id);
@@ -148,6 +154,8 @@ class CustomerController extends Controller
             'last_name'  => $request->input('last_name'),
             'phone'  => $request->input('phone'),
             'gender'  => $request->input('gender'),
+            'addr_province_id'  => $request->input('province_id'),
+            'addr_city_id'  => $request->input('city_id'),
             'addr_street'  => $request->input('addr_street'),
             'addr_zipcode'  => $request->input('zipcode'),
             'birthdate'  => $request->input('birthdate')

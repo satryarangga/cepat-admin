@@ -21,9 +21,7 @@ class InitMigration extends Migration
             $table->string('password');
             $table->tinyInteger('gender')->comment('1:male, 2:female');
             $table->text('addr_street')->nullable();
-            $table->string('addr_city_name', 75)->nullable();
             $table->integer('addr_city_id')->nullable();
-            $table->string('addr_province_name', 75)->nullable();
             $table->integer('addr_province_id')->nullable();
             $table->string('addr_zipcode')->nullable();
             $table->string('phone', 35)->nullable();

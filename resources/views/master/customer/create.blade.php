@@ -57,6 +57,23 @@
 	                </div>
 
 	                <div class="form-group">
+	                  <label for="province" class="col-sm-2 control-label">Province</label>
+	                  <div class="col-sm-10">
+	                  	<input type="province" class="form-control" name="province" value="{{old('province_name')}}" id="province" placeholder="Province Address">
+	                  	<input type="hidden" name="province_id" id="province_id" value="{{old('province_id')}}">
+	                  </div>
+	                </div>
+
+	                <div class="form-group">
+	                  <label for="city" class="col-sm-2 control-label">City</label>
+	                  <div class="col-sm-10">
+	                  	<select class="form-control" id="city_id" name="city_id">
+	                  		<option>Choose City</option>
+	                  	</select>
+	                  </div>
+	                </div>
+
+	                <div class="form-group">
 	                  <label for="addr_street" class="col-sm-2 control-label">Address Street Name</label>
 	                  <div class="col-sm-10">
 	                  	<textarea rows="5" name="addr_street" style="width:100%">{{old('addr_street')}}</textarea>

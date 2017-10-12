@@ -58,6 +58,23 @@
 	                </div>
 
 	                <div class="form-group">
+	                  <label for="province" class="col-sm-2 control-label">Province</label>
+	                  <div class="col-sm-10">
+	                  	<input type="province" class="form-control" name="province" value="{{getFieldOfTable('provinces', $row->addr_province_id, 'name')}}" id="province" placeholder="Province Address">
+	                  	<input type="hidden" name="province_id" id="province_id" value="{{$row->addr_province_id}}">
+	                  </div>
+	                </div>
+
+	                <div class="form-group">
+	                  <label for="city" class="col-sm-2 control-label">City</label>
+	                  <div class="col-sm-10">
+	                  	<select class="form-control" id="city_id" name="city_id">
+	                  		<option>Choose City</option>
+	                  	</select>
+	                  </div>
+	                </div>
+
+	                <div class="form-group">
 	                  <label for="address" class="col-sm-2 control-label">Address</label>
 	                  <div class="col-sm-10">
 	                  	<textarea rows="5" name="addr_street" style="width:100%">{{$row->addr_street}}</textarea>
