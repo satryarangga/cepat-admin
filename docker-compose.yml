@@ -12,6 +12,7 @@ services:
     environment:
       - "DB_PORT=3306"
       - "DB_HOST=database"
+      - "REDIS_HOST=redis"
 
   # The Web Server
   web:
@@ -36,6 +37,9 @@ services:
       - "MYSQL_ROOT_PASSWORD=secret"
     ports:
         - "33063:3306"
-
+  redis:
+    image: redis:latest
+    ports:
+        - "63793:6379"
 volumes:
   dbdata:

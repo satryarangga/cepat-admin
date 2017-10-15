@@ -20,9 +20,10 @@ Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::get('setting/user/change-status/{id}/{status}', 'Master\UserController@changeStatus')->name('user.change-status');
 Route::resource('setting/user', 'Master\UserController');
 
-Route::get('setting/customer/change-status/{id}/{status}', 'Master\CustomerController@changeStatus')->name('customer.change-status');
-Route::resource('setting/customer', 'Master\CustomerController');
+Route::get('master/customer/change-status/{id}/{status}', 'Master\CustomerController@changeStatus')->name('customer.change-status');
+Route::resource('master/customer', 'Master\CustomerController');
 
+Route::resource('setting/static-content', 'Master\StaticContentController');
 
 Route::get('ajax/get-province', 'Master\AjaxController@getProvince')->name('ajax.getProvince');
 Route::get('ajax/get-city', 'Master\AjaxController@getCity')->name('ajax.getCity');
