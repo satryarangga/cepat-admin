@@ -70,12 +70,13 @@ class StaticContentController extends Controller
     {
         $this->validate($request,[
             'name'     => 'required',
-            'content'     => 'required',
+            'type'     => 'required'
         ]);
 
         $create = [
             'name'  => str_replace(' ', '_', strtolower($request->input('name'))),
-            'content'  => $request->input('content'),
+            'type'  => $request->input('type'),
+            'content'  => ($request->input('type') == 1) ? $request->input('content_text') : $request->input('content_value'),
             'created_by'  => Auth::id(),
         ];
 
@@ -125,20 +126,19 @@ class StaticContentController extends Controller
     {
         $this->validate($request,[
             'name'     => 'required',
-            'content'     => 'required',
+            'type'     => 'required'
         ]);
 
         $update = [
             'name'  => str_replace(' ', '_', strtolower($request->input('name'))),
-            'content'  => $request->input('content'),
+            'type'  => $request->input('type'),
+            'content'  => ($request->input('type') == 1) ? $request->input('content_text') : $request->input('content_value'),
             'created_by'  => Auth::id(),
         ];
 
         $this->model->update($id, $update);
 
         logUser('update Static Content '.$update['name']);
-
-        logUser('Update Static Content '.$update['name']);
 
         $message = setDisplayMessage('success', "Success to update ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);

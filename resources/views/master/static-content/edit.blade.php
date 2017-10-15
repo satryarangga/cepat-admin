@@ -29,9 +29,24 @@
 	                </div>
 
 	                <div class="form-group">
+			               <label for="gender" class="col-sm-2 control-label">Type</label>
+			               <div class="col-sm-10">
+				               <label class="radio-inline"><input @if(!isset($row['type']) || $row['type'] == 1) checked="checked" @endif type="radio" value="1" name="type">Text</label>
+		                  	   <label class="radio-inline"><input @if(isset($row['type']) && $row['type'] == 2) checked="checked" @endif type="radio" value="2" name="type">Value</label>
+			               </div>
+			         </div>
+
+	                <div class="form-group" id="text-content" style="@if(isset($row['type']) && $row['type'] == 2) display: none @endif">
 	                  <label for="name" class="col-sm-2 control-label">Content</label>
 	                  <div class="col-sm-10">
-	                  	<textarea name="content" class="form-control textarea">{{$row['content']}}</textarea>
+	                  	<textarea name="content_text" class="form-control textarea">{{$row['content']}}</textarea>
+	                  </div>
+	                </div>
+
+	                <div class="form-group" id="value-content" style="@if(!isset($row['type']) || $row['type'] == 1) display: none @endif">
+	                  <label for="name" class="col-sm-2 control-label">Content</label>
+	                  <div class="col-sm-10">
+	                  	<input type="text" class="form-control" name="content_value" value="{{$row['content']}}">
 	                  </div>
 	                </div>
 

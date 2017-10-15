@@ -28,9 +28,24 @@
 	                </div>
 
 	                <div class="form-group">
+			               <label for="gender" class="col-sm-2 control-label">Type</label>
+			               <div class="col-sm-10">
+				               <label class="radio-inline"><input @if(old('type') == 1) checked="checked" @endif type="radio" value="1" name="type">Text</label>
+		                  	   <label class="radio-inline"><input @if(old('type') == 2) checked="checked" @endif type="radio" value="2" name="type">Value</label>
+			               </div>
+			         </div> 
+
+	                <div class="form-group" id="text-content" style="display: none">
 	                  <label for="name" class="col-sm-2 control-label">Content</label>
 	                  <div class="col-sm-10">
-	                  	<textarea name="content" class="form-control textarea"></textarea>
+	                  	<textarea name="content_text" class="form-control textarea"></textarea>
+	                  </div>
+	                </div>
+
+	                <div class="form-group" id="value-content" style="display: none">
+	                  <label for="name" class="col-sm-2 control-label">Content</label>
+	                  <div class="col-sm-10">
+	                  	<input type="text" class="form-control" name="content_value">
 	                  </div>
 	                </div>
 

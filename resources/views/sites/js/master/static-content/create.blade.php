@@ -3,6 +3,18 @@
 <script>
   $(function () {
     //bootstrap WYSIHTML5 - text editor
-    $('.textarea').wysihtml5()
-  })
+    $('.textarea').wysihtml5();
+
+    $('input[name=type]').click(function(){
+    	let val = $(this).val();
+
+    	if(val == 1) {
+    		$('#text-content').show();
+    		$('#value-content').hide();
+    	} else {
+    		$('#text-content').hide();
+    		$('#value-content').show();
+    	}
+    });
+  });
 </script>
