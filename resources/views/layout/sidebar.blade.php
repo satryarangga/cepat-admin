@@ -11,6 +11,7 @@
           <a href="{{route('user.index')}}"><i class="fa fa-user"></i> User Management</a>
           <a href="{{route('customer.index')}}"><i class="fa fa-users"></i> Customer Management</a>
           <a href="{{route('static-content.index')}}"><i class="fa fa-file"></i> Static Content Management</a>
+          <a href="{{route('voucher.index')}}"><i class="fa fa-usd"></i> Voucher Management</a>
         </li>
       </ul>
     </section>

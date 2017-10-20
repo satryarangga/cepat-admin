@@ -25,5 +25,8 @@ Route::resource('master/customer', 'Master\CustomerController');
 
 Route::resource('setting/static-content', 'Master\StaticContentController');
 
+Route::get('master/voucher/change-status/{id}/{status}', 'Master\VoucherController@changeStatus')->name('voucher.change-status');
+Route::resource('master/voucher', 'Master\VoucherController');
+
 Route::get('ajax/get-province', 'Master\AjaxController@getProvince')->name('ajax.getProvince');
 Route::get('ajax/get-city', 'Master\AjaxController@getCity')->name('ajax.getCity');
