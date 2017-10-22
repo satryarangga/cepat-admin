@@ -41,12 +41,12 @@
       		let obj = jQuery.parseJSON(result);
       		let opt = [];
       		opt.push("<option>Choose City</option>");
-			$.each(obj, function(key,value) {
-			  opt.push('<option value="'+value.id+'">'+value.name+'</option>');
-			}); 
-			let all = opt.join(" ");
-			$('#city_id').html(all);
-      	}
+    			$.each(obj, function(key,value) {
+    			  opt.push('<option value="'+value.id+'">'+value.name+'</option>');
+    			}); 
+    			let all = opt.join(" ");
+    			$('#city_id').html(all);
+        }
      });
   }
 </script>

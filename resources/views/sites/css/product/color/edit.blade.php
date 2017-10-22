@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="{{ asset('lte') }}/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">

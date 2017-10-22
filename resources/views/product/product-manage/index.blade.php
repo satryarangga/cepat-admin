@@ -17,9 +17,8 @@
                 <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Type</th>
+                  <th>Price</th>
+                  <th>Weight</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -27,10 +26,9 @@
                 <tbody>
                 @foreach($result as $key => $val)
                 <tr>
-                <td>{{$val->first_name . ' ' . $val->last_name}}</td>
-                <td>{{$val->username}}</td>
-                <td>{{$val->email}}</td>
-                <td>{{($val->user_type == 1) ? 'Internal' : 'Partner'}}</td>
+                <td>{{$val->name}}</td>
+                <td>{{moneyFormat($val->original_price)}}</td>
+                <td>{{$val->weight}} Kg</td>
                 <td>{!!setActivationStatus($val->status)!!}</td>
                 <td>
                 	<div class="btn-group">
@@ -40,24 +38,21 @@
 	                    <span class="sr-only">Toggle Dropdown</span>
 	                  </button>
 	                  <ul class="dropdown-menu" role="menu">
-                        @if($val->username != 'admin')
-    	                    <li><a href="{{ route($page.'.edit', ['id' => $val->id]) }}">Edit</a></li>
-                          @if($val->status == 1)
-                          <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 0]) }}">Set Non Active</a></li>
-                          @else
-                          <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 1]) }}">Set Active</a></li>
-                          @endif
-                        @endif
-  	                    <li class="divider"></li>
-                        @if($val->username != 'admin')
-    	                    <li>
-    	                    	<form class="deleteForm" method="post" action="{{route("$page.destroy", ['id' => $val->id])}}">
-    	                    		{{csrf_field()}}
-    	                    		<button onclick="return confirm('You will delete this {{$page}}, continue')" type="submit">Delete</button>
-    	                    		{{ method_field('DELETE') }}
-    	                    	</form>
-    	                    </li>
-                        @endif
+    	                <li><a href="{{ route($page.'.edit', ['id' => $val->id]) }}">Edit</a></li>
+                      <li><a href="{{ route('product-variant'.'.index') }}?product_id={{$val->id}}">View Variant</a></li>
+  	                  <li class="divider"></li>
+                      @if($val->status == 1)
+                        <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 0]) }}">Set Not Active</a></li>
+                        @else
+                        <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 1]) }}">Set Active</a></li>
+                      @endif
+    	                <li>
+    	                  <form class="deleteForm" method="post" action="{{route("$page.destroy", ['id' => $val->id])}}">
+    	                    {{csrf_field()}}
+    	                    <button onclick="return confirm('You will delete this {{$page}}, continue')" type="submit">Delete</button>
+    	                    {{ method_field('DELETE') }}
+    	                  </form>
+    	                </li>
 	                  </ul>
                 	</div>
                 </td>

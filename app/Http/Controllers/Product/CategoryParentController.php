@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers\Product;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\User;
-use App\Models\UserLogs;
-// use App\Role;
-// use App\RoleUser;
+use App\Models\CategoryParent;
 
-
-class UserController extends Controller
+class CategoryParentController extends Controller
 {
     /**
      * @var string
@@ -30,9 +26,9 @@ class UserController extends Controller
 
 
     public function __construct() {
-        $this->model = new User();
-        $this->module = 'master.user';
-        $this->page = 'user';
+        $this->model = new CategoryParent();
+        $this->module = 'product.category-parent';
+        $this->page = 'category-parent';
         $this->middleware('auth');
     }
 
@@ -41,7 +37,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $data = [
             'result' => $this->model->all(),
@@ -58,8 +54,7 @@ class UserController extends Controller
     public function create()
     {
         $data = [
-            'page' => $this->page,
-            // 'position' => Role::all(),
+            'page' => $this->page
         ];
 
         return view($this->module.".create", $data);
@@ -74,29 +69,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'first_name'     => 'required',
-            'last_name'     => 'required',
-            'username'     => 'required|unique:users',
-            'password' => 'required|string|min:4',
-            'user_type' => 'required',
+            'name'     => 'required'
         ]);
 
         $create = [
-            'first_name'  => $request->input('first_name'),
-            'last_name'  => $request->input('last_name'),
-            'username'  => $request->input('username'),
-            'user_type'  => $request->input('user_type'),
-            'email'  => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+            'name'  => $request->input('name'),
+            'url'  => urlFormat($request->input('name')),
             'created_by' => Auth::id()
         ];
 
-        $user = $this->model->create($create);
+        $this->model->create($create);
 
-        logUser('Create User '.$create['first_name'].' '.$create['last_name']);
-
-        // $role = $request->input('roles');
-        // $this->assignRole($role, $user);
+        logUser('Create Category Parent '.$create['name']);
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -108,14 +92,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function edit($id)
     {
-        $type = $request->input('type');
         $data = [
             'page' => $this->page,
-            'row' => $this->model->find($id),
-            'type' => $type,
-            // 'validRole' => RoleUser::getRoleForUser($id)
+            'row' => $this->model->find($id)
         ];
 
         return view($this->module.".edit", $data);
@@ -131,41 +112,22 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'first_name'     => 'required',
-            'last_name'     => 'required'
+            'name'     => 'required'
         ]);
 
         $data = $this->model->find($id);
 
         $update = [
-            'first_name'  => $request->input('first_name'),
-            'last_name'  => $request->input('last_name'),
-            'user_type'  => $request->input('user_type'),
-            'email'  => $request->input('email'),
+            'name'  => $request->input('name'),
+            'url'  => urlFormat($request->input('name')),
             'updated_by' => Auth::id()
         ];
 
-        if($request->input('password')) {
-            $update['password'] = bcrypt($request->input('password'));
-        }
-
         $data->update($update);
 
-        logUser('Update User '.$update['first_name'] . ' ' . $update['last_name']);
-
-
-        // $role = $request->input('roles');
-        // $this->assignRole($role, $data);
-
-        $type = $request->input('type');
+        logUser('Update Category Parent '.$update['name']);
 
         $message = setDisplayMessage('success', "Success to update ".$this->page);
-
-        if($type == 'profile') {
-            $message = setDisplayMessage('success', "Success to update your profile");
-            return redirect(route($this->page.'.edit', ['id' => $id]).'?type=profile')->with('displayMessage', $message);
-        }
-
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
 
@@ -179,7 +141,7 @@ class UserController extends Controller
     {
         $data = $this->model->find($id);
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
-        logUser('Delete User '.$data->first_name . ' ' . $data->last_name);
+        logUser('Delete Category Parent '.$data->name);
         $data->deleted_at = date('Y-m-d H:i:s');
         $data->save();
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -193,25 +155,18 @@ class UserController extends Controller
     public function changeStatus($id, $status) {
         $data = $this->model->find($id);
 
-        if($status == 1) { // ACTIVATE USER
+        if($status == 1) { // ACTIVATE CUSTOMER
             $desc = 'activate';
         } else {
-            $desc = 'suspend';
+            $desc = 'deacticate';
         }
 
         $data->status = $status;
         $data->save();
 
-        logUser('Change Status User '.$data->first_name . ' ' . $data->last_name);
+        logUser('Change Status Category Parent '.$data->name);
 
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
-
-    // protected function assignRole($role, $user) {
-    //     RoleUser::where('user_id', $user->id)->delete();
-    //     foreach ($role as $key => $value) {
-    //         $user->attachRole($value);
-    //     }
-    // }
 }

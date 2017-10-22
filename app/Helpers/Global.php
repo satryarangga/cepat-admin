@@ -60,16 +60,6 @@
         ];
     }
 
-    function getPrevYears() {
-        $now = date('Y');
-        $limit = 3;
-        for($i=0; $i < $limit; $i++) {
-            $years[] = $now - $i;
-        }
-
-        return $years;
-    }
-
     function dateHumanFormat($date) {
         if($date == null) {
             return null;
@@ -82,27 +72,13 @@
         return App\Models\UserLogs::createLog($desc);
     }
 
-    function generateApiField($fieldName, $label, $type = 'string', $required = true, $options = null, $desc = null) {
-        $field = [
-            'fieldName' => $fieldName,
-            'type'      => $type,
-            'label'     => $label,
-            'required'  => $required
-        ];
-
-        if($options != null) {
-            $field['options'] = $options;
-        }
-
-        if($desc != null) {
-            $field['desc'] = $desc;
-        }
-
-        return $field;
-    }
-
     function getFieldOfTable($tableName, $primaryKey, $field) {
         $query = Illuminate\Support\Facades\DB::table($tableName)->where('id', $primaryKey)->value($field);
 
         return $query;
+    }
+
+    function urlFormat($name) {
+        $constraint = [' ', '_'];
+        return strtolower(str_replace($constraint, '-', $name));
     }

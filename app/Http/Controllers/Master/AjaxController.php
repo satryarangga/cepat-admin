@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Province;
 use App\Models\City;
+use App\Models\CategoryChild;
 
 class AjaxController extends Controller
 {
@@ -23,6 +24,13 @@ class AjaxController extends Controller
     	$data = City::where('province_id', $province)->get();
 
     	return json_encode($data);
+    }
+
+    public function getCategoryChild(Request $request) {
+        $parent = $request->input('parent');
+        $data = CategoryChild::where('parent_id', $parent)->get();
+
+        return json_encode($data);
     }
 
 }

@@ -21,43 +21,35 @@
 	            	{{csrf_field()}}
 	              <div class="box-body">
 	                <div class="form-group">
-	                  <label for="first_name" class="col-sm-3 control-label">First Name</label>
+	                  <label for="first_name" class="col-sm-4 control-label">First Name</label>
 	                  <div class="col-sm-8">
 	                    <input type="text" class="form-control" name="first_name" value="{{old('first_name')}}" id="first_name" placeholder="First Name">
 	                  </div>
 	                </div>
 	                
 	                <div class="form-group">
-	                  <label for="last_name" class="col-sm-3 control-label">Last Name</label>
+	                  <label for="last_name" class="col-sm-4 control-label">Last Name</label>
 	                  <div class="col-sm-8">
 	                  	<input type="text" class="form-control" name="last_name" value="{{old('last_name')}}" id="last_name" placeholder="Last Name">
 	                  </div>
 	                </div>
 
 	                <div class="form-group">
-	                  <label for="email" class="col-sm-3 control-label">Email</label>
+	                  <label for="email" class="col-sm-4 control-label">Email</label>
 	                  <div class="col-sm-8">
 	                  	<input type="text" class="form-control" name="email" value="{{old('email')}}" id="email" placeholder="Email">
 	                  </div>
 	                </div>
 
 	                <div class="form-group">
-			               <label for="user_type" class="col-sm-3 control-label">User Type</label>
-			               <div class="col-sm-8">
-				               <label class="radio-inline"><input @if(old('user_type') == 1) checked="checked" @endif type="radio" value="1" name="user_type">Internal</label>
-		                  	   <label class="radio-inline"><input @if(old('user_type') == 2) checked="checked" @endif type="radio" value="2" name="user_type">Partner</label>
-			               </div>
-			         </div> 
-
-	                <div class="form-group">
-	                  <label for="username" class="col-sm-3 control-label">Username *For Login</label>
+	                  <label for="username" class="col-sm-4 control-label">Username *For Login</label>
 	                  <div class="col-sm-8">
 	                  	<input type="text" class="form-control" name="username" value="{{old('username')}}" id="username" placeholder="Username">
 	                  </div>
 	                </div>
 
 	                <div class="form-group">
-	                  <label for="file" class="col-sm-3 control-label">Password *Min 4 Characters</label>
+	                  <label for="file" class="col-sm-4 control-label">Password *Min 4 Characters</label>
 	                  <div class="col-sm-8">
 	                    <input type="password" class="form-control" name="password" id="pass">
 	                  </div>

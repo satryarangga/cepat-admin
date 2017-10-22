@@ -19,10 +19,11 @@ class CreateRequestPartner extends Migration
             $table->string('last_name', 150)->nullable();
             $table->string('email', 75);
             $table->string('handphone_number', 50);
-            $table->string('homephone_number', 50);
+            $table->string('homephone_number', 50)->nullable();
             $table->integer('province_id');
             $table->integer('city_id');
             $table->text('address');
+            $table->text('desc')->nullable();
             $table->tinyInteger('status')->comment('0:pending, 1:Rejected, 2:Approved');
             $table->integer('updated_by')->nullable();
             $table->softDeletes();
