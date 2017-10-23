@@ -51,6 +51,13 @@
 	                  </div>
 	                </div>
 
+	                <div class="form-group">
+	                  <label for="image" class="col-sm-3 control-label">Images *Choose Multiple</label>
+	                  <div class="col-sm-8">
+	                  	<input type="file" name="image[]" multiple>
+	                  </div>
+	                </div>
+
 	              </div>
 	              <!-- /.box-body -->
 	              <div class="box-footer">

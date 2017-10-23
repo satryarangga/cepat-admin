@@ -1,5 +1,5 @@
 @foreach($resultPerColor['data'] as $key => $val)
-<div class="modal fade" id="modal-view-add-{{$val->color_id}}">
+<div class="modal fade" id="modal-size-add-{{$val->color_id}}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

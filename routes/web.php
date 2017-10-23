@@ -36,6 +36,7 @@ Route::get('ajax/get-city', 'Master\AjaxController@getCity')->name('ajax.getCity
 Route::get('ajax/get-category-child', 'Master\AjaxController@getCategoryChild')->name('ajax.getCategoryChild');
 Route::get('ajax/change-status-size-variant', 'Product\ProductVariantController@changeStatusSize')->name('ajax.changeStatusSizeVariant');
 Route::get('ajax/delete-size-variant', 'Product\ProductVariantController@deleteSize')->name('ajax.deleteSizeVariant');
+Route::get('ajax/delete-image-variant', 'Product\ProductVariantController@deleteImage')->name('ajax.deleteImageVariant');
 
 
 // PRODUCT
@@ -52,6 +53,7 @@ Route::resource('product/category-child', 'Product\CategoryChildController');
 Route::get('product/product-manage/change-status/{id}/{status}', 'Product\ProductController@changeStatus')->name('product-manage.change-status');
 Route::resource('product/product-manage', 'Product\ProductController');
 
+Route::post('product/product-variant/image', 'Product\ProductVariantController@addImage')->name('product-variant.addImage');
 Route::resource('product/product-variant', 'Product\ProductVariantController');
 
 

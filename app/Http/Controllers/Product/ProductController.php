@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\CategoryChild;
 use App\Models\CategoryParent;
 use App\Models\CategoryMap;
+use App\Models\ProductVariant;
+use App\Models\ProductImage;
 
 class ProductController extends Controller
 {
@@ -44,7 +46,8 @@ class ProductController extends Controller
     {
         $data = [
             'result' => $this->model->all(),
-            'page' => $this->page
+            'page' => $this->page,
+            'title' => 'Product'
         ];
         return view($this->module . ".index", $data);
     }
@@ -176,6 +179,12 @@ class ProductController extends Controller
         logUser('Delete Product '.$data->name);
         $data->deleted_at = date('Y-m-d H:i:s');
         $data->save();
+
+        // DELETE VARIANT
+        ProductVariant::where('product_id', $id)->delete();
+        ProductImage::where('product_id', $id)->delete();
+        CategoryMap::where('product_id', $id)->delete();
+
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
 

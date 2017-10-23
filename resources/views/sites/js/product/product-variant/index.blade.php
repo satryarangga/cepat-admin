@@ -66,4 +66,19 @@
 			});
 		}
 	}
+
+	function deleteImage(elem, imageId) {
+		let confirmed = confirm('You will delete one image, continue?');
+		if(confirmed) {
+			$.ajax({
+				method: 'GET',
+				data: {"image_id":imageId},
+				url: '{{route("ajax.deleteImageVariant")}}',
+				success: function(result) {
+					let className = $(elem).parent().parent().attr('class');
+					$(elem).parent().parent().html('');
+				}
+			});
+		}
+	}
 </script>

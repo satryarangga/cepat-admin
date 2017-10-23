@@ -33,7 +33,6 @@
 	                    <input type="text" class="form-control colorpicker" name="hexa" value="{{old('hexa')}}" id="hexa" placeholder="Hexa">
 	                  </div>
 	                </div>
-
 	              </div>
 	              <!-- /.box-body -->
 	              <div class="box-footer">

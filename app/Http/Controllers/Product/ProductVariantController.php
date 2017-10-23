@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductImage;
 use App\Models\Color;
 use App\Models\Size;
 
@@ -50,6 +51,7 @@ class ProductVariantController extends Controller
         $data = [
             'resultPerColor' => $this->model->listByColor($product_id),
             'resultPerSize' => $this->model->listBySize($product_id),
+            'resultPerImage' => ProductImage::listByProductID($product_id),
             'page' => $this->page,
             'title' => 'List Variant Color '.$product->name,
             'product' => $product,
@@ -110,6 +112,28 @@ class ProductVariantController extends Controller
         $create['SKU'] = $this->model->generateSKU($create['product_id'], $create['color_id'], $create['size_id']);
 
         $created = $this->model->create($create);
+
+        // IMAGE PROCESS
+        if ($request->file('image')) {
+            $x = 0;
+            foreach ($request->file('image') as $key => $value) {
+                $x++;
+                $ext = $value->getClientOriginalExtension();
+                $random = strtoupper(str_random(5));
+                $name = $create['product_id'] . '-' . $create['color_id'] . '-' . $random.'.'.$ext;
+                $value->move(
+                    base_path() . '/public/images/product/'. $create['product_id'] . '/' . $create['color_id'] . '/' ,$name
+                );
+
+                ProductImage::create([
+                    'product_id'    => $create['product_id'],
+                    'color_id'    => $create['color_id'],
+                    'url'    => $name,
+                    'default' => ($x == 1) ? 1 : 0,
+                    'created_by' => Auth::id()
+                ]);
+            }
+        }
 
         $log = 'Create Product Variant Product ID:'.$create['product_id']. ' Color : '. $create['color_id'] . ' Size:'.$create['size_id'];
         logUser($log);
@@ -175,5 +199,44 @@ class ProductVariantController extends Controller
         $data->delete();
         logUser('Delete Product Variant Size');
         return 1;
+    }
+
+    public function deleteImage(Request $request) {
+        $image_id = $request->input('image_id');
+        $data = ProductImage::find($image_id);
+        $data->delete();
+        logUser('Delete Product Image');
+        return 1;
+    }
+
+    public function addImage(Request $request) {
+        $colorId = $request->input('color_id');
+        $productId = $request->input('product_id');
+
+        $dataColor = Color::find($colorId);
+
+        if ($request->file('image')) {
+            $x = 0;
+            foreach ($request->file('image') as $key => $value) {
+                $x++;
+                $ext = $value->getClientOriginalExtension();
+                $random = strtoupper(str_random(5));
+                $name = $productId . '-' . $colorId . '-' . $random.'.'.$ext;
+                $value->move(
+                    base_path() . '/public/images/product/'. $productId . '/' . $colorId . '/' ,$name
+                );
+
+                ProductImage::create([
+                    'product_id'    => $productId,
+                    'color_id'    => $colorId,
+                    'url'    => $name,
+                    'default' => ($x == 1) ? 1 : 0,
+                    'created_by' => Auth::id()
+                ]);
+            }
+        }
+
+        $message = setDisplayMessage('success', "Success to add image for variant color ".$dataColor->name);
+        return redirect(route($this->page.'.index').'?product_id='.$productId)->with('displayMessage', $message);
     }
 }

@@ -9,7 +9,7 @@
 		{!! session('displayMessage') !!}
 		<div class="box">
             <div class="box-header">
-                <a href="{{route($page.'.create')}}" class="btn btn-info">Create {{ucwords(str_replace('-',' ', $page))}}</a>
+                <a href="{{route($page.'.create')}}" class="btn btn-info">Create Product</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -49,7 +49,7 @@
     	                <li>
     	                  <form class="deleteForm" method="post" action="{{route("$page.destroy", ['id' => $val->id])}}">
     	                    {{csrf_field()}}
-    	                    <button onclick="return confirm('You will delete this {{$page}}, continue')" type="submit">Delete</button>
+    	                    <button onclick="return confirm('You will delete product {{$val->name}} and all of its variants, continue?')" type="submit">Delete</button>
     	                    {{ method_field('DELETE') }}
     	                  </form>
     	                </li>
