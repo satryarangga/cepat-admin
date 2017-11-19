@@ -31,4 +31,20 @@ class Product extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public function getListProduct($filter = [], $sortBy = 'updated_at', $limit = 10) {
+        $where = [];
+
+        $keyword = $filter['keyword'];
+        if($filter['search_by'] == 'product_name' && $keyword) {
+            $where[] = ['products.name', 'like', "%$keyword%"];
+        }
+
+        $data = parent::select('id', 'name', 'original_price', 'weight')
+                        ->orderBy($sortBy, 'desc')
+                        ->where($where)
+                        ->paginate($limit);
+
+        return $data;
+    }
 }

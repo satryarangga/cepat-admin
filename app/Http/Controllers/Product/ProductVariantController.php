@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
+use App\Models\InventoryLog;
 use App\Models\Color;
 use App\Models\Size;
 
@@ -238,5 +239,63 @@ class ProductVariantController extends Controller
 
         $message = setDisplayMessage('success', "Success to add image for variant color ".$dataColor->name);
         return redirect(route($this->page.'.index').'?product_id='.$productId)->with('displayMessage', $message);
+    }
+
+    public function inventoryControl(Request $request) {
+        $filter = [
+            'search_by' => $request->input('search_by'),
+            'keyword' => $request->input('keyword')
+        ];
+        $variantModel = new ProductVariant();
+        $listSKU =  $variantModel->getListSKU($filter);
+
+
+        foreach ($listSKU as $key => $value) {
+            $logs = InventoryLog::where('SKU', $value->SKU)->get();
+            $listSKU[$key]->logs = $logs;
+        }
+
+        $data = [
+            'list'  => $listSKU,
+            'page' => 'inventory-control',
+            'filter' => $filter,
+            'inventoryLog'  => new InventoryLog()
+        ];
+
+        return view($this->module . ".inventory-control", $data);
+    }
+
+    public function changeInventory(Request $request) {
+        $current = $request->input('current');
+        $new = $request->input('new');
+        $reason = $request->input('reason');
+        $sku = $request->input('sku');
+        $delta = $new - $current;
+
+        $data = ProductVariant::where('SKU', $sku)->first();
+        $productId = $data->product_id;
+        $newQtyOrder = $data->qty_order + $delta;
+
+        $data->qty_order = $newQtyOrder;
+        $data->qty_warehouse = $new;
+        $data->save();
+
+        $description = ($delta < 0) ? 'Inventory Correction Out' : 'Inventory Correction In';
+
+        if($delta != 0) {
+            InventoryLog::create([
+                'product_id'    => $productId,
+                'purchase_code' => '',
+                'user_id'       => Auth::id(),
+                'SKU'           => $sku,
+                'qty'           => abs($delta),
+                'type'          => ($delta < 0) ? 4 : 3,
+                'description'   => ($reason) ? $description.' - '.$reason : $description,
+                'source'        => 2 // ADMIN
+            ]);
+        }
+
+        $message = setDisplayMessage('success', "Success to change inventory SKU ".$sku);
+        return redirect(route($this->page.'.inventoryControl'))->with('displayMessage', $message);        
     }
 }

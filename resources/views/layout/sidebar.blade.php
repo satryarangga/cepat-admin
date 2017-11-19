@@ -30,6 +30,9 @@
               <li @if($page == 'product') class="active" @endif>
                 <a href="{{route('product-manage.index')}}"><i class="fa fa-folder-open"></i> Product</a>
               </li>
+              <li @if($page == 'inventory-control') class="active" @endif>
+                <a href="{{route('product-variant.inventoryControl')}}"><i class="fa fa-folder-open"></i> Inventory Control</a>
+              </li>
             </ul>
         </li>
 

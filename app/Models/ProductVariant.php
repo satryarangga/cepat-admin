@@ -94,4 +94,27 @@ class ProductVariant extends Model
         }
         return $data;
     }
+
+    public function getListSKU ($filter = [], $sortBy = 'updated_at', $limit = 20) {
+        $where = [];
+
+        $keyword = $filter['keyword'];
+        if($filter['search_by'] == 'sku' && $keyword) {
+            $where[] = ['SKU', '=', $keyword];
+        }
+
+        if($filter['search_by'] == 'product_name' && $keyword) {
+            $where[] = ['products.name', 'like', "%$keyword%"];
+        }
+
+        $data = parent::select('SKU', 'qty_order', 'qty_warehouse', 'products.name as product_name', 'colors.name as color_name', 'size.name as size_name')
+                        ->join('products', 'products.id', '=', 'product_variants.product_id')
+                        ->join('colors', 'colors.id', '=', 'product_variants.color_id')
+                        ->join('size', 'size.id', '=', 'product_variants.size_id')
+                        ->where($where)
+                        ->orderBy('product_variants.updated_at', 'desc')
+                        ->paginate($limit);
+        return $data;
+
+    }
 }

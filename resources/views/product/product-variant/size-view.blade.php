@@ -1,5 +1,5 @@
-@foreach($resultPerColor['data'] as $key => $val)
-<div class="modal fade" id="modal-size-view-{{$val->color_id}}">
+@foreach($resultPerColor as $key => $val)
+<div class="modal fade" id="modal-view-size-{{$val->color_id}}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -16,27 +16,15 @@
                 <th>SKU</th>
                 <th>Qty Order</th>
                 <th>Qty Warehouse</th>
-                <th>Status</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               @foreach($resultPerSize[$val->color_id] as $keySize => $valSize)
-              @php $sizeName = getFieldOfTable('size', $valSize->size_id, 'name')  @endphp
               <tr>
-                <td>{{$sizeName}}</td>
+                <td>{{getFieldOfTable('size', $valSize->size_id, 'name')}}</td>
                 <td>{{$valSize->SKU}}</td>
                 <td>{{$valSize->qty_order}}</td>
                 <td>{{$valSize->qty_warehouse}}</td>
-                <td class="status">{{($valSize->status == 1) ? 'Active' : 'Not Active'}}</td>
-                <td class="buttonStatus">
-                    @if($valSize->status == 1)
-                      <a onclick="changeStatusSize($(this), 0, {{$valSize->id}}, '{{$sizeName}}')" class="btn btn-danger">Deactivate</a>
-                    @else
-                      <a onclick="changeStatusSize($(this), 1, {{$valSize->id}}, '{{$sizeName}}')" class="btn btn-success">Activate</a>
-                    @endif
-                    <a onclick="deleteSize($(this), {{$valSize->id}}, '{{$sizeName}}')" class="btn btn-warning">Delete</a>
-                </td>
               </tr>
               @endforeach
             </tbody>

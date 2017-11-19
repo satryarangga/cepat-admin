@@ -9,11 +9,26 @@
 		{!! session('displayMessage') !!}
 		<div class="box">
             <div class="box-header">
-                <a href="{{route($page.'.create')}}" class="btn btn-info">Create Product</a>
+                <form style="float: right;" class="form-inline">
+                  <div class="form-group">
+                    <label class="control-label">Search by</label>
+                    <select name="search_by" class="form-control">
+                      <option @if($filter['search_by'] == 'product_name') selected @endif value="product_name">Product Name</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="margin-left: 10px">
+                    <label class="control-label">Keyword</label>
+                    <input type="text" name="keyword" value="{{$filter['keyword']}}" class="form-control" />
+                  </div>
+                  <div class="form-group" style="margin-left: 10px">
+                    <input type="submit" value="Search" class="btn btn-primary">
+                  </div>
+                </form>
+                <a style="float: left;" href="{{route($page.'.create')}}" class="btn btn-info">Create Product</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-hover table-striped">
+              <table class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
                   <th>Name</th>
@@ -59,6 +74,7 @@
                 </tr>
                 @endforeach
               </table>
+              {{$result->links()}}
             </div>
             <!-- /.box-body -->
           </div>

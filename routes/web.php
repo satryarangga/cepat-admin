@@ -54,6 +54,8 @@ Route::get('product/product-manage/change-status/{id}/{status}', 'Product\Produc
 Route::resource('product/product-manage', 'Product\ProductController');
 
 Route::post('product/product-variant/image', 'Product\ProductVariantController@addImage')->name('product-variant.addImage');
+Route::get('product/product-variant/inventory', 'Product\ProductVariantController@inventoryControl')->name('product-variant.inventoryControl');
+Route::put('product/product-variant/change-inventory', 'Product\ProductVariantController@changeInventory')->name('product-variant.changeInventory');
 Route::resource('product/product-variant', 'Product\ProductVariantController');
 
 

@@ -69,6 +69,20 @@
 		                  </div>
 		                </div>
 
+		                <div class="form-group">
+		                  <label for="meta_description" class="col-sm-3 control-label">Meta Description</label>
+		                  <div class="col-sm-8">
+		                  	<textarea name="meta_description" rows="5" class="form-control">{{isset($seo->meta_description) ? $seo->meta_description : null}}</textarea>
+		                  </div>
+		                </div>
+
+		                <div class="form-group">
+		                  <label for="meta_keywords" class="col-sm-3 control-label">Meta Keywords</label>
+		                  <div class="col-sm-8">
+		                  	<input type="text" class="form-control" name="meta_keywords" value="{{isset($seo->meta_keywords) ? $seo->meta_keywords : null}}" id="meta_keywords" placeholder="Words separated by comma">
+		                  </div>
+		                </div>
+
 	              </div>
 	              <!-- /.box-body -->
 	              <div class="box-footer">

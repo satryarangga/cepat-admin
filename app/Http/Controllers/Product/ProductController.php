@@ -11,6 +11,7 @@ use App\Models\CategoryParent;
 use App\Models\CategoryMap;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
+use App\Models\ProductSeo;
 
 class ProductController extends Controller
 {
@@ -42,12 +43,19 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filter = [
+            'search_by' => $request->input('search_by'),
+            'keyword' => $request->input('keyword')
+        ];
+        $productModel = new Product();
+        $list =  $productModel->getListProduct($filter);
         $data = [
-            'result' => $this->model->all(),
+            'result' => $list,
             'page' => $this->page,
-            'title' => 'Product'
+            'title' => 'Product',
+            'filter' => $filter,
         ];
         return view($this->module . ".index", $data);
     }
@@ -99,6 +107,12 @@ class ProductController extends Controller
             'product_id'            => $created->id
         ]);
 
+        ProductSeo::create([
+            'product_id'    => $created->id,
+            'meta_description' => $request->input('meta_description'),
+            'meta_keywords' => $request->input('meta_keywords')
+        ]);
+
         logUser('Create Product '.$create['name']);
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
@@ -117,7 +131,8 @@ class ProductController extends Controller
             'page' => $this->page,
             'row' => $this->model->find($id),
             'categoryParent' => CategoryParent::all(),
-            'categoryMap' => CategoryMap::where('product_id', $id)->first()
+            'categoryMap' => CategoryMap::where('product_id', $id)->first(),
+            'seo' => ProductSeo::where('product_id', $id)->first()
         ];
 
         return view($this->module.".edit", $data);
@@ -160,6 +175,20 @@ class ProductController extends Controller
             'product_id'            => $id
         ]);
 
+        // PRODUCT SEO
+        $data = ProductSeo::where('product_id', $id)->first();
+        if(isset($data->id)) {
+            $data->meta_description = $request->input('meta_description');
+            $data->meta_keywords = $request->input('meta_keywords');
+            $data->save();
+        } else {
+            ProductSeo::create([
+                'product_id'    => $id,
+                'meta_description' => $request->input('meta_description'),
+                'meta_keywords' => $request->input('meta_keywords')
+            ]);
+        }
+
         logUser('Update Product '.$update['name']);
 
         $message = setDisplayMessage('success', "Success to update ".$this->page);
@@ -184,6 +213,7 @@ class ProductController extends Controller
         ProductVariant::where('product_id', $id)->delete();
         ProductImage::where('product_id', $id)->delete();
         CategoryMap::where('product_id', $id)->delete();
+        ProductSeo::where('product_id', $id)->delete();
 
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
