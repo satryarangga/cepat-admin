@@ -82,3 +82,26 @@
         $constraint = [' ', '_'];
         return strtolower(str_replace($constraint, '-', $name));
     }
+
+    function convertSeconds($seconds) {
+      if(!$seconds) {
+        return null;
+      }
+      $dt1 = new DateTime("@0");
+      $dt2 = new DateTime("@$seconds");
+
+      if($seconds >= 86400) {
+        return $dt1->diff($dt2)->format('%a d, %h h, %i m, %s s');
+      }
+
+      if($seconds >= 3600) {
+        return $dt1->diff($dt2)->format('%h h, %i m, %s s'); 
+      }
+
+      if($seconds >= 60) {
+        return $dt1->diff($dt2)->format('%i m , %s s'); 
+      }
+
+      return $dt1->diff($dt2)->format('%s s'); 
+
+    }

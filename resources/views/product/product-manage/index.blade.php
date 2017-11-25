@@ -35,6 +35,7 @@
                   <th>Price</th>
                   <th>Weight</th>
                   <th>Status</th>
+                  <th>Countdown</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -45,6 +46,7 @@
                 <td>{{moneyFormat($val->original_price)}}</td>
                 <td>{{$val->weight}} Kg</td>
                 <td>{!!setActivationStatus($val->status)!!}</td>
+                <td id="countdown-{{$val->id}}"></td>
                 <td>
                 	<div class="btn-group">
 	                  <button type="button" class="btn btn-info">Action</button>
@@ -68,6 +70,13 @@
     	                    {{ method_field('DELETE') }}
     	                  </form>
     	                </li>
+                      <li class="divider"></li>
+                      @if($val->duration)
+                        <li><a 
+                          onclick="return confirm('You will stop countdown timer for {{$val->name}}, continue?')" href="{{route('product-manage.stopCountdown', ['id' => $val->countdown_id, 'name' => $val->name])}}">Stop Countdown</a></li>
+                      @else
+                        <li><a style="cursor: pointer;" data-toggle="modal" data-target="#modal-countdown-{{$val->id}}">Set Countdown</a></li>
+                      @endif
 	                  </ul>
                 	</div>
                 </td>
@@ -78,6 +87,7 @@
             </div>
             <!-- /.box-body -->
           </div>
+          @include('product.product-manage.modal.countdown')
 	</div>
 </section>
 

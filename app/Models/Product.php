@@ -32,7 +32,7 @@ class Product extends Model
      */
     protected $dates = ['deleted_at'];
 
-    public function getListProduct($filter = [], $sortBy = 'updated_at', $limit = 10) {
+    public function getListProduct($filter = [], $sortBy = 'products.updated_at', $limit = 10) {
         $where = [];
 
         $keyword = $filter['keyword'];
@@ -40,7 +40,8 @@ class Product extends Model
             $where[] = ['products.name', 'like', "%$keyword%"];
         }
 
-        $data = parent::select('id', 'name', 'original_price', 'weight')
+        $data = parent::select('products.id', 'name', 'original_price', 'weight', 'duration', 'product_countdown.id as countdown_id', 'end_on')
+                        ->leftJoin('product_countdown', 'product_countdown.product_id', '=', 'products.id')
                         ->orderBy($sortBy, 'desc')
                         ->where($where)
                         ->paginate($limit);

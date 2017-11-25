@@ -12,6 +12,7 @@ use App\Models\CategoryMap;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
 use App\Models\ProductSeo;
+use App\Models\ProductCountdown;
 
 class ProductController extends Controller
 {
@@ -239,5 +240,48 @@ class ProductController extends Controller
 
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    public function setCountdown(Request $request) {
+        $type = $request->input('type');
+        $value = $request->input('value');
+        $product_id = $request->input('product_id');
+        $product_name = $request->input('product_name');
+
+        if($type == 1) { // DAYS
+            $seconds = 86400 * $value;
+        } else if($type == 2) {
+            $seconds = 3600 * $value;
+        } else if($type == 3) {
+            $seconds = 60 * $value;
+        } else {
+            $seconds = $value;
+        }
+
+        $time = time();
+        $ended = $time + $seconds;
+        ProductCountdown::create([
+            'product_id'    => $product_id,
+            'duration'      => $seconds,
+            'status'        => 1,
+            'start_on'      => date('Y-m-d H:i:s', $time),
+            'end_on'      => date('Y-m-d H:i:s', $ended),
+            'created_by'    => Auth::id()
+        ]);
+
+        $message = setDisplayMessage('success', "Success to set countdown time for $product_name");
+        return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    public function stopCountdown($id, $product_name) {
+        $data = ProductCountdown::find($id)->delete();
+
+        $message = setDisplayMessage('success', "Success to stop countdown time for $product_name");
+        return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    public function expiredCountdown() {
+        $data = ProductCountdown::where('end_on', '<', date('Y-m-d H:i:s'))->delete();
+        return redirect(route($this->page.'.index'));
     }
 }

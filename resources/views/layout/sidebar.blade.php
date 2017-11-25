@@ -53,8 +53,14 @@
               <li @if($page == 'static-content') class="active" @endif>
                 <a href="{{route('static-content.index')}}"><i class="fa fa-file"></i> Static Content Management</a>
               </li>
+              <li @if($page == 'slider') class="active" @endif>
+                <a href="{{route('slider.index')}}"><i class="fa fa-picture-o"></i> Slider Management</a>
+              </li>
               <li @if($page == 'voucher') class="active" @endif>
                 <a href="{{route('voucher.index')}}"><i class="fa fa-usd"></i> Voucher Management</a>
+              </li>
+              <li @if($page == 'payment-method') class="active" @endif>
+                <a href="{{route('payment-method.index')}}"><i class="fa fa-credit-card"></i> Payment Method Management</a>
               </li>
               <li @if($page == 'request-partner') class="active" @endif>
                 <a href="{{route('request-partner.index')}}"><i class="fa fa-handshake-o"></i> Partner Request</a>

@@ -31,6 +31,12 @@ Route::resource('master/static-content', 'Master\StaticContentController');
 Route::get('master/voucher/change-status/{id}/{status}', 'Master\VoucherController@changeStatus')->name('voucher.change-status');
 Route::resource('master/voucher', 'Master\VoucherController');
 
+Route::get('master/payment-method/change-status/{id}/{status}', 'Master\PaymentMethodController@changeStatus')->name('payment-method.change-status');
+Route::resource('master/payment-method', 'Master\PaymentMethodController');
+
+Route::get('master/slider/change-status/{id}/{status}', 'Master\SliderController@changeStatus')->name('slider.change-status');
+Route::resource('master/slider', 'Master\SliderController');
+
 Route::get('ajax/get-province', 'Master\AjaxController@getProvince')->name('ajax.getProvince');
 Route::get('ajax/get-city', 'Master\AjaxController@getCity')->name('ajax.getCity');
 Route::get('ajax/get-category-child', 'Master\AjaxController@getCategoryChild')->name('ajax.getCategoryChild');
@@ -50,6 +56,9 @@ Route::resource('product/category-parent', 'Product\CategoryParentController');
 Route::get('product/category-child/change-status/{id}/{status}', 'Product\CategoryChildController@changeStatus')->name('category-child.change-status');
 Route::resource('product/category-child', 'Product\CategoryChildController');
 
+Route::post('product/product-manage/countdown', 'Product\ProductController@setCountdown')->name('product-manage.setCountdown');
+Route::get('product/product-manage/stop-countdown/{id}/{name}', 'Product\ProductController@stopCountdown')->name('product-manage.stopCountdown');
+Route::get('product/product-manage/expired-countdown', 'Product\ProductController@expiredCountdown')->name('product-manage.expiredCountdown');
 Route::get('product/product-manage/change-status/{id}/{status}', 'Product\ProductController@changeStatus')->name('product-manage.change-status');
 Route::resource('product/product-manage', 'Product\ProductController');
 

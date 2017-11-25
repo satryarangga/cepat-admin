@@ -10,6 +10,8 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 public/images/product
+public/images/payment-method
+public/images/slider
 .env
 *.conf
 *.dockerfile
