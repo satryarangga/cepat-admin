@@ -53,7 +53,7 @@ class OrderSeeder extends Seeder
 
         DB::table('order_item')->insert([
 			'order_id'				=> 1,
-			'product_id'			=> 3,
+			'product_id'			=> 1,
 			'product_variant_id'	=> 20,
 			'SKU'					=> 'TSTXSBLU5144',
 			'color_id'				=> 1,
@@ -66,7 +66,7 @@ class OrderSeeder extends Seeder
 
         DB::table('order_item')->insert([
 			'order_id'				=> 2,
-			'product_id'			=> 3,
+			'product_id'			=> 1,
 			'product_variant_id'	=> 22,
 			'SKU'					=> 'TSTSBLA5296',
 			'color_id'				=> 2,

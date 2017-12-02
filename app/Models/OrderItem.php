@@ -52,7 +52,7 @@ class OrderItem extends Model
     public static function isItemShipped($items) {
         $shipped = false;
         foreach ($items as $key => $value) {
-            if($value->shipping_status == 1) {
+            if($value->shipping_status == 1 || $value->shipping_status == 2 || $value->shipping_status == 3 || $value->shipping_status == 4) {
                 return true;
             }
         }
