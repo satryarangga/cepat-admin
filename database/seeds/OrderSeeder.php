@@ -42,7 +42,7 @@ class OrderSeeder extends Seeder
 		DB::table('order_item')->insert([
 			'order_id'				=> 1,
 			'product_id'			=> 1,
-			'product_variant_id'	=> 8,
+			'product_variant_id'	=> 3,
 			'SKU'					=> 'BAILBLU3845',
 			'color_id'				=> 1,
 			'size_id'				=> 5,
@@ -54,7 +54,7 @@ class OrderSeeder extends Seeder
         DB::table('order_item')->insert([
 			'order_id'				=> 1,
 			'product_id'			=> 1,
-			'product_variant_id'	=> 20,
+			'product_variant_id'	=> 2,
 			'SKU'					=> 'TSTXSBLU5144',
 			'color_id'				=> 1,
 			'size_id'				=> 2,
@@ -67,7 +67,7 @@ class OrderSeeder extends Seeder
         DB::table('order_item')->insert([
 			'order_id'				=> 2,
 			'product_id'			=> 1,
-			'product_variant_id'	=> 22,
+			'product_variant_id'	=> 1,
 			'SKU'					=> 'TSTSBLA5296',
 			'color_id'				=> 2,
 			'size_id'				=> 3,
