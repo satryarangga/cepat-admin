@@ -50,6 +50,9 @@
               <li @if($page == 'customer') class="active" @endif>
                 <a href="{{route('customer.index')}}"><i class="fa fa-users"></i> Customer Management</a>
               </li>
+              <li @if($page == 'partner') class="active" @endif>
+                <a href="{{route('partner.index')}}"><i class="fa fa-handshake-o"></i> Partner Management</a>
+              </li>
               <li @if($page == 'static-content') class="active" @endif>
                 <a href="{{route('static-content.index')}}"><i class="fa fa-file"></i> Static Content Management</a>
               </li>
@@ -64,6 +67,22 @@
               </li>
               <li @if($page == 'request-partner') class="active" @endif>
                 <a href="{{route('request-partner.index')}}"><i class="fa fa-handshake-o"></i> Partner Request</a>
+              </li>
+            </ul>
+        </li>
+
+        <li class="@if(\Illuminate\Support\Facades\Request::segment(1) == 'order') active @endif treeview">
+            <a href="#">
+              <i class="fa fa-folder"></i> <span>Order</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li @if($page == 'user') class="active" @endif>
+                <a href="{{route('order-manage.index', ['status' => 'all'])}}"><i class="fa fa-money"></i> All</a>
+                <a href="{{route('order-manage.index', ['status' => 'to_approve'])}}"><i class="fa fa-money"></i> Wait to Approve</a>
+                <a href="{{route('order-manage.index', ['status' => 'to_ship'])}}"><i class="fa fa-money"></i> Wait to Ship</a>
               </li>
             </ul>
         </li>

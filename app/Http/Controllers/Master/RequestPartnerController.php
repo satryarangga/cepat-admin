@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\RequestPartner;
+use App\Models\Partner;
+use App\User;
 
 class RequestPartnerController extends Controller
 {
@@ -86,8 +88,10 @@ class RequestPartnerController extends Controller
 
         if($status == 1) { // ACTIVATE USER
             $desc = 'Reject';
+            Partner::sendEmailNotif('reject', $data);
         } else {
             $desc = 'Approve';
+            $this->insertToPartner($data);
         }
 
         $data->status = $status;
@@ -98,4 +102,41 @@ class RequestPartnerController extends Controller
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
+
+    private function insertToPartner($data) {
+        $partner = Partner::create([
+            'store_name'    => $data->store_name,
+            'owner_name'    => $data->first_name .' '. $data->last_name,
+            'email'         => $data->email,
+            'handphone_number' => $data->handphone_number,
+            'homephone_number' => $data->homephone_number,
+            'province_id'   => $data->province_id,
+            'city_id'   => $data->city_id,
+            'address'   => $data->address,
+            'postcode'   => $data->postcode
+        ]);
+
+        $randomPass = str_random(10);
+        $user = User::create([
+            'email'     => $data->email,
+            'password'  => bcrypt($randomPass),
+            'first_name'    => $data->first_name,
+            'last_name'    => $data->last_name,
+            'username'      => RequestPartner::generateUsername($data->store_name),
+            'user_type'  => 2,
+            'partner_id'    => $partner->id,
+            'status'        => 1,
+            'created_by'    => Auth::id()
+        ]);
+        $user->password = $randomPass;
+        $user->store_name = $partner->store_name;
+
+        logUser('Partner '.$data->store_name.' is registered');
+
+        Partner::sendEmailNotif('approve', $user);
+    }
 }
+
+
+
+

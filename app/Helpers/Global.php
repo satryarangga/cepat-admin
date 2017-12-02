@@ -36,7 +36,18 @@
      * @param $money
      * @return string
      */
-    function moneyFormat ($money) {
+    function moneyFormat ($money, $useCurrency = true) {
+        $currency = ($useCurrency) ? 'Rp. ' : '';
+        $money = number_format($money,0,',',',');
+
+        return $currency.$money;
+    }
+
+    /**
+     * @param $money
+     * @return string
+     */
+    function numberFormat ($money) {
         $currency = 'Rp. ';
         $money = number_format($money,0,',',',');
 
@@ -105,3 +116,41 @@
       return $dt1->diff($dt2)->format('%s s'); 
 
     }
+
+    function setShippingStatus($status) {
+        switch ($status) {
+          case 0:
+            return 'Not Shipped';
+            break;
+          case 1:
+            return 'Shipped';
+            break;
+          case 2:
+            return 'Delivered';
+            break;
+          case 3:
+            return 'Fail to delivered';
+            break;
+          case 4:
+            return 'Returned';
+            break;
+        }
+    }
+
+    function getPaymentStatus($status) {
+        switch ($status) {
+          case 0:
+            return 'Unpaid';
+            break;
+          case 1:
+            return 'Confirmed by Customer';
+            break;
+          case 2:
+            return 'Paid';
+            break;
+        }
+    }
+
+
+
+

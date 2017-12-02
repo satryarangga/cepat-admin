@@ -15,7 +15,7 @@ class InventoryLog extends Model
      * @var array
      */
     protected $fillable = [
-        'product_id', 'purchase_code', 'user_id', 'SKU', 'qty', 'type', 'description', 'source'
+        'product_id', 'purchase_code', 'user_id', 'SKU', 'qty', 'type', 'description', 'source', 'product_variant_id', 'order_id'
     ];
 
     /**

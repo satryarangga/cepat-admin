@@ -18,7 +18,7 @@ class CreateOrderTable extends Migration
             $table->string('purchase_code', 50);
             $table->date('date');
             $table->integer('customer_id');
-            $table->integer('customer_email');
+            $table->string('customer_email', 100);
             $table->integer('total_purchase');
             $table->integer('shipping_cost');
             $table->integer('paycode');
@@ -32,12 +32,21 @@ class CreateOrderTable extends Migration
         Schema::create('order_delivery', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id');
-            $table->text('address');
-            $table->integer('province_id');
-            $table->string('province_name', 150);
-            $table->integer('city_id');
-            $table->string('city_name', 150);
-            $table->integer('postcode');
+            $table->integer('order_item_id');
+            $table->text('from_address');
+            $table->integer('from_province_id');
+            $table->string('from_province_name', 150);
+            $table->integer('from_city_id');
+            $table->string('from_city_name', 150);
+            $table->string('from_phone', 75);
+            $table->integer('from_postcode');
+            $table->text('to_address');
+            $table->integer('to_province_id');
+            $table->string('to_province_name', 150);
+            $table->integer('to_city_id');
+            $table->string('to_city_name', 150);
+            $table->string('to_phone', 75);
+            $table->integer('to_postcode');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -48,7 +57,7 @@ class CreateOrderTable extends Migration
             $table->string('voucher_code', 150);
             $table->integer('voucher_id');
             $table->integer('voucher_value');
-            $table->integer('voucher_name');
+            $table->string('voucher_name', 100);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -58,6 +67,9 @@ class CreateOrderTable extends Migration
             $table->integer('order_id');
             $table->integer('product_id');
             $table->integer('product_variant_id');
+            $table->string('SKU', 75);
+            $table->integer('color_id')->nullable();
+            $table->integer('size_id')->nullable();
             $table->integer('product_price');
             $table->integer('qty');
             $table->integer('subtotal');
@@ -68,7 +80,7 @@ class CreateOrderTable extends Migration
             $table->datetime('approved_time')->nullable();
             $table->datetime('shipping_time')->nullable();
             $table->datetime('delivery_time')->nullable();
-            $table->integer('partner_id');
+            $table->integer('partner_id')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -81,6 +93,7 @@ class CreateOrderTable extends Migration
             $table->string('confirmed_bank', 100)->nullable();
             $table->integer('confirmed_amount')->nullable();
             $table->integer('total_amount');
+            $table->tinyInteger('status')->comment('0:unpaid, 1:waiting confirmation, 2:Paid')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -119,6 +132,7 @@ class CreateOrderTable extends Migration
         Schema::dropIfExists('order_head');
         Schema::dropIfExists('order_delivery');
         Schema::dropIfExists('order_discount');
+        Schema::dropIfExists('order_item');
         Schema::dropIfExists('order_payment');
         Schema::dropIfExists('order_log');
         Schema::dropIfExists('payment_method');

@@ -51,4 +51,11 @@ class RequestPartner extends Model
 
     	return '<span class="btn btn-'.$type.'">'.$label.'</span>';
     }
+
+    public static function generateUsername($storeName) {
+        $filter = str_replace(' ', '', strtolower($storeName));
+        $shorter = substr($filter, 0, 5);
+        $random = strtolower(str_random(3));
+        return $shorter.$random;
+    }
 }

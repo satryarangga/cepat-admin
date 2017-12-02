@@ -45,7 +45,7 @@
     	                    	<button onclick="return confirm('You will delete this {{$page}}, continue')" type="submit">Delete</button>
     	                  		{{ method_field('DELETE') }}
     	                  	</form>
-    	                   </li>
+    	                 </li>
 	                  </ul>
                 	</div>
                 </td>

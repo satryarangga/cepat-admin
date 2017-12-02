@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class ProductVariant extends Model
 {
@@ -116,5 +117,35 @@ class ProductVariant extends Model
                         ->paginate($limit);
         return $data;
 
+    }
+
+    public static function variantShipped($productVariantId, $qty, $orderId, $shippingStatus) {
+        $data = parent::find($productVariantId);
+        $order = OrderHead::find($orderId);
+        $oldQtyWarehouse = $data->qty_warehouse;
+
+        if($shippingStatus == 1) { //SHIPPED
+            $data->qty_warehouse = $oldQtyWarehouse - $qty;
+        } else if ($shippingStatus == 4) { // RETURNED
+            $data->qty_warehouse = $oldQtyWarehouse + $qty;
+        }
+        $data->save();
+        $listStatus = config('cepat.shipping_status');
+
+        // INSERT TO INVENTORY LOG
+        if($shippingStatus == 1 || $shippingStatus == 4) { // ONLYC CREATE INVENTORY LOG FOR SHIPPED AND RETURNED
+            InventoryLog::create([
+                'product_id'    => $data->product_id,
+                'purchase_code' => $order->purchase_code,
+                'user_id'       => Auth::id(),
+                'SKU'           => $data->SKU,
+                'qty'           => $qty,
+                'type'          => ($shippingStatus == 1 ) ? 2 : 1,
+                'description'   => 'Order '.$listStatus[$shippingStatus],
+                'source'        => 2,
+                'product_variant_id'    => $productVariantId,
+                'order_id'      => $orderId
+            ]);
+        }
     }
 }

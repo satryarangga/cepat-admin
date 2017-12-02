@@ -22,6 +22,13 @@
 	            	{{csrf_field()}}
 	              <div class="box-body">
 	                
+	              	<div class="form-group">
+	                  <label for="store_name" class="col-sm-3 control-label">Store Name</label>
+	                  <div class="col-sm-8">
+	                    <input type="text" class="form-control" name="store_name" readonly value="{{$row->store_name}}">
+	                  </div>
+	                </div>
+
 	                <div class="form-group">
 	                  <label for="first_name" class="col-sm-3 control-label">First Name</label>
 	                  <div class="col-sm-8">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\WalletLog;
 
 class CustomerController extends Controller
 {
@@ -39,8 +40,10 @@ class CustomerController extends Controller
     {
         $limit = ($request->input('limit')) ? $request->input('limit') : 10000000;
         $offset = ($request->input('offset')) ? $request->input('offset') : 0;
+        $list = $this->model->list();
+        $listWithWalletLog = $this->model->listWalletLog($list);
         $data = [
-            'result'  => $this->model->list(),
+            'result'  => $list,
             'page'    => $this->page
         ];
 
@@ -205,5 +208,28 @@ class CustomerController extends Controller
 
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    public function adjustWallet(Request $request) {
+        $customerId = $request->input('customer_id');
+        $data = $this->model->find($customerId);
+
+        $newWallet = $request->input('amount');
+        $deltaAmount = parseMoneyToInteger($newWallet) - $data->wallet;
+
+        if($deltaAmount != 0) {
+            $data->wallet = parseMoneyToInteger($newWallet);
+            $data->save();
+
+            WalletLog::create([
+                'customer_id'   => $customerId,
+                'description'   => $request->input('reason'),
+                'amount'        => abs($deltaAmount),
+                'type'          => ($deltaAmount < 0) ? 1 : 2
+            ]);
+        }
+
+        $message = setDisplayMessage('success', "Success to adjust wallet for ".$data->first_name." ".$data->last_name);
+        return redirect(route($this->page.'.index'))->with('displayMessage', $message);   
     }
 }

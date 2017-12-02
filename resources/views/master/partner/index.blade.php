@@ -13,13 +13,14 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered table-hover table-striped">
+              <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Store Name</th>
+                  <th>Owner Name</th>
                   <th>Email</th>
-                  <th>Phone</th>
-                  <th>Wallet</th>
+                  <th>Handphone Number</th>
+                  <th>Location</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -27,10 +28,11 @@
                 <tbody>
                 @foreach($result as $key => $val)
                 <tr>
-                <td>{{$val->first_name . ' ' . $val->last_name}}</td>
+                <td>{{$val->store_name}}</td>
+                <td>{{$val->owner_name}}</td>
                 <td>{{$val->email}}</td>
-                <td>{{$val->phone}}</td>
-                <td>{{moneyFormat($val->wallet)}}</td>
+                <td>{{$val->handphone_number}}</td>
+                <td>{{getFieldOfTable('provinces', $val->province_id, 'name') . '-' . getFieldOfTable('cities', $val->city_id, 'name')}}</td>
                 <td>{!!setActivationStatus($val->status)!!}</td>
                 <td>
                   <div class="btn-group">
@@ -46,9 +48,13 @@
                         @else
                         <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 1]) }}">Unblock</a></li>
                         @endif
-                        <li class="divider"></li>
-                        <li><a style="cursor: pointer;" data-toggle="modal" data-target="#modal-wallet-{{$val->id}}">View Wallet Log</a></li>
-                        <li><a style="cursor: pointer;" data-toggle="modal" data-target="#modal-wallet-adjustment-{{$val->id}}">Adjust Wallet</a></li>
+                        <li>
+                          <form class="deleteForm" method="post" action="{{route("$page.destroy", ['id' => $val->id])}}">
+                            {{csrf_field()}}
+                            <button onclick="return confirm('You will delete this {{$page}}, continue')" type="submit">Delete</button>
+                            {{ method_field('DELETE') }}
+                          </form>
+                       </li>
                     </ul>
                   </div>
                 </td>
@@ -58,8 +64,6 @@
             </div>
             <!-- /.box-body -->
           </div>
-          @include('master.customer.modal.wallet-log')
-          @include('master.customer.modal.wallet-adjustment')
   </div>
 </section>
 

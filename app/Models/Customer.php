@@ -34,4 +34,13 @@ class Customer extends Model
 
     	return $data;
     }
+
+    public function listWalletLog($list) {
+        $wallet = [];
+        foreach ($list as $key => $value) {
+            $data = WalletLog::where('customer_id', $value->id)->get();
+            $list[$key]->wallet_logs = $data;
+        }
+        return $list;
+    }
 }
