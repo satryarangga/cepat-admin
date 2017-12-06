@@ -43,4 +43,9 @@ class Customer extends Model
         }
         return $list;
     }
+
+    public function getTodayRegister() {
+        $data = parent::whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")->count();
+        return $data;
+    }
 }

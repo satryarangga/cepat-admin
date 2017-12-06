@@ -88,4 +88,44 @@ class OrderHead extends Model
         $data = self::getDataForEmail($orderId);
         Mail::to($data->customer_email)->send(new OrderPaymentNotif($data));
     }
+
+    public function salesReport($start, $end) {
+        $data = parent::select('purchase_code', 'customer_email', 'date', 'total_purchase')
+                        ->whereBetween('date', [$start, $end])
+                        ->get();
+
+        return $data;
+    }
+
+    public function getTodayOrder() {
+        $data = parent::where('date', date('Y-m-d'))->count();
+        return $data;
+    }
+
+    public function getTodayPurchase() {
+        $data = parent::where('date', date('Y-m-d'))->sum('total_purchase');
+        return $data;
+    }
+
+    public function getGraphPurchaseDaily() {
+        $data = parent::select(DB::raw("SUM(total_purchase) as totalSales, 
+                                        CONCAT(YEAR(date), '-', MONTH(date), '-', DAY(date)) AS period"))
+                        ->whereRaw('date > DATE_SUB(now(), INTERVAL 1 MONTH)')
+                        ->groupBy(DB::raw("period"))
+                        ->orderBy(DB::raw("period"))
+                        ->get();
+
+        $data = json_decode(json_encode($data), True);
+
+        usort($data, function ($a, $b) {
+          $a_val = strtotime($a['period']);
+          $b_val = strtotime($b['period']);
+
+          if($a_val > $b_val) return 1;
+          if($a_val < $b_val) return -1;
+          return 0;
+        });
+
+        return $data;
+    }
 }

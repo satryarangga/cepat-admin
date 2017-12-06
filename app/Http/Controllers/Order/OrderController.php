@@ -13,7 +13,7 @@ use App\Models\OrderPayment;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 
-class OrderController extends Controller
+class OrderController extends Controller 
 {
     /**
      * @var string

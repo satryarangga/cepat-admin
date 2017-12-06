@@ -75,3 +75,7 @@ Route::put('order/set-shipment/', 'Order\OrderController@setShipment')->name('or
 Route::get('order/change-status/{id}/{type}', 'Order\OrderController@changeStatus')->name('order-manage.changeStatus');
 Route::get('order/order-manage/{status}', 'Order\OrderController@index')->name('order-manage.index');
 Route::get('order/order-detail/{id}', 'Order\OrderController@detail')->name('order-manage.detail');
+Route::get('ajax/graph-sales', 'Order\AjaxController@graphSales')->name('ajax.graphSales');
+
+Route::get('report/sales', 'Order\ReportController@sales')->name('report.sales');
+Route::get('report/excel/sales', 'Order\ReportController@excelSales')->name('report.excel.sales');

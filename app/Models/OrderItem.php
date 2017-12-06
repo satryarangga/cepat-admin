@@ -76,4 +76,9 @@ class OrderItem extends Model
         $data = self::getDataForEmail($orderItemId);
         Mail::to($data->customer_email)->send(new OrderShippingNotif($data, $status));
     }
+
+    public function getTodaySoldItem() {
+        $data = parent::whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")->sum('qty');
+        return $data;
+    }
 }

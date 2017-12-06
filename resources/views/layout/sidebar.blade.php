@@ -86,6 +86,20 @@
               </li>
             </ul>
         </li>
+
+        <li class="@if(\Illuminate\Support\Facades\Request::segment(1) == 'order') active @endif treeview">
+            <a href="#">
+              <i class="fa fa-folder"></i> <span>Report</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li @if($page == 'report') class="active" @endif>
+                <a href="{{route('report.sales')}}"><i class="fa fa-book"></i> Sales Report</a>
+              </li>
+            </ul>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
