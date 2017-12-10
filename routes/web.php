@@ -16,6 +16,7 @@ Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::get('/dashboard-partner', 'HomeController@partner')->name('home-partner');
 
 Route::get('master/user/change-status/{id}/{status}', 'Master\UserController@changeStatus')->name('user.change-status');
 Route::resource('master/user', 'Master\UserController');
@@ -76,6 +77,10 @@ Route::get('order/change-status/{id}/{type}', 'Order\OrderController@changeStatu
 Route::get('order/order-manage/{status}', 'Order\OrderController@index')->name('order-manage.index');
 Route::get('order/order-detail/{id}', 'Order\OrderController@detail')->name('order-manage.detail');
 Route::get('ajax/graph-sales', 'Order\AjaxController@graphSales')->name('ajax.graphSales');
+
+// PARTNER
+Route::get('order/order-partner/{status}', 'Order\PartnerController@index')->name('order-partner.index');
+Route::get('order/order-partner-detail/{id}', 'Order\PartnerController@detail')->name('order-partner.detail');
 
 Route::get('report/sales', 'Order\ReportController@sales')->name('report.sales');
 Route::get('report/excel/sales', 'Order\ReportController@excelSales')->name('report.excel.sales');

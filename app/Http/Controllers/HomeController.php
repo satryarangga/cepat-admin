@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\OrderHead;
 use App\Models\OrderItem;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -26,6 +27,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        if($user->user_type == 2) {
+            return redirect('/dashboard-partner');
+        }
+
         $order = new OrderHead();
         $item = new OrderItem();
         $customer = new Customer();
@@ -37,5 +43,19 @@ class HomeController extends Controller
             'num_item' => $item->getTodaySoldItem()
         ];
         return view('dashboard', $data);
+    }
+
+    public function partner()
+    {
+        $user = Auth::user();
+        $item = new OrderItem();
+        $data = [
+            'page'  => 'dashboard',
+            'num_order' => $item->getPartnerTodayOrder($user->partner_id),
+            'num_purchase' => $item->getPartnerTodayPurchase($user->partner_id),
+            'num_user' => $item->getPartnerUniqueBuyer($user->partner_id),
+            'num_item' => $item->getTodaySoldItem($user->partner_id)
+        ];
+        return view('dashboard-partner', $data);
     }
 }

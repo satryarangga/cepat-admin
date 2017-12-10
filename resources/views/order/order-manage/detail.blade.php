@@ -33,11 +33,12 @@
         <div class="col-sm-6 invoice-col">
           <b style="font-size: 18px">Customer Detail</b>
           <address>
-            <strong>John Doe</strong><br>
-            795 Folsom Ave, Suite 600<br>
-            San Francisco, CA 94107<br>
-            Phone: (555) 539-1037<br>
-            Email: john.doe@example.com
+            <strong>{{$customer->first_name}} {{$customer->last_name}}</strong><br>
+            {{$delivery->to_address}}<br>
+            {{$delivery->to_city_name}}, {{$delivery->to_province_name}}<br>
+            Postcode: {{$delivery->to_postcode}}<br>
+            Phone: {{$delivery->to_phone}}<br>
+            Email: {{$customer->email}}
           </address>
         </div>
       </div>
@@ -50,8 +51,7 @@
             <thead>
             <tr>
               <th>Product</th>
-              <th>Color</th>
-              <th>Size</th>
+              <th>Seller</th>
               <th>SKU</th>
               <th>Qty</th>
               <th>Shipping Status</th>
@@ -62,9 +62,8 @@
             <tbody>
             @foreach($items as $key => $val)
             <tr>
-              <td>{{$val->product_name}}</td>
-              <td>{{$val->color_name}}</td>
-              <td>{{$val->size_name}}</td>
+              <td><b>{{$val->product_name}}</b><br>Color: <b>{{$val->color_name}}</b><br>Size: <b>{{$val->size_name}}</b></td>
+              <td>{{(isset($val->partner_name)) ? $val->partner_name : 'Internal'}}</td>
               <td>{{$val->SKU}}</td>
               <td>{{$val->qty}}</td>
               <td>{{setShippingStatus($val->shipping_status)}}</td>
@@ -77,7 +76,6 @@
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a>View Detail</a></li>
                       @if($payment->status == 2)
                       <li><a data-toggle="modal" style="cursor: pointer;" data-target="#modal-ship-{{$val->id}}">Set Shipment</a></li>
                       @endif
@@ -87,7 +85,7 @@
             </tr>
             @endforeach
             <tr>
-              <td colspan="6" style="text-align: right;font-size: 18px;font-weight: bold;">Total Purchase</td>
+              <td colspan="5" style="text-align: right;font-size: 18px;font-weight: bold;">Total Purchase</td>
               <td colspan="3" style="font-size: 18px;font-weight: bold;">{{moneyFormat($head->total_purchase)}}</td>
             </tr>
             </tbody>

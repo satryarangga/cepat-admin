@@ -5,8 +5,12 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li @if($page == 'dashboard') class="active" @endif>
-                <a href="/"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
-              </li>
+          @if($user->user_type == 1)
+          <a href="/"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
+          @else
+          <a href="{{route('home-partner')}}"><i class="fa fa-tachometer"></i> <span>Dashboard Partner</span></a>
+          @endif
+        </li>
         <li class="@if(\Illuminate\Support\Facades\Request::segment(1) == 'product') active @endif treeview">
             <a href="#">
               <i class="fa fa-folder"></i> <span>Products</span>

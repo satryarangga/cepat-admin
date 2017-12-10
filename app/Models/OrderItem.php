@@ -37,13 +37,21 @@ class OrderItem extends Model
      */
     protected $dates = ['deleted_at'];
 
-    public static function getItemDetail($orderId) {
-        $data = parent::select('order_item.id', 'products.name as product_name', 'size.name as size_name', 'colors.name as color_name', 
-                                'SKU', 'qty', 'subtotal', 'shipping_status', 'resi', 'shipping_status', 'shipping_notes')
+    public static function getItemDetail($orderId, $partnerId = null) {
+        $where[] = ['order_id', '=', $orderId];
+
+        if($partnerId) {
+            $where[] = ['order_item.partner_id', '=', $partnerId];            
+        }
+
+        $data = parent::select('order_item.id', 'products.name as product_name', 'size.name as size_name', 
+                                'colors.name as color_name', 'SKU', 'qty', 'subtotal', 'shipping_status', 
+                                'resi', 'shipping_status', 'shipping_notes', 'partners.store_name as partner_name')
                         ->leftJoin('products', 'products.id', '=', 'order_item.product_id')
+                        ->leftJoin('partners', 'order_item.partner_id', '=', 'partners.id')
                         ->leftJoin('colors', 'colors.id', '=', 'order_item.color_id')
                         ->leftJoin('size', 'size.id', '=', 'order_item.size_id')
-                        ->where('order_id', $orderId)
+                        ->where($where)
                         ->get();
 
         return $data;
@@ -77,8 +85,61 @@ class OrderItem extends Model
         Mail::to($data->customer_email)->send(new OrderShippingNotif($data, $status));
     }
 
-    public function getTodaySoldItem() {
-        $data = parent::whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")->sum('qty');
+    public function getTodaySoldItem($partnerId = null) {
+        $where = [];
+        if($partnerId) {
+            $where[] = ['partner_id', '=', $partnerId];
+        }
+        $data = parent::whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")
+                        ->where($where)
+                        ->sum('qty');
+        return $data;
+    }
+
+    public function getPartnerTodayOrder($partnerId) {
+        $data = parent::where('partner_id', $partnerId)
+                        ->whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")
+                        ->count();
+
+        return $data;
+    }
+
+    public function getPartnerTodayPurchase($partnerId) {
+        $data = parent::where('partner_id', $partnerId)
+                        ->whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")
+                        ->sum('subtotal');
+
+        return $data;
+    }
+
+    public function getPartnerUniqueBuyer($partnerId) {
+        $data = parent::where('partner_id', $partnerId)
+                        ->leftJoin('order_head', 'order_item.order_id', '=', 'order_head.id')
+                        ->distinct('customer_id')
+                        ->count();
+        return $data;
+    }
+
+    public function getPartnerGraphPurchase($partnerId) {
+        $data = parent::select(DB::raw("SUM(subtotal) as totalSales, 
+                                        CONCAT(YEAR(created_at), '-', MONTH(created_at), '-', DAY(created_at)) AS period"))
+                        ->whereRaw('created_at > DATE_SUB(now(), INTERVAL 1 MONTH)')
+                        ->where('partner_id', $partnerId)
+                        ->groupBy(DB::raw("period"))
+                        ->orderBy(DB::raw("period"))
+                        ->get();
+
+        $data = json_decode(json_encode($data), True);
+
+        usort($data, function ($a, $b) {
+          $a_val = strtotime($a['period']);
+          $b_val = strtotime($b['period']);
+
+          if($a_val > $b_val) return 1;
+          if($a_val < $b_val) return -1;
+          return 0;
+        });
+
         return $data;
     }
 }

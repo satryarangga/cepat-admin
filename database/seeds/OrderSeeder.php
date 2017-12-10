@@ -61,7 +61,8 @@ class OrderSeeder extends Seeder
 			'product_price'			=> 200000,
 			'qty'					=> 1,
 			'subtotal'				=> 200000,
-			'notes'					=> 'Jangan lecek'
+			'notes'					=> 'Jangan lecek',
+			'partner_id'			=> 7
         ]);        
 
         DB::table('order_item')->insert([

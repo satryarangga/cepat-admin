@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OrderHead;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -21,10 +22,11 @@ class ReportController extends Controller
     }
 
     public function sales(Request $request) {
+        $user = Auth::user();
         $model = new OrderHead();
     	$start = ($request->input('start')) ? $request->input('start') : date('Y-m-01');
         $end = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
-        $result = $model->salesReport($start, $end);
+        $result = (!$user->partner_id) ? $model->salesReport($start, $end) : $model->salesReportPartner($start, $end, $user->partner_id);
     	$data = [
     		'start' => $start,
             'end' => $end,
@@ -36,10 +38,11 @@ class ReportController extends Controller
     }
 
     public function excelSales(Request $request) {
+        $user = Auth::user();
         $model = new OrderHead();
         $start = ($request->input('start')) ? $request->input('start') : date('Y-m-01');
         $end = ($request->input('end')) ? $request->input('end') : date('Y-m-d');
-        $result = $model->salesReport($start, $end);
+        $result = (!$user->partner_id) ? $model->salesReport($start, $end) : $model->salesReportPartner($start, $end, $user->partner_id);
 
         $csv = [];
         foreach($result as $key => $value){
