@@ -46,6 +46,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
         $filter = [
             'search_by' => $request->input('search_by'),
             'keyword' => $request->input('keyword')
@@ -84,6 +85,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $this->validate($request,[
             'name'     => 'required',
             'weight'    => 'required',
@@ -97,7 +99,8 @@ class ProductController extends Controller
             'original_price' => parseMoneyToInteger($request->input('original_price')),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
-            'created_by' => Auth::id()
+            'created_by' => $user->id,
+            'partner_id'    => ($user->partner_id) ? $user->partner_id : 0
         ];
 
         $created = $this->model->create($create);

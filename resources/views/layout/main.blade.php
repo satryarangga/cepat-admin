@@ -18,7 +18,11 @@
 
     <!-- SIDEBAR
     ================================================== -->
-    @include("layout.sidebar")
+    @if($user->user_type == 1)
+        @include("layout.sidebar")
+    @else
+        @include("layout.sidebar-partner")
+    @endif
 
     <div class="content-wrapper">
         <!-- BREADCRUMB
@@ -28,6 +32,8 @@
         <!-- CONTENT
         ================================================== -->
         @yield("content")
+
+        <div style="clear: both;"></div>
     </div>
   
 

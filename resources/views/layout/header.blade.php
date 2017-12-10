@@ -4,12 +4,16 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">
         <b>
-           <img style="display:block;height:50px;width:50px" src="{{asset('images')}}/logo.png" />     
+           <!-- <img style="display:block;height:50px;width:50px" src="{{asset('images')}}/logo.png" />      -->
         </b>
       </span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
-        <b>Cepat-Cepat Admin</b>
+        @if($user->partner_id)
+          <b>Reseller Admin</b>
+        @else
+          <b>Cepat-Cepat Admin</b>
+        @endif
       </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->

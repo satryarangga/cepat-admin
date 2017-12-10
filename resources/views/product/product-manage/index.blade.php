@@ -58,10 +58,12 @@
     	                <li><a href="{{ route($page.'.edit', ['id' => $val->id]) }}">Edit</a></li>
                       <li><a href="{{ route('product-variant'.'.index') }}?product_id={{$val->id}}">View Variant</a></li>
   	                  <li class="divider"></li>
-                      @if($val->status == 1)
-                        <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 0]) }}">Set Not Active</a></li>
-                        @else
-                        <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 1]) }}">Set Active</a></li>
+                      @if($user->user_type == 1)
+                        @if($val->status == 1)
+                          <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 0]) }}">Set Not Active</a></li>
+                          @else
+                          <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 1]) }}">Set Active</a></li>
+                        @endif
                       @endif
     	                <li>
     	                  <form class="deleteForm" method="post" action="{{route("$page.destroy", ['id' => $val->id])}}">
@@ -70,12 +72,14 @@
     	                    {{ method_field('DELETE') }}
     	                  </form>
     	                </li>
-                      <li class="divider"></li>
-                      @if($val->duration)
-                        <li><a 
-                          onclick="return confirm('You will stop countdown timer for {{$val->name}}, continue?')" href="{{route('product-manage.stopCountdown', ['id' => $val->countdown_id, 'name' => $val->name])}}">Stop Countdown</a></li>
-                      @else
-                        <li><a style="cursor: pointer;" data-toggle="modal" data-target="#modal-countdown-{{$val->id}}">Set Countdown</a></li>
+                      @if($user->user_type == 1)
+                        <li class="divider"></li>
+                        @if($val->duration)
+                          <li><a 
+                            onclick="return confirm('You will stop countdown timer for {{$val->name}}, continue?')" href="{{route('product-manage.stopCountdown', ['id' => $val->countdown_id, 'name' => $val->name])}}">Stop Countdown</a></li>
+                        @else
+                          <li><a style="cursor: pointer;" data-toggle="modal" data-target="#modal-countdown-{{$val->id}}">Set Countdown</a></li>
+                        @endif
                       @endif
 	                  </ul>
                 	</div>

@@ -97,6 +97,7 @@ class ProductVariant extends Model
     }
 
     public function getListSKU ($filter = [], $sortBy = 'updated_at', $limit = 20) {
+        $user = Auth::user();
         $where = [];
 
         $keyword = $filter['keyword'];
@@ -106,6 +107,10 @@ class ProductVariant extends Model
 
         if($filter['search_by'] == 'product_name' && $keyword) {
             $where[] = ['products.name', 'like', "%$keyword%"];
+        }
+
+        if($user->partner_id) {
+            $where[] = ['partner_id', '=', $user->partner_id];   
         }
 
         $data = parent::select('SKU', 'qty_order', 'qty_warehouse', 'products.name as product_name', 'colors.name as color_name', 'size.name as size_name')
