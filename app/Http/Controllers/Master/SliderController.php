@@ -78,6 +78,8 @@ class SliderController extends Controller
         $create['filename'] = $name;
         $create['created_by'] = Auth::id();
         $create['caption'] = $request->input('caption');
+        $create['link'] = $request->input('link');
+        $create['target'] = $request->input('target');
 
         $this->model->create($create);
         logUser('Create Slider '.$create['filename']);
@@ -125,7 +127,9 @@ class SliderController extends Controller
         $data = $this->model->find($id);
         $update = [
             'caption'          => $request->input('caption'),
-            'updated_by' => Auth::id()
+            'updated_by' => Auth::id(),
+            'link'              => $request->input('link'),
+            'target'              => $request->input('target'),
         ];
 
         if($request->input('filename')) {
