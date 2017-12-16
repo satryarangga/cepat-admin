@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerRegistration;
 
 class Customer extends Model
 {
@@ -47,5 +49,9 @@ class Customer extends Model
     public function getTodayRegister() {
         $data = parent::whereRaw("DATE(created_at) = '".date('Y-m-d')."' ")->count();
         return $data;
+    }
+
+    public static function sendEmailNotif($data) {
+        Mail::to($data->email)->send(new CustomerRegistration($data));
     }
 }

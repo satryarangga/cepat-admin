@@ -7,22 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class PartnerNotif extends Mailable
+class CustomerRegistration extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $partner;
-    public $type;
+    public $customer;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($partner, $type)
+    public function __construct($customer)
     {
-        $this->partner = $partner;
-        $this->type = $type;
+        $this->customer = $customer;
     }
 
     /**
@@ -32,7 +30,7 @@ class PartnerNotif extends Mailable
      */
     public function build()
     {
-        return $this->subject('Registrasi Akun Partner Cepat Cepat E-Commerce')
-                    ->view('mail.partner');
+        return $this->subject('Welcome to Cepat Cepat E-Commerce')
+                    ->view('mail.customer-registration');
     }
 }

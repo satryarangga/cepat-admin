@@ -24,6 +24,7 @@ Route::resource('master/user', 'Master\UserController');
 Route::get('master/request-partner/change-status/{id}/{status}', 'Master\RequestPartnerController@changeStatus')->name('request-partner.change-status');
 Route::resource('master/request-partner', 'Master\RequestPartnerController');
 
+Route::get('master/customer/send-email/{id}', 'Master\CustomerController@sendEmail')->name('customer.sendRegisterEmail');
 Route::put('master/customer/adjust-wallet', 'Master\CustomerController@adjustWallet')->name('customer.adjustWallet');
 Route::get('master/customer/change-status/{id}/{status}', 'Master\CustomerController@changeStatus')->name('customer.change-status');
 Route::resource('master/customer', 'Master\CustomerController');

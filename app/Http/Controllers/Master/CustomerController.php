@@ -28,7 +28,7 @@ class CustomerController extends Controller
         $this->model = new Customer();
         $this->module = 'master.customer';
         $this->page = 'customer';
-        $this->middleware('auth');
+        $this->middleware('auth')->except('sendEmail');
     }
 
     /**
@@ -231,5 +231,11 @@ class CustomerController extends Controller
 
         $message = setDisplayMessage('success', "Success to adjust wallet for ".$data->first_name." ".$data->last_name);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);   
+    }
+
+    public function sendEmail($customerId) {
+        $data = Customer::find($customerId);
+        Customer::sendEmailNotif($data);
+        return 'Done';
     }
 }
