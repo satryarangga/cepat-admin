@@ -46,7 +46,11 @@
                 <td>{{moneyFormat($val->original_price)}}</td>
                 <td>{{$val->weight}} Kg</td>
                 <td>{!!setActivationStatus($val->status)!!}</td>
-                <td id="countdown-{{$val->id}}"></td>
+                <td id="countdown-{{$val->id}}">
+                  @if($val->duration)
+                  Starts on {{date('j F Y H:i:s', strtotime($val->start_on))}}
+                  @endif
+                </td>
                 <td>
                 	<div class="btn-group">
 	                  <button type="button" class="btn btn-info">Action</button>

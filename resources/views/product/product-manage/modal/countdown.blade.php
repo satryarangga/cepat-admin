@@ -12,6 +12,25 @@
       	<form class="form-horizontal" action="{{route('product-manage.setCountdown')}}" method="post">
       		{{csrf_field()}}
       		<div class="box-body">
+            <div class="form-group">
+              <label class="label-control">Start Date</label>
+              <input type="text" name="start_date" class="form-control datepicker">
+            </div>
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>Start Time:</label>
+
+                <div class="input-group">
+                  <input type="text" name="start_time" class="form-control timepicker">
+
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+            </div>
 	      		<div class="form-group">
 	      			<label class="label-control">Time Type</label>
               <select class="form-control" name="type">

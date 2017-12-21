@@ -250,6 +250,16 @@ class ProductController extends Controller
         $value = $request->input('value');
         $product_id = $request->input('product_id');
         $product_name = $request->input('product_name');
+        $start_date = $request->input('start_date');
+        $start_time = $request->input('start_time');
+
+        $time = explode(' ', $start_time);
+        $hour = explode(':', $time[0]);
+        if($time[1] == 'PM') {
+            $hour[0] = (int) $hour[0] + 12;
+        }
+        $time = $hour[0].':'.$hour[1].':00';
+        $start = $start_date.' '.$time;
 
         if($type == 1) { // DAYS
             $seconds = 86400 * $value;
@@ -261,13 +271,13 @@ class ProductController extends Controller
             $seconds = $value;
         }
 
-        $time = time();
+        $time = strtotime($start);
         $ended = $time + $seconds;
         ProductCountdown::create([
             'product_id'    => $product_id,
             'duration'      => $seconds,
             'status'        => 1,
-            'start_on'      => date('Y-m-d H:i:s', $time),
+            'start_on'      => $start,
             'end_on'      => date('Y-m-d H:i:s', $ended),
             'created_by'    => Auth::id()
         ]);
