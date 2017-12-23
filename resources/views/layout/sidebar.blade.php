@@ -84,9 +84,18 @@
             </a>
             <ul class="treeview-menu">
               <li @if($page == 'user') class="active" @endif>
-                <a href="{{route('order-manage.index', ['status' => 'all'])}}"><i class="fa fa-money"></i> All</a>
-                <a href="{{route('order-manage.index', ['status' => 'to_approve'])}}"><i class="fa fa-money"></i> Wait to Approve</a>
-                <a href="{{route('order-manage.index', ['status' => 'to_ship'])}}"><i class="fa fa-money"></i> Wait to Ship</a>
+                <a href="{{route('order-manage.index', ['status' => 'all'])}}">
+                  <i class="fa fa-money"></i> All
+                </a>
+                <a href="{{route('order-manage.index', ['status' => 'to_approve'])}}">
+                  <i class="fa fa-money"></i> Wait to Approve
+                </a>
+                <a href="{{route('order-manage.index', ['status' => 'to_ship'])}}">
+                  <i class="fa fa-money"></i> Wait to Ship
+                </a>
+                <a href="{{route('shipping.checkCost')}}">
+                  <i class="fa fa-money"></i> Check Shipping Cost
+                </a>
               </li>
             </ul>
         </li>

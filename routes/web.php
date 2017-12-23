@@ -79,6 +79,9 @@ Route::get('order/order-manage/{status}', 'Order\OrderController@index')->name('
 Route::get('order/order-detail/{id}', 'Order\OrderController@detail')->name('order-manage.detail');
 Route::get('ajax/graph-sales', 'Order\AjaxController@graphSales')->name('ajax.graphSales');
 
+Route::get('shipping/export-city', 'Order\ShippingController@exportCity')->name('shipping.exportCity');
+Route::get('shipping/check-cost', 'Order\ShippingController@checkCost')->name('shipping.checkCost');
+
 // PARTNER
 Route::get('order/order-partner/{status}', 'Order\PartnerController@index')->name('order-partner.index');
 Route::get('order/order-partner-detail/{id}', 'Order\PartnerController@detail')->name('order-partner.detail');

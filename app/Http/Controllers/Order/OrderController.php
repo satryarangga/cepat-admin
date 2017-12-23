@@ -161,7 +161,4 @@ class OrderController extends Controller
         return redirect(route($this->page.'.detail', ['id' => $item->order_id]))->with('displayMessage', $message);
 
     }
-
-
-
 }
