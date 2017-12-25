@@ -26,10 +26,7 @@
                 <a href="{{route('size.index')}}"><i class="fa fa-blind"></i> Size</a>
               </li>
               <li @if($page == 'category-parent') class="active" @endif>
-                <a href="{{route('category-parent.index')}}"><i class="fa fa-folder-open"></i> Category Parent</a>
-              </li>
-              <li @if($page == 'category-child') class="active" @endif>
-                <a href="{{route('category-child.index')}}"><i class="fa fa-folder-open"></i> Category Child</a>
+                <a href="{{route('category.index')}}"><i class="fa fa-folder-open"></i> Category</a>
               </li>
               <li @if($page == 'product') class="active" @endif>
                 <a href="{{route('product-manage.index')}}"><i class="fa fa-folder-open"></i> Product</a>

@@ -15,7 +15,7 @@ class CategoryMap extends Model
      * @var array
      */
     protected $fillable = [
-        'category_parent_id', 'category_child_id', 'product_id'
+        'category_id', 'product_id'
     ];
 
     /**

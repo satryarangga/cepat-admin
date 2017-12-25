@@ -1,1 +1,2 @@
 <link rel="stylesheet" href="{{ asset('lte') }}/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+<link rel="stylesheet" href="{{ asset('lte') }}/bower_components/select2/dist/css/select2.min.css?v=0.1">

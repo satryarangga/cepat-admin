@@ -29,21 +29,12 @@
 		                </div>
 
 		                <div class="form-group">
-		                  <label for="parent_id" class="col-sm-3 control-label">Category Parent</label>
+		                  <label for="parent_id" class="col-sm-3 control-label">Category</label>
 		                  <div class="col-sm-8">
-		                  	<select name="cat_parent_id" id="cat_parent_id" class="form-control">
-		                  		<option disabled selected>Select Category Parent</option>
-		                  		@foreach($categoryParent as $key => $val)
-		                  			<option @if($categoryMap->category_parent_id == $val->id) selected @endif value="{{$val->id}}">{{$val->name}}</option>
+		                  	<select name="category[]" multiple id="category" class="form-control select2">
+		                  		@foreach($category as $key => $val)
+		                  			<option @if(in_array($val->id, $categoryMap)) selected @endif value="{{$val->id}}">{{$val->name}}</option>
 		                  		@endforeach
-		                  	</select>
-		                  </div>
-		                </div>
-
-		                <div class="form-group" id="cat_child_container">
-		                  <label for="parent_id" class="col-sm-3 control-label">Category Child</label>
-		                  <div class="col-sm-8">
-		                  	<select name="cat_child_id" id="cat_child_id" class="form-control">
 		                  	</select>
 		                  </div>
 		                </div>

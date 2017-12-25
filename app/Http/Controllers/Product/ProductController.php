@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
-use App\Models\CategoryChild;
-use App\Models\CategoryParent;
+use App\Models\Category;
 use App\Models\CategoryMap;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
@@ -71,7 +70,7 @@ class ProductController extends Controller
     {
         $data = [
             'page' => $this->page,
-            'categoryParent' => CategoryParent::all()
+            'category' => Category::all()
         ];
 
         return view($this->module.".create", $data);
@@ -90,8 +89,7 @@ class ProductController extends Controller
             'name'     => 'required',
             'weight'    => 'required',
             'original_price'    => 'required',
-            'cat_parent_id'    => 'required',
-            'cat_child_id'    => 'required'
+            'category'    => 'required'
         ]);
 
         $create = [
@@ -105,11 +103,13 @@ class ProductController extends Controller
 
         $created = $this->model->create($create);
 
-        CategoryMap::create([
-            'category_parent_id'    => $request->input('cat_parent_id'),
-            'category_child_id'     => $request->input('cat_child_id'),
-            'product_id'            => $created->id
-        ]);
+        $category = $request->input('category');
+        foreach ($category as $key => $value) {
+            CategoryMap::create([
+                'category_id'    => $value,
+                'product_id'     => $created->id
+            ]);
+        }
 
         ProductSeo::create([
             'product_id'    => $created->id,
@@ -131,11 +131,17 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $categoryMap = CategoryMap::where('product_id', $id)->pluck('category_id');
+        $cat = [];
+
+        foreach ($categoryMap as $key => $value) {
+            $cat[] = $value;
+        }
         $data = [
             'page' => $this->page,
             'row' => $this->model->find($id),
-            'categoryParent' => CategoryParent::all(),
-            'categoryMap' => CategoryMap::where('product_id', $id)->first(),
+            'category' => Category::all(),
+            'categoryMap' => $cat,
             'seo' => ProductSeo::where('product_id', $id)->first()
         ];
 
@@ -155,8 +161,7 @@ class ProductController extends Controller
             'name'     => 'required',
             'weight'    => 'required',
             'original_price'    => 'required',
-            'cat_parent_id'    => 'required',
-            'cat_child_id'    => 'required'
+            'category'    => 'required',
         ]);
 
         $data = $this->model->find($id);
@@ -173,11 +178,13 @@ class ProductController extends Controller
 
         // CATEGORY MAP PROCESS
         CategoryMap::where('product_id', $id)->delete();
-        CategoryMap::create([
-            'category_parent_id'    => $request->input('cat_parent_id'),
-            'category_child_id'     => $request->input('cat_child_id'),
-            'product_id'            => $id
-        ]);
+        $category = $request->input('category');
+        foreach ($category as $key => $value) {
+            CategoryMap::create([
+                'category_id'    => $value,
+                'product_id'     => $id
+            ]);
+        }
 
         // PRODUCT SEO
         $data = ProductSeo::where('product_id', $id)->first();

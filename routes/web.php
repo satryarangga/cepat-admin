@@ -56,11 +56,11 @@ Route::resource('product/color', 'Product\ColorController');
 
 Route::resource('product/size', 'Product\SizeController');
 
-Route::get('product/category-parent/change-status/{id}/{status}', 'Product\CategoryParentController@changeStatus')->name('category-parent.change-status');
-Route::resource('product/category-parent', 'Product\CategoryParentController');
-
-Route::get('product/category-child/change-status/{id}/{status}', 'Product\CategoryChildController@changeStatus')->name('category-child.change-status');
-Route::resource('product/category-child', 'Product\CategoryChildController');
+Route::get('product/category/delete/{id}', 'Product\CategoryController@delete')->name('category.delete');
+Route::get('product/category/format', 'Product\CategoryController@formatTree')->name('category.format-list');
+Route::get('product/category/update-state', 'Product\CategoryController@updateState')->name('category.update-state');
+Route::get('product/category/change-status/{id}/{status}', 'Product\CategoryController@changeStatus')->name('category.change-status');
+Route::resource('product/category', 'Product\CategoryController');
 
 Route::post('product/product-manage/countdown', 'Product\ProductController@setCountdown')->name('product-manage.setCountdown');
 Route::get('product/product-manage/stop-countdown/{id}/{name}', 'Product\ProductController@stopCountdown')->name('product-manage.stopCountdown');

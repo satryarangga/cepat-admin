@@ -28,7 +28,8 @@
         if($money == null){
             return 0;
         }
-        $money = str_replace('.', '', $money); 
+        $money = str_replace('.', '', $money);
+        $money = str_replace('Rp', '', $money);
         return str_replace(',', '', $money);
     }
 
@@ -149,6 +150,28 @@
             return 'Paid';
             break;
         }
+    }
+
+    function buildCategoryTreeArray($parent, $category) {
+        $arr = [];
+        if (isset($category['parent_cats'][$parent])) {
+            foreach ($category['parent_cats'][$parent] as $cat_id) {
+                if (!isset($category['parent_cats'][$cat_id])) {
+                    $arr[] = [
+                        'id'  =>  $category['categories'][$cat_id]['id'],
+                        'name'  =>  $category['categories'][$cat_id]['name'],
+                    ];
+                }
+                if (isset($category['parent_cats'][$cat_id])) {
+                    $arr[] = [
+                        'id'        =>  $category['categories'][$cat_id]['id'],
+                        'name'      =>  $category['categories'][$cat_id]['name'],
+                        'children'  => buildCategoryTreeArray($cat_id, $category)
+                    ];
+                }
+            }
+        }
+        return $arr;
     }
 
 

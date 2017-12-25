@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\CategoryParent;
+use App\Models\Category;
 
-class CategoryParentController extends Controller
+class CategoryController extends Controller
 {
     /**
      * @var string
@@ -26,9 +26,9 @@ class CategoryParentController extends Controller
 
 
     public function __construct() {
-        $this->model = new CategoryParent();
-        $this->module = 'product.category-parent';
-        $this->page = 'category-parent';
+        $this->model = new Category();
+        $this->module = 'product.category';
+        $this->page = 'category';
         $this->middleware('auth');
     }
 
@@ -40,7 +40,7 @@ class CategoryParentController extends Controller
     public function index()
     {
         $data = [
-            'result' => $this->model->all(),
+            'result' => $this->formatTree(),
             'page' => $this->page
         ];
         return view($this->module . ".index", $data);
@@ -80,7 +80,7 @@ class CategoryParentController extends Controller
 
         $this->model->create($create);
 
-        logUser('Create Category Parent '.$create['name']);
+        logUser('Create Category '.$create['name']);
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -125,7 +125,7 @@ class CategoryParentController extends Controller
 
         $data->update($update);
 
-        logUser('Update Category Parent '.$update['name']);
+        logUser('Update Category '.$update['name']);
 
         $message = setDisplayMessage('success', "Success to update ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -141,7 +141,7 @@ class CategoryParentController extends Controller
     {
         $data = $this->model->find($id);
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
-        logUser('Delete Category Parent '.$data->name);
+        logUser('Delete Category '.$data->name);
         $data->deleted_at = date('Y-m-d H:i:s');
         $data->save();
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -164,9 +164,53 @@ class CategoryParentController extends Controller
         $data->status = $status;
         $data->save();
 
-        logUser('Change Status Category Parent '.$data->name);
+        logUser('Change Status Category '.$data->name);
 
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
+        return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    public function formatTree() {
+        $data = $this->model->orderBy('parent')->get();
+
+        $category = [
+            'categories'    => [],
+            'parent_cats'   => []
+        ];
+
+        foreach ($data as $key => $value) {
+            $category['categories'][$value->id] = $value;
+            $category['parent_cats'][$value->parent][] = $value->id;
+        }
+
+        $tree = buildCategoryTreeArray(0, $category);
+        return $tree;
+    }
+
+    public function updateState(Request $request) {
+        $id = $request->input('id');
+        $position = $request->input('position');
+        $target = $request->input('target');
+
+        if($position == 'after') { // BECOME ROOT
+            $data = $this->model->find($id)->update([
+                'parent'    => 0
+            ]);
+        } else { // CHANGE PARENT
+            $data = $this->model->find($id)->update([
+                'parent'    => $target
+            ]);
+        }
+
+        echo 1; die;
+    }
+
+    public function delete($id) {
+        $data = $this->model->find($id);
+        $message = setDisplayMessage('success', "Success to delete ".$this->page);
+        logUser('Delete Category '.$data->name);
+        $data->deleted_at = date('Y-m-d H:i:s');
+        $data->save();
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
 }

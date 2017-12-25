@@ -5,27 +5,6 @@
     //bootstrap WYSIHTML5 - text editor
     $('.textarea').wysihtml5();
 
-    $('#cat_parent_id').change(function() {
-    	let val = $(this).val();
-
-    	$.ajax({
-    		method: 'GET',
-    		data: {"parent":val},
-    		url: "{{route('ajax.getCategoryChild')}}",
-    		success: function(result) {
-    			let obj = jQuery.parseJSON(result);
-    			let opt = [];
-    			opt.push("<option>Choose Category Child</option>");
-    			$.each(obj, function(key,value) {
-    			  opt.push('<option value="'+value.id+'">'+value.name+'</option>');
-    			});
-    			let all = opt.join(" ");
-    			$('#cat_child_container').show();
-    			$('#cat_child_id').html(all);
-    		}
-    	});
-    });
-
   });
 
   function formatMoney(elem) {
@@ -37,4 +16,9 @@
             elem.val(n.toLocaleString());
         }
    }
+</script>
+
+<script src="{{asset('lte')}}/bower_components/select2/dist/js/select2.full.min.js"></script>
+<script type="text/javascript">
+    $('.select2').select2()
 </script>
