@@ -47,7 +47,8 @@ class Product extends Model
             $where[] = ['partner_id', '=', $user->partner_id];   
         }
 
-        $data = parent::select('products.id', 'name', 'original_price', 'weight', 'duration', 'product_countdown.id as countdown_id', 'end_on', 'start_on')
+        $data = parent::select('products.id', 'name', 'original_price', 'weight', 'duration',
+                                'product_countdown.id as countdown_id', 'end_on', 'start_on', 'products.status')
                         ->leftJoin('product_countdown', 'product_countdown.product_id', '=', 'products.id')
                         ->orderBy($sortBy, 'desc')
                         ->where($where)
