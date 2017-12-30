@@ -66,6 +66,7 @@ Route::post('product/product-manage/countdown', 'Product\ProductController@setCo
 Route::get('product/product-manage/stop-countdown/{id}/{name}', 'Product\ProductController@stopCountdown')->name('product-manage.stopCountdown');
 Route::get('product/product-manage/expired-countdown', 'Product\ProductController@expiredCountdown')->name('product-manage.expiredCountdown');
 Route::get('product/product-manage/change-status/{id}/{status}', 'Product\ProductController@changeStatus')->name('product-manage.change-status');
+Route::get('product/product-manage/delete-image', 'Product\ProductController@deleteImage')->name('product-manage.delete-image');
 Route::resource('product/product-manage', 'Product\ProductController');
 
 Route::post('product/product-variant/image', 'Product\ProductVariantController@addImage')->name('product-variant.addImage');

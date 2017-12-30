@@ -74,6 +74,25 @@
 		                  </div>
 		                </div>
 
+		                <div class="form-group" id="image-cont" style="display: {{($row->has_variant == 0) ? 'block' : 'none'}}">
+			              <label for="image" class="col-sm-3 control-label">Images *Choose Multiple</label>
+			              <div class="col-sm-8">
+			                <input type="file" name="image[]" multiple>
+			                <div style="margin-top: 20px">
+			                	@if(isset($images))
+					              	@foreach($images as $key => $val)
+					              		<div style="float: left;margin-right: 25px">
+					              			<a onclick="return confirm('You will delete this image, continue?')" href="{{route('product-manage.delete-image')}}?product_id={{$row->id}}&image_id={{$val->id}}" style="float: right;position: absolute;background-color: red;color: #fff;font-weight: bold;padding: 3px" href="">
+					              				<i class="fa fa-times"></i>
+					              			</a>
+					              			<img style="width: 180px;height: 180px;" src="{{asset('images') . '/product/' . $row->id . '/0/' . $val->url}}" class="img-responsive">
+					              		</div>
+					              	@endforeach
+					            @endif
+			                </div>
+			              </div>
+			            </div>
+
 	              </div>
 	              <!-- /.box-body -->
 	              <div class="box-footer">

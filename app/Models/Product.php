@@ -19,7 +19,7 @@ class Product extends Model
      */
     protected $fillable = [
         'name', 'original_price', 'discount_price', 'modal_price', 'weight', 'description', 'created_by', 'updated_by', 'status',
-        'partner_id'
+        'partner_id', 'has_variant'
     ];
 
     /**
@@ -48,12 +48,27 @@ class Product extends Model
         }
 
         $data = parent::select('products.id', 'name', 'original_price', 'weight', 'duration',
-                                'product_countdown.id as countdown_id', 'end_on', 'start_on', 'products.status')
+                                'product_countdown.id as countdown_id', 'end_on', 'start_on', 'products.status', 'has_variant')
                         ->leftJoin('product_countdown', 'product_countdown.product_id', '=', 'products.id')
                         ->orderBy($sortBy, 'desc')
                         ->where($where)
                         ->paginate($limit);
 
         return $data;
+    }
+
+    public function insertVariantProduct($productId) {
+        $variant = new ProductVariant();
+        $createVariant = ProductVariant::create([
+            'product_id'    => $productId,
+            'color_id'      => 0,
+            'size_id'       => 0,
+            'SKU'           => $variant->generateSKU($productId, $color = 0, $size = 0),
+            'default'       => 1,
+            'max_order_qty' => 100, // TEMPORARY, WILL CHANGE IF NEEDED BY
+            'created_by'    => Auth::id()
+        ]);
+
+
     }
 }

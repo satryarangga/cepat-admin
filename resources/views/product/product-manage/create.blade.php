@@ -28,7 +28,7 @@
 	                </div>
 
 	                <div class="form-group">
-	                  <label for="parent_id" class="col-sm-3 control-label">Category Parent</label>
+	                  <label for="parent_id" class="col-sm-3 control-label">Category</label>
 	                  <div class="col-sm-8">
 	                  	<select name="category[]" id="category" multiple class="form-control select2">
 	                  		@foreach($category as $key => $val)
@@ -72,6 +72,23 @@
 	                  	<input type="text" class="form-control" name="meta_keywords" value="{{old('meta_keywords')}}" id="meta_keywords" placeholder="Words separated by comma">
 	                  </div>
 	                </div>
+
+	                <div class="form-group">
+	                  <label for="has_variant" class="col-sm-3 control-label">Has Variant</label>
+	                  <div class="col-sm-8">
+	                  	<div class="col-sm-8">
+			               <label class="radio-inline"><input @if(old('has_variant') == 0) checked="checked" @endif type="radio" value="0" name="has_variant">No</label>
+	                  	   <label class="radio-inline"><input @if(old('has_variant') == 1) checked="checked" @endif type="radio" value="1" name="has_variant">Yes</label>
+		               </div>
+	                  </div>
+	                </div>
+
+	                <div class="form-group" id="image-cont" style="display: block;">
+		              <label for="image" class="col-sm-3 control-label">Images *Choose Multiple</label>
+		              <div class="col-sm-8">
+		                <input type="file" name="image[]" multiple>
+		              </div>
+		            </div>
 
 	              </div>
 	              <!-- /.box-body -->

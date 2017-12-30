@@ -60,7 +60,9 @@
 	                  </button>
 	                  <ul class="dropdown-menu" role="menu">
     	                <li><a href="{{ route($page.'.edit', ['id' => $val->id]) }}">Edit</a></li>
+                      @if($val->has_variant == 1)
                       <li><a href="{{ route('product-variant'.'.index') }}?product_id={{$val->id}}">View Variant</a></li>
+                      @endif
   	                  <li class="divider"></li>
                       @if($user->user_type == 1)
                         @if($val->status == 1)

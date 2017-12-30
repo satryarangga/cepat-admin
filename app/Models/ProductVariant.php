@@ -68,16 +68,25 @@ class ProductVariant extends Model
 
     public function generateSKU($productId, $colorId, $sizeId) {
         $product = Product::find($productId);
-        $color = Color::find($colorId);
-        $size = Size::find($sizeId);
+
+        if($colorId != 0) {
+            $color = Color::find($colorId);
+            $size = Size::find($sizeId);
+        }
         $constraint = [' ', '-', '_'];
 
         $productName = str_replace($constraint, '', $product->name);
         $startName = substr($productName, 0, 2);
         $endName = substr($productName, -1);
 
-        $sizeName = str_replace($constraint, '', substr($size->url, 0, 2));
-        $colorName = str_replace($constraint, '', substr($color->url, 0, 3));
+        if(isset($color)) {
+            $sizeName = str_replace($constraint, '', substr($size->url, 0, 2));
+            $colorName = str_replace($constraint, '', substr($color->url, 0, 3));
+        } else {
+            $sizeName = 'ns';
+            $colorName = 'ncl';
+        }
+
         $time = substr(time(), -4);
 
         $sku = strtoupper($startName.$endName.$sizeName.$colorName.$time);
@@ -115,8 +124,8 @@ class ProductVariant extends Model
 
         $data = parent::select('SKU', 'qty_order', 'qty_warehouse', 'products.name as product_name', 'colors.name as color_name', 'size.name as size_name')
                         ->join('products', 'products.id', '=', 'product_variants.product_id')
-                        ->join('colors', 'colors.id', '=', 'product_variants.color_id')
-                        ->join('size', 'size.id', '=', 'product_variants.size_id')
+                        ->leftJoin('colors', 'colors.id', '=', 'product_variants.color_id')
+                        ->leftJoin('size', 'size.id', '=', 'product_variants.size_id')
                         ->where($where)
                         ->orderBy('product_variants.updated_at', 'desc')
                         ->paginate($limit);

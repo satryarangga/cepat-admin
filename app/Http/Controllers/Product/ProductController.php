@@ -89,7 +89,8 @@ class ProductController extends Controller
             'name'     => 'required',
             'weight'    => 'required',
             'original_price'    => 'required',
-            'category'    => 'required'
+            'category'    => 'required',
+            'has_variant'   => 'required'
         ]);
 
         $create = [
@@ -98,6 +99,7 @@ class ProductController extends Controller
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
             'created_by' => $user->id,
+            'has_variant'   => $request->input('has_variant'),
             'partner_id'    => ($user->partner_id) ? $user->partner_id : 0
         ];
 
@@ -116,6 +118,30 @@ class ProductController extends Controller
             'meta_description' => $request->input('meta_description'),
             'meta_keywords' => $request->input('meta_keywords')
         ]);
+
+        if($request->input('has_variant') == 0) {
+            if ($request->file('image')) {
+                $x = 0;
+                foreach ($request->file('image') as $key => $value) {
+                    $x++;
+                    $ext = $value->getClientOriginalExtension();
+                    $random = strtoupper(str_random(5));
+                    $name = $created->id . '-0-' . $random.'.'.$ext;
+                    $value->move(
+                        base_path() . '/public/images/product/'. $created->id . '/0/' ,$name
+                    );
+
+                    ProductImage::create([
+                        'product_id'    => $created->id,
+                        'color_id'    => 0,
+                        'url'    => $name,
+                        'default' => ($x == 1) ? 1 : 0,
+                        'created_by' => Auth::id()
+                    ]);
+                }
+            }
+            $createVariant = $this->model->insertVariantProduct($created->id);
+        }
 
         logUser('Create Product '.$create['name']);
 
@@ -137,13 +163,19 @@ class ProductController extends Controller
         foreach ($categoryMap as $key => $value) {
             $cat[] = $value;
         }
+
+        $detail = $this->model->find($id);
         $data = [
             'page' => $this->page,
-            'row' => $this->model->find($id),
+            'row' => $detail,
             'category' => Category::all(),
             'categoryMap' => $cat,
             'seo' => ProductSeo::where('product_id', $id)->first()
         ];
+
+        if($detail->has_variant == 0) {
+            $data['images'] = ProductImage::where('product_id', $id)->get();
+        }
 
         return view($this->module.".edit", $data);
     }
@@ -171,7 +203,7 @@ class ProductController extends Controller
             'original_price' => parseMoneyToInteger($request->input('original_price')),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
-            'updated_by' => Auth::id()
+            'updated_by' => Auth::id(),
         ];
 
         $data->update($update);
@@ -198,6 +230,29 @@ class ProductController extends Controller
                 'meta_description' => $request->input('meta_description'),
                 'meta_keywords' => $request->input('meta_keywords')
             ]);
+        }
+
+        if($data->variant == 0) {
+            if ($request->file('image')) {
+                $x = 0;
+                foreach ($request->file('image') as $key => $value) {
+                    $x++;
+                    $ext = $value->getClientOriginalExtension();
+                    $random = strtoupper(str_random(5));
+                    $name = $id . '-0-' . $random.'.'.$ext;
+                    $value->move(
+                        base_path() . '/public/images/product/'. $id . '/0/' ,$name
+                    );
+
+                    ProductImage::create([
+                        'product_id'    => $id,
+                        'color_id'    => 0,
+                        'url'    => $name,
+                        'default' => ($x == 1) ? 1 : 0,
+                        'created_by' => Auth::id()
+                    ]);
+                }
+            }
         }
 
         logUser('Update Product '.$update['name']);
@@ -303,5 +358,15 @@ class ProductController extends Controller
     public function expiredCountdown() {
         $data = ProductCountdown::where('end_on', '<', date('Y-m-d H:i:s'))->delete();
         return redirect(route($this->page.'.index'));
+    }
+
+    public function deleteImage(Request $request) {
+        $image_id = $request->input('image_id');
+        $product_id = $request->input('product_id');
+        $data = ProductImage::find($image_id);
+        $data->delete();
+        logUser('Delete Product Image');
+        $message = setDisplayMessage('success', "Success to delete product image");
+        return redirect(route($this->page.'.edit', ['id' => $product_id]))->with('displayMessage', $message);
     }
 }
