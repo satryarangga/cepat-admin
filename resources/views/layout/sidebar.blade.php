@@ -34,6 +34,9 @@
               <li @if($page == 'inventory-control') class="active" @endif>
                 <a href="{{route('product-variant.inventoryControl')}}"><i class="fa fa-folder-open"></i> Inventory Control</a>
               </li>
+              <li @if($page == 'option') class="active" @endif>
+                <a href="{{route('option.index')}}"><i class="fa fa-folder-open"></i> Product Option</a>
+              </li>
             </ul>
         </li>
 

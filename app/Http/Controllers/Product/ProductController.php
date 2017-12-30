@@ -12,6 +12,9 @@ use App\Models\ProductVariant;
 use App\Models\ProductImage;
 use App\Models\ProductSeo;
 use App\Models\ProductCountdown;
+use App\Models\ProductOption;
+use App\Models\ProductOptionValue;
+use App\Models\ProductOptionMapProduct;
 
 class ProductController extends Controller
 {
@@ -70,7 +73,8 @@ class ProductController extends Controller
     {
         $data = [
             'page' => $this->page,
-            'category' => Category::all()
+            'category' => Category::all(),
+            'options'   => ProductOption::all()
         ];
 
         return view($this->module.".create", $data);
@@ -119,6 +123,9 @@ class ProductController extends Controller
             'meta_keywords' => $request->input('meta_keywords')
         ]);
 
+        $options = $request->input('options');
+        $mapProductOptions = ProductOptionMapProduct::map($created->id, $options);
+
         if($request->input('has_variant') == 0) {
             if ($request->file('image')) {
                 $x = 0;
@@ -142,7 +149,6 @@ class ProductController extends Controller
             }
             $createVariant = $this->model->insertVariantProduct($created->id);
         }
-
         logUser('Create Product '.$create['name']);
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
@@ -164,13 +170,17 @@ class ProductController extends Controller
             $cat[] = $value;
         }
 
+        $mapOption = ProductOptionMapProduct::where('product_id', $id)->get();
+
         $detail = $this->model->find($id);
         $data = [
             'page' => $this->page,
             'row' => $detail,
             'category' => Category::all(),
             'categoryMap' => $cat,
-            'seo' => ProductSeo::where('product_id', $id)->first()
+            'seo' => ProductSeo::where('product_id', $id)->first(),
+            'options'   => ProductOption::all(),
+            'mapOption' => $mapOption
         ];
 
         if($detail->has_variant == 0) {
@@ -208,6 +218,9 @@ class ProductController extends Controller
 
         $data->update($update);
 
+        $options = ($request->input('options')) ? $request->input('options') : [];
+        $mapProductOptions = ProductOptionMapProduct::map($id, $options);
+
         // CATEGORY MAP PROCESS
         CategoryMap::where('product_id', $id)->delete();
         $category = $request->input('category');
@@ -219,11 +232,11 @@ class ProductController extends Controller
         }
 
         // PRODUCT SEO
-        $data = ProductSeo::where('product_id', $id)->first();
-        if(isset($data->id)) {
-            $data->meta_description = $request->input('meta_description');
-            $data->meta_keywords = $request->input('meta_keywords');
-            $data->save();
+        $dataSeo = ProductSeo::where('product_id', $id)->first();
+        if(isset($dataSeo->id)) {
+            $dataSeo->meta_description = $request->input('meta_description');
+            $dataSeo->meta_keywords = $request->input('meta_keywords');
+            $dataSeo->save();
         } else {
             ProductSeo::create([
                 'product_id'    => $id,

@@ -15,7 +15,40 @@
         }
     });
 
+    $('#option').change(function() {
+        let val = $(this).val();
+        $('#option-value').html('<option>Select Value</option>');
+        let opt = [];
+        $.ajax({
+            url: '{{route('ajax.getOptionValue')}}',
+            data: {option_id:val},
+            method: 'GET',
+            success: function(result) {
+                let obj = jQuery.parseJSON(result);
+                $.each(obj, function(key,value) {
+                    opt.push('<option value="'+value.id+'">'+value.name+'</option>');
+              }); 
+                let all = opt.join(" ");
+                $('#option-value').html(all);
+            }
+        });
+    });
+
+    $('#add-option').click(function() {
+        let option = $('#option').val();
+        let optionLabel = $('#option option:selected').html();
+        let optionValue = $('#option-value').val();
+        let optionValueLabel = $('#option-value option:selected').html();
+
+        let optHtml = '<tr id="'+optionValue+'"><td>'+optionLabel+'</td><td>'+optionValueLabel+'</td><td><a onclick="removeParent('+optionValue+')" class="btn btn-danger">Remove</a><input type="hidden" name="options[]" value="'+option+';'+optionValue+'" /></td></tr>';
+        $('#data-option').append(optHtml);
+    });
+
   });
+
+  function removeParent(optValue) {
+    $('#'+optValue).remove();
+  }
 
   function formatMoney(elem) {
         var n = parseInt(elem.val().replace(/\D/g, ''), 10);

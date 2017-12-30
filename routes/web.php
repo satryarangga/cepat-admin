@@ -18,74 +18,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::get('/dashboard-partner', 'HomeController@partner')->name('home-partner');
 
-Route::get('master/user/change-status/{id}/{status}', 'Master\UserController@changeStatus')->name('user.change-status');
-Route::resource('master/user', 'Master\UserController');
-
-Route::get('master/request-partner/change-status/{id}/{status}', 'Master\RequestPartnerController@changeStatus')->name('request-partner.change-status');
-Route::resource('master/request-partner', 'Master\RequestPartnerController');
-
-Route::get('master/customer/send-email/{id}', 'Master\CustomerController@sendEmail')->name('customer.sendRegisterEmail');
-Route::put('master/customer/adjust-wallet', 'Master\CustomerController@adjustWallet')->name('customer.adjustWallet');
-Route::get('master/customer/change-status/{id}/{status}', 'Master\CustomerController@changeStatus')->name('customer.change-status');
-Route::resource('master/customer', 'Master\CustomerController');
-
-Route::get('master/partner/change-status/{id}/{status}', 'Master\PartnerController@changeStatus')->name('partner.change-status');
-Route::resource('master/partner', 'Master\PartnerController');
-
-Route::resource('master/static-content', 'Master\StaticContentController');
-
-Route::get('master/voucher/change-status/{id}/{status}', 'Master\VoucherController@changeStatus')->name('voucher.change-status');
-Route::resource('master/voucher', 'Master\VoucherController');
-
-Route::get('master/payment-method/change-status/{id}/{status}', 'Master\PaymentMethodController@changeStatus')->name('payment-method.change-status');
-Route::resource('master/payment-method', 'Master\PaymentMethodController');
-
-Route::get('master/slider/change-status/{id}/{status}', 'Master\SliderController@changeStatus')->name('slider.change-status');
-Route::resource('master/slider', 'Master\SliderController');
-
 Route::get('ajax/get-province', 'Master\AjaxController@getProvince')->name('ajax.getProvince');
 Route::get('ajax/get-city', 'Master\AjaxController@getCity')->name('ajax.getCity');
 Route::get('ajax/get-category-child', 'Master\AjaxController@getCategoryChild')->name('ajax.getCategoryChild');
 Route::get('ajax/change-status-size-variant', 'Product\ProductVariantController@changeStatusSize')->name('ajax.changeStatusSizeVariant');
 Route::get('ajax/delete-size-variant', 'Product\ProductVariantController@deleteSize')->name('ajax.deleteSizeVariant');
 Route::get('ajax/delete-image-variant', 'Product\ProductVariantController@deleteImage')->name('ajax.deleteImageVariant');
-
-
-// PRODUCT
-Route::resource('product/color', 'Product\ColorController');
-
-Route::resource('product/size', 'Product\SizeController');
-
-Route::get('product/category/delete/{id}', 'Product\CategoryController@delete')->name('category.delete');
-Route::get('product/category/format', 'Product\CategoryController@formatTree')->name('category.format-list');
-Route::get('product/category/update-state', 'Product\CategoryController@updateState')->name('category.update-state');
-Route::get('product/category/change-status/{id}/{status}', 'Product\CategoryController@changeStatus')->name('category.change-status');
-Route::resource('product/category', 'Product\CategoryController');
-
-Route::post('product/product-manage/countdown', 'Product\ProductController@setCountdown')->name('product-manage.setCountdown');
-Route::get('product/product-manage/stop-countdown/{id}/{name}', 'Product\ProductController@stopCountdown')->name('product-manage.stopCountdown');
-Route::get('product/product-manage/expired-countdown', 'Product\ProductController@expiredCountdown')->name('product-manage.expiredCountdown');
-Route::get('product/product-manage/change-status/{id}/{status}', 'Product\ProductController@changeStatus')->name('product-manage.change-status');
-Route::get('product/product-manage/delete-image', 'Product\ProductController@deleteImage')->name('product-manage.delete-image');
-Route::resource('product/product-manage', 'Product\ProductController');
-
-Route::post('product/product-variant/image', 'Product\ProductVariantController@addImage')->name('product-variant.addImage');
-Route::get('product/product-variant/inventory', 'Product\ProductVariantController@inventoryControl')->name('product-variant.inventoryControl');
-Route::put('product/product-variant/change-inventory', 'Product\ProductVariantController@changeInventory')->name('product-variant.changeInventory');
-Route::resource('product/product-variant', 'Product\ProductVariantController');
-
-Route::put('order/set-shipment/', 'Order\OrderController@setShipment')->name('order-manage.setShipment');
-Route::get('order/change-status/{id}/{type}', 'Order\OrderController@changeStatus')->name('order-manage.changeStatus');
-Route::get('order/order-manage/{status}', 'Order\OrderController@index')->name('order-manage.index');
-Route::get('order/order-detail/{id}', 'Order\OrderController@detail')->name('order-manage.detail');
-Route::get('ajax/graph-sales', 'Order\AjaxController@graphSales')->name('ajax.graphSales');
-
-Route::get('shipping/export-city', 'Order\ShippingController@exportCity')->name('shipping.exportCity');
-Route::get('shipping/check-cost', 'Order\ShippingController@checkCost')->name('shipping.checkCost');
-
-// PARTNER
-Route::get('order/order-partner/{status}', 'Order\PartnerController@index')->name('order-partner.index');
-Route::get('order/order-partner-detail/{id}', 'Order\PartnerController@detail')->name('order-partner.detail');
-
-Route::get('report/sales', 'Order\ReportController@sales')->name('report.sales');
-Route::get('report/excel/sales', 'Order\ReportController@excelSales')->name('report.excel.sales');
+Route::get('ajax/get-option-value', 'Product\OptionController@getValue')->name('ajax.getOptionValue');

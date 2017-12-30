@@ -90,6 +90,8 @@
 		              </div>
 		            </div>
 
+		            @include('product.product-manage.options')
+
 	              </div>
 	              <!-- /.box-body -->
 	              <div class="box-footer">
