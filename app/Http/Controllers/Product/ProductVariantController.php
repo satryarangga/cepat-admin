@@ -102,7 +102,7 @@ class ProductVariantController extends Controller
             'color_id'  => $request->input('color_id'),
             'size_id'  => $request->input('size_id'),
             'product_id'  => $request->input('product_id'),
-            'default'  => 1,
+            'defaults'  => 1,
             'qty_order'  => $request->input('qty'),
             'qty_warehouse'  => $request->input('qty'),
             'max_order_qty'  => 100, // TEMPORARY, WILL CHANGE IF NEEDED BY
@@ -130,7 +130,7 @@ class ProductVariantController extends Controller
                     'product_id'    => $create['product_id'],
                     'color_id'    => $create['color_id'],
                     'url'    => $name,
-                    'default' => ($x == 1) ? 1 : 0,
+                    'defauls' => ($x == 1) ? 1 : 0,
                     'created_by' => Auth::id()
                 ]);
             }
@@ -231,7 +231,7 @@ class ProductVariantController extends Controller
                     'product_id'    => $productId,
                     'color_id'    => $colorId,
                     'url'    => $name,
-                    'default' => ($x == 1) ? 1 : 0,
+                    'defaults' => ($x == 1) ? 1 : 0,
                     'created_by' => Auth::id()
                 ]);
             }

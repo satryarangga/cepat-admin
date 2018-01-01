@@ -142,7 +142,7 @@ class ProductController extends Controller
                         'product_id'    => $created->id,
                         'color_id'    => 0,
                         'url'    => $name,
-                        'default' => ($x == 1) ? 1 : 0,
+                        'defaults' => ($x == 1) ? 1 : 0,
                         'created_by' => Auth::id()
                     ]);
                 }
@@ -261,7 +261,7 @@ class ProductController extends Controller
                         'product_id'    => $id,
                         'color_id'    => 0,
                         'url'    => $name,
-                        'default' => ($x == 1) ? 1 : 0,
+                        'defaults' => ($x == 1) ? 1 : 0,
                         'created_by' => Auth::id()
                     ]);
                 }

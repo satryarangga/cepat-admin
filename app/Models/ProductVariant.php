@@ -18,7 +18,7 @@ class ProductVariant extends Model
      * @var array
      */
     protected $fillable = [
-        'product_id', 'color_id', 'size_id', 'SKU', 'default', 'qty_order', 'qty_warehouse', 'max_order_qty',
+        'product_id', 'color_id', 'size_id', 'SKU', 'defaults', 'qty_order', 'qty_warehouse', 'max_order_qty',
         'status', 'created_by', 'updated_by'
     ];
 
@@ -98,7 +98,7 @@ class ProductVariant extends Model
             $image = ProductImage::where('product_id', $value->product_id)
                                     ->where('color_id', $value->color_id)
                                     ->where('deleted_at', null)
-                                    ->orderBy('default', 'desc')
+                                    ->orderBy('defaults', 'desc')
                                     ->first();
             $data[$key]['image'] = (isset($image->id)) ? $image->url : null;
         }
