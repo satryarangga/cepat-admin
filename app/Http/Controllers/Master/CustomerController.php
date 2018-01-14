@@ -28,7 +28,7 @@ class CustomerController extends Controller
         $this->model = new Customer();
         $this->module = 'master.customer';
         $this->page = 'customer';
-        $this->middleware('auth')->except('sendEmail');
+        $this->middleware('auth', ['except' => ['sendEmail', 'forgotPassword']]);
     }
 
     /**
@@ -236,6 +236,12 @@ class CustomerController extends Controller
     public function sendEmail($customerId) {
         $data = Customer::find($customerId);
         Customer::sendEmailNotif($data);
+        return 'Done';
+    }
+
+    public function forgotPassword($customerId, $token) {
+        $data = Customer::find($customerId);
+        Customer::sendResetPassword($data, $token);
         return 'Done';
     }
 }

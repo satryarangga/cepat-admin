@@ -32,6 +32,8 @@ return [
 										'pandu'	=> 'Pandu Logistic',
 										'cahaya' => 'Cahaya Logistik',
 										'indah' => 'Indah Jaya Express'
-								   ]
+								   ],
+
+	'front_end_host'			=> env('FRONT_END_HOST')
 
 ];

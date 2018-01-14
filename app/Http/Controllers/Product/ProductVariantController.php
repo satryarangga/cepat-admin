@@ -278,6 +278,7 @@ class ProductVariantController extends Controller
 
         $data->qty_order = $newQtyOrder;
         $data->qty_warehouse = $new;
+        $data->status = ($newQtyOrder > 0) ? 1 : 0;
         $data->save();
 
         $description = ($delta < 0) ? 'Inventory Correction Out' : 'Inventory Correction In';

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerRegistration;
+use App\Mail\CustomerForgotPassword;
 
 class Customer extends Model
 {
@@ -53,5 +54,9 @@ class Customer extends Model
 
     public static function sendEmailNotif($data) {
         Mail::to($data->email)->send(new CustomerRegistration($data));
+    }
+
+    public static function sendResetPassword($data, $token) {
+        Mail::to($data->email)->send(new CustomerForgotPassword($data, $token));
     }
 }

@@ -7,6 +7,7 @@ Route::get('master/request-partner/change-status/{id}/{status}', 'Master\Request
 Route::resource('master/request-partner', 'Master\RequestPartnerController');
 
 Route::get('master/customer/send-email/{id}', 'Master\CustomerController@sendEmail')->name('customer.sendRegisterEmail');
+Route::get('master/customer/forgot-password/{id}/{token}', 'Master\CustomerController@forgotPassword')->name('customer.forgotPassword');
 Route::put('master/customer/adjust-wallet', 'Master\CustomerController@adjustWallet')->name('customer.adjustWallet');
 Route::get('master/customer/change-status/{id}/{status}', 'Master\CustomerController@changeStatus')->name('customer.change-status');
 Route::resource('master/customer', 'Master\CustomerController');
