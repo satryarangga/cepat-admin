@@ -100,6 +100,7 @@ class ProductController extends Controller
         $create = [
             'name'  => $request->input('name'),
             'original_price' => parseMoneyToInteger($request->input('original_price')),
+            'discount_price' => parseMoneyToInteger($request->input('original_price')),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
             'created_by' => $user->id,
@@ -123,7 +124,7 @@ class ProductController extends Controller
             'meta_keywords' => $request->input('meta_keywords')
         ]);
 
-        $options = $request->input('options');
+        $options = ($request->input('options')) ? $request->input('options') : [];
         $mapProductOptions = ProductOptionMapProduct::map($created->id, $options);
 
         if($request->input('has_variant') == 0) {
@@ -211,6 +212,7 @@ class ProductController extends Controller
         $update = [
             'name'  => $request->input('name'),
             'original_price' => parseMoneyToInteger($request->input('original_price')),
+            'discount_price' => parseMoneyToInteger($request->input('original_price')),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
             'updated_by' => Auth::id(),
