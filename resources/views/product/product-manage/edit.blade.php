@@ -42,9 +42,17 @@
 		                <div class="form-group">
 		                  <label for="original_price" class="col-sm-3 control-label">Price</label>
 		                  <div class="col-sm-8">
-		                    <input type="text" class="form-control" onkeyup="formatMoney($(this))" name="original_price" value="{{moneyFormat($row->original_price)}}" id="original_price" placeholder="Price">
+		                    <input type="text" class="form-control" onkeyup="formatMoney($(this))" name="original_price" value="{{moneyFormat($row->original_price, false)}}" id="original_price" placeholder="Price">
 		                  </div>
 		                </div>
+
+		                <div class="form-group">
+		                  <label for="original_price" class="col-sm-3 control-label">Discount Price</label>
+		                  <div class="col-sm-8">
+		                    <input type="text" class="form-control" onkeyup="formatMoney($(this))" name="discount_price" value="{{moneyFormat($row->discount_price, false)}}" id="discount_price" placeholder="Discount Price">
+		                  </div>
+		                </div>
+
 
 		                <div class="form-group">
 		                  <label for="weight" class="col-sm-3 control-label">Weight (Kg)</label>

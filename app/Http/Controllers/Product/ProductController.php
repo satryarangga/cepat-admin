@@ -97,15 +97,20 @@ class ProductController extends Controller
             'has_variant'   => 'required'
         ]);
 
+        $discount_price = $request->input('original_price');
+        if($request->input('discount_price') || $request->input('discount_price') == '0') {
+            $discount_price = $request->input('discount_price');
+        }
+
         $create = [
             'name'  => $request->input('name'),
             'original_price' => parseMoneyToInteger($request->input('original_price')),
-            'discount_price' => parseMoneyToInteger($request->input('original_price')),
+            'discount_price' => parseMoneyToInteger($discount_price),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
             'created_by' => $user->id,
             'has_variant'   => $request->input('has_variant'),
-            'partner_id'    => ($user->partner_id) ? $user->partner_id : 0
+            'partner_id'    => ($user->partner_id) ? $user->partner_id : 1
         ];
 
         $created = $this->model->create($create);
@@ -174,6 +179,7 @@ class ProductController extends Controller
         $mapOption = ProductOptionMapProduct::where('product_id', $id)->get();
 
         $detail = $this->model->find($id);
+        $detail->discount_price = ($detail->discount_price == $detail->original_price) ? null : $detail->discount_price;
         $data = [
             'page' => $this->page,
             'row' => $detail,
@@ -209,10 +215,14 @@ class ProductController extends Controller
 
         $data = $this->model->find($id);
 
+        $discount_price = $request->input('original_price');
+        if($request->input('discount_price') || $request->input('discount_price') == '0') {
+            $discount_price = $request->input('discount_price');
+        }
         $update = [
             'name'  => $request->input('name'),
             'original_price' => parseMoneyToInteger($request->input('original_price')),
-            'discount_price' => parseMoneyToInteger($request->input('original_price')),
+            'discount_price' => parseMoneyToInteger($discount_price),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
             'updated_by' => Auth::id(),

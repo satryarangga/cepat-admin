@@ -43,6 +43,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ route($page.'.edit', ['id' => $val->id]) }}">Edit</a></li>
+                        @if($val->id != 1)
                         @if($val->status == 1)
                         <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 0]) }}">Block</a></li>
                         @else
@@ -55,6 +56,7 @@
                             {{ method_field('DELETE') }}
                           </form>
                        </li>
+                       @endif
                     </ul>
                   </div>
                 </td>

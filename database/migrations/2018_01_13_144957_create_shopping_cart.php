@@ -23,9 +23,12 @@ class CreateShoppingCart extends Migration
             $table->string('color')->nullable();
             $table->string('size')->nullable();
             $table->string('SKU', 75);
+            $table->float('weight');
+            $table->integer('price_ori_each');
             $table->integer('price_each');
             $table->integer('qty');
             $table->integer('subtotal');
+            $table->integer('partner_id');
             $table->timestamps();
         });
     }
