@@ -98,7 +98,7 @@ class ProductController extends Controller
         ]);
 
         $discount_price = $request->input('original_price');
-        if($request->input('discount_price') || $request->input('discount_price') == '0') {
+        if($request->input('discount_price') && $request->input('discount_price') != '0') {
             $discount_price = $request->input('discount_price');
         }
 
@@ -216,7 +216,7 @@ class ProductController extends Controller
         $data = $this->model->find($id);
 
         $discount_price = $request->input('original_price');
-        if($request->input('discount_price') || $request->input('discount_price') == '0') {
+        if($request->input('discount_price') && $request->input('discount_price') != '0') {
             $discount_price = $request->input('discount_price');
         }
         $update = [

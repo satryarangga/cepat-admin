@@ -7,7 +7,7 @@
         dateFormat: 'yy-mm-dd',
         changeMonth: true,
         changeYear: true,
-        maxDate: '0'
+        minDate: '0'
     });
 
   });
