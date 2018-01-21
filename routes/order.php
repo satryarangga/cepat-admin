@@ -4,6 +4,7 @@ Route::put('order/set-shipment/', 'Order\OrderController@setShipment')->name('or
 Route::get('order/change-status/{id}/{type}', 'Order\OrderController@changeStatus')->name('order-manage.changeStatus');
 Route::get('order/order-manage/{status}', 'Order\OrderController@index')->name('order-manage.index');
 Route::get('order/order-detail/{id}', 'Order\OrderController@detail')->name('order-manage.detail');
+Route::get('order/send-email-finish/{orderId}', 'Order\OrderController@sendEmailOrder')->name('order-manage.sendEmailOrder');
 Route::get('ajax/graph-sales', 'Order\AjaxController@graphSales')->name('ajax.graphSales');
 
 Route::get('shipping/export-city', 'Order\ShippingController@exportCity')->name('shipping.exportCity');

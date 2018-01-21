@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OrderPaymentNotif;
+use App\Mail\OrderFinish;
 
 class OrderHead extends Model
 {
@@ -176,5 +177,24 @@ class OrderHead extends Model
                         ->get();
 
         return $data;
+    }
+
+    public static function sendEmailOrder($orderId) {
+        $head = parent::find($orderId);
+        $customer = Customer::find($head->customer_id);
+        $item = OrderItem::select(DB::raw('product_id, color_id, size_id, product_price, qty, subtotal, colors.name, 
+                                            size.name, products.name as product_name'))
+                            ->leftJoin('colors', 'colors.id', '=', 'order_item.color_id')
+                            ->leftJoin('size', 'size.id', '=', 'order_item.size_id')
+                            ->leftJoin('products', 'products.id', '=', 'order_item.product_id')
+                            ->where('order_id', $orderId)->get();
+
+        $payment = OrderPayment::select(DB::raw('*, payment_method.name as payment_method_name, 
+                                                payment_method.desc as payment_method_desc'))
+                                ->leftJoin('payment_method', 'order_payment.payment_method_id', '=', 'payment_method.id')
+                                ->where('order_id', $orderId)
+                                ->first();
+
+        Mail::to($customer->email)->send(new OrderFinish($customer, $head, $item, $payment));
     }
 }

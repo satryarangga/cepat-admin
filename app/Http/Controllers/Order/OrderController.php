@@ -35,7 +35,7 @@ class OrderController extends Controller
 		$this->model = new OrderHead();
 		$this->module = 'order.order-manage';
 		$this->page = 'order-manage';
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['sendEmailOrder']]);
     }
 
     public function index($status, Request $request) {
@@ -159,6 +159,10 @@ class OrderController extends Controller
 
         $message = setDisplayMessage('success', "Success to ship order item");
         return redirect(route($this->page.'.detail', ['id' => $item->order_id]))->with('displayMessage', $message);
+    }
 
+    public function sendEmailOrder($orderId) {
+        OrderHead::sendEmailOrder($orderId);
+        return 'Done';
     }
 }
