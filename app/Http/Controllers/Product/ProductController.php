@@ -386,7 +386,17 @@ class ProductController extends Controller
     }
 
     public function expiredCountdown() {
-        $data = ProductCountdown::where('end_on', '<', date('Y-m-d H:i:s'))->delete();
+        $now = date('Y-m-d H:i:s');
+        $data = ProductCountdown::where('end_on', '<', $now)->get();
+
+        foreach ($data as $key => $value) {
+            $product = Product::find($value->product_id);
+            $product->status = 0;
+            $product->save();
+        }
+
+        ProductCountdown::where('end_on', '<', $now)->delete();
+        
         return redirect(route($this->page.'.index'));
     }
 
