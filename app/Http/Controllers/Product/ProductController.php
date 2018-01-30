@@ -374,7 +374,12 @@ class ProductController extends Controller
     }
 
     public function stopCountdown($id, $product_name) {
-        $data = ProductCountdown::find($id)->delete();
+        $data = ProductCountdown::find($id);
+        Product::find($data->product_id)->update([
+            'status'    => 1
+        ]);
+
+        $data->delete();
 
         $message = setDisplayMessage('success', "Success to stop countdown time for $product_name");
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
