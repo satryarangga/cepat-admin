@@ -96,6 +96,9 @@
                 <a href="{{route('shipping.checkCost')}}">
                   <i class="fa fa-money"></i> Check Shipping Cost
                 </a>
+                <a href="{{route('return.index')}}">
+                  <i class="fa fa-truck"></i> Return Order
+                </a>
               </li>
             </ul>
         </li>
