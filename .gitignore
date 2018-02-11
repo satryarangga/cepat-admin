@@ -11,6 +11,7 @@ npm-debug.log
 yarn-error.log
 public/images/product
 public/images/payment-method
+public/images/promo
 public/images/slider
 .env
 *.conf
