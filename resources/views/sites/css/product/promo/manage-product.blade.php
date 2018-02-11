@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="{{ asset('lte') }}/bower_components/select2/dist/css/select2.min.css?v=0.1">

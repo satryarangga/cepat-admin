@@ -72,6 +72,9 @@
               <li @if($page == 'request-partner') class="active" @endif>
                 <a href="{{route('request-partner.index')}}"><i class="fa fa-handshake-o"></i> Partner Request</a>
               </li>
+              <li @if($page == 'promo') class="active" @endif>
+                <a href="{{route('promo.index')}}"><i class="fa fa-money"></i> Promo</a>
+              </li>
             </ul>
         </li>
 
