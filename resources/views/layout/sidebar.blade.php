@@ -37,6 +37,9 @@
               <li @if($page == 'option') class="active" @endif>
                 <a href="{{route('option.index')}}"><i class="fa fa-folder-open"></i> Product Option</a>
               </li>
+              <li @if($page == 'mass-upload') class="active" @endif>
+                <a href="{{route('mass-upload.index')}}"><i class="fa fa-folder-open"></i> Mass Upload</a>
+              </li>
             </ul>
         </li>
 

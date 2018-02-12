@@ -10,6 +10,8 @@ Route::get('product/category/update-state', 'Product\CategoryController@updateSt
 Route::get('product/category/change-status/{id}/{status}', 'Product\CategoryController@changeStatus')->name('category.change-status');
 Route::resource('product/category', 'Product\CategoryController');
 
+Route::get('product/product-manage/mass-upload', 'Product\MassUploadController@index')->name('mass-upload.index');
+Route::post('product/product-manage/mass-upload', 'Product\MassUploadController@store')->name('mass-upload.store');
 Route::post('product/product-manage/countdown', 'Product\ProductVariantControllerroller@setCountdown')->name('product-manage.setCountdown');
 Route::get('product/product-manage/stop-countdown/{id}/{name}', 'Product\ProductController@stopCountdown')->name('product-manage.stopCountdown');
 Route::get('product/product-manage/expired-countdown', 'Product\ProductController@expiredCountdown')->name('product-manage.expiredCountdown');

@@ -21,6 +21,9 @@
               <li @if($page == 'inventory-control') class="active" @endif>
                 <a href="{{route('product-variant.inventoryControl')}}"><i class="fa fa-folder-open"></i> Inventory Control</a>
               </li>
+              <li @if($page == 'mass-upload') class="active" @endif>
+                <a href="{{route('mass-upload.index')}}"><i class="fa fa-folder-open"></i> Mass Upload</a>
+              </li>
             </ul>
         </li>
 
