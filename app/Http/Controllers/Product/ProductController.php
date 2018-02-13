@@ -225,6 +225,7 @@ class ProductController extends Controller
             'discount_price' => parseMoneyToInteger($discount_price),
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
+            'has_variant'   => $request->input('has_variant'),
             'updated_by' => Auth::id(),
         ];
 

@@ -82,6 +82,16 @@
 		                  </div>
 		                </div>
 
+		                <div class="form-group">
+		                  <label for="has_variant" class="col-sm-3 control-label">Has Variant</label>
+		                  <div class="col-sm-8">
+		                  	<div class="col-sm-8">
+				               <label class="radio-inline"><input @if($row->has_variant == 0) checked="checked" @endif type="radio" value="0" name="has_variant">No</label>
+		                  	   <label class="radio-inline"><input @if($row->has_variant == 1) checked="checked" @endif type="radio" value="1" name="has_variant">Yes</label>
+			               </div>
+		                  </div>
+		                </div>
+
 		                <div class="form-group" id="image-cont" style="display: {{($row->has_variant == 0) ? 'block' : 'none'}}">
 			              <label for="image" class="col-sm-3 control-label">Images *Choose Multiple</label>
 			              <div class="col-sm-8">

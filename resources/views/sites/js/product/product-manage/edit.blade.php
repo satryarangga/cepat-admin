@@ -5,6 +5,16 @@
 
     $('.textarea').wysihtml5();
 
+    $('input[name=has_variant]').click(function(){
+        let val = $(this).val();
+
+        if(val == 0) {
+            $('#image-cont').show();
+        } else {
+            $('#image-cont').hide();
+        }
+    });
+
     $('#option').change(function() {
         let val = $(this).val();
         $('#option-value').html('<option>Select Value</option>');

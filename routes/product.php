@@ -12,7 +12,8 @@ Route::resource('product/category', 'Product\CategoryController');
 
 Route::get('product/product-manage/mass-upload', 'Product\MassUploadController@index')->name('mass-upload.index');
 Route::post('product/product-manage/mass-upload', 'Product\MassUploadController@store')->name('mass-upload.store');
-Route::post('product/product-manage/countdown', 'Product\ProductVariantControllerroller@setCountdown')->name('product-manage.setCountdown');
+Route::post('product/product-manage/confirm-upload', 'Product\MassUploadController@confirm')->name('mass-upload.confirm');
+Route::post('product/product-manage/countdown', 'Product\ProductController@setCountdown')->name('product-manage.setCountdown');
 Route::get('product/product-manage/stop-countdown/{id}/{name}', 'Product\ProductController@stopCountdown')->name('product-manage.stopCountdown');
 Route::get('product/product-manage/expired-countdown', 'Product\ProductController@expiredCountdown')->name('product-manage.expiredCountdown');
 Route::get('product/product-manage/change-status/{id}/{status}', 'Product\ProductController@changeStatus')->name('product-manage.change-status');

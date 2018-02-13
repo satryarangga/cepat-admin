@@ -153,6 +153,15 @@ class OptionController extends Controller
 
         $data = $this->model->find($id);
 
+        $category = ($request->input('category')) ? $request->input('category') : [];
+        ProductOptionMapCategory::where('product_option_id', $id)->delete();
+        foreach ($category as $key => $value) {
+            ProductOptionMapCategory::create([
+                'product_option_id'     => $id,
+                'category_id'           => $value
+            ]);
+        }
+
         $update = [
             'name'  => $request->input('name'),
             'url'  => urlFormat($request->input('name')),
