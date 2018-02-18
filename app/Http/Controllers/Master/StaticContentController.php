@@ -74,7 +74,8 @@ class StaticContentController extends Controller
         ]);
 
         $create = [
-            'name'  => str_replace(' ', '_', strtolower($request->input('name'))),
+            'name' => $request->input('name'),
+            'url'  => str_replace(' ', '_', strtolower($request->input('name'))),
             'type'  => $request->input('type'),
             'content'  => ($request->input('type') == 1) ? $request->input('content_text') : $request->input('content_value'),
             'created_by'  => Auth::id(),
@@ -130,7 +131,8 @@ class StaticContentController extends Controller
         ]);
 
         $update = [
-            'name'  => str_replace(' ', '_', strtolower($request->input('name'))),
+            'name' => $request->input('name'),
+            'url'  => str_replace(' ', '_', strtolower($request->input('name'))),
             'type'  => $request->input('type'),
             'content'  => ($request->input('type') == 1) ? $request->input('content_text') : $request->input('content_value'),
             'created_by'  => Auth::id(),
