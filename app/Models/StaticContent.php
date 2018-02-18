@@ -2,55 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StaticContent
+class StaticContent extends Model
 {
-    CONST CACHE_KEY = 'static-content';
+    use SoftDeletes;
+    /**
+     * @var string
+     */
+    protected $table = 'static_content';
 
-    public function list() {
-        $data = Cache::get(self::CACHE_KEY);
-        return ($data) ? $data : [];
-    }
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'url', 'type', 'content', 'created_by', 'updated_by'
+    ];
 
-    public function create($create) {
-        $data = Cache::get(self::CACHE_KEY);
-        $next = Count($data);
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
 
-        $data[$next + 1] = $create;
-        Cache::forever(self::CACHE_KEY, $data);
-    }
-
-    public function find($id) {
-        $data = Cache::get(self::CACHE_KEY);
-
-        if(isset($data[$id])) {
-            $data[$id]['id'] = $id;
-            return $data[$id];
-        }
-        
-        return false;
-    }
-
-    public function update($id, $update) {
-        $data = Cache::get(self::CACHE_KEY);
-
-        if(isset($data[$id])) {
-            $data[$id] = $update;
-            Cache::forever(self::CACHE_KEY, $data);
-        }
-
-        return false;
-    }
-
-    public function delete($id) {
-        $data = Cache::get(self::CACHE_KEY);
-
-        if(isset($data[$id])) {
-            unset($data[$id]);
-            Cache::forever(self::CACHE_KEY, $data);
-        }
-
-        return false;
-    }
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 }

@@ -13,17 +13,21 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered table-hover table-striped">
+              <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Image</th>
+                  <th>Positifon</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($result as $key => $val)
                 <tr>
-                <td>{{$val->name}}</td>
+                <td><img src="{{asset('images/banner/'.$val->filename)}}" style="width: 200px; height: 200px" /></td>
+                <td>{{$val->position}}</td>
+                <td>{!!setActivationStatus($val->status)!!}</td>
                 <td>
                   <div class="btn-group">
                     <button type="button" class="btn btn-info">Action</button>
@@ -33,6 +37,11 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ route($page.'.edit', ['id' => $val->id]) }}">Edit</a></li>
+                        @if($val->status == 1)
+                        <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 0]) }}">Set Not Active</a></li>
+                        @else
+                        <li><a href="{{ route($page.'.change-status', ['id' => $val->id, 'status' => 1]) }}">Set Active</a></li>
+                        @endif
                         <li class="divider"></li>
                         <li>
                           <form class="deleteForm" method="post" action="{{route("$page.destroy", ['id' => $val->id])}}">

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Master;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Slider;
+use App\Models\Banner;
 
-class SliderController extends Controller
+class BannerController extends Controller
 {
     /**
      * @var string
@@ -25,9 +25,9 @@ class SliderController extends Controller
     private $model;
 
     public function __construct() {
-        $this->model = new Slider();
-        $this->module = 'master.slider';
-        $this->page = 'slider';
+        $this->model = new Banner();
+        $this->module = 'master.banner';
+        $this->page = 'banner';
         $this->middleware('auth');
     }
 
@@ -73,16 +73,16 @@ class SliderController extends Controller
         ]);
         $name = str_replace(' ', '-', $request->filename->getClientOriginalName());
         $request->filename->move(
-            base_path() . '/public/images/slider/', $name
+            base_path() . '/public/images/banner/', $name
         );
         $create['filename'] = $name;
         $create['created_by'] = Auth::id();
-        $create['caption'] = $request->input('caption');
+        $create['position'] = $request->input('position');
         $create['link'] = $request->input('link');
         $create['target'] = $request->input('target');
 
         $this->model->create($create);
-        logUser('Create Slider '.$create['filename']);
+        logUser('Create Banner '.$create['filename']);
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -126,8 +126,9 @@ class SliderController extends Controller
     {
         $data = $this->model->find($id);
         $update = [
-            'caption'          => $request->input('caption'),
-            'updated_by' => Auth::id(),
+            'banner'          => $request->input('banner'),
+            'position'          => $request->input('position'),
+            'updated_by'        => Auth::id(),
             'link'              => $request->input('link'),
             'target'              => $request->input('target'),
         ];
@@ -135,7 +136,7 @@ class SliderController extends Controller
         if($request->file('filename')) {
             $name = str_replace(' ', '-', $request->filename->getClientOriginalName());
             $request->filename->move(
-                base_path() . '/public/images/slider/', $name
+                base_path() . '/public/images/banner/', $name
             );
 
             $update['filename'] = $name;
@@ -144,7 +145,7 @@ class SliderController extends Controller
 
         $data->update($update);
 
-        logUser('Update Slider');
+        logUser('Update Banner');
 
         $message = setDisplayMessage('success', "Success to update new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -161,7 +162,7 @@ class SliderController extends Controller
     {
         $data = $this->model->find($id);
         $data->delete();
-        logUser('Delete Slider');
+        logUser('Delete Banner');
 
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -181,7 +182,7 @@ class SliderController extends Controller
 
         $data->save();
 
-        logUser($desc.' Slider '.$data->name);
+        logUser($desc.' Banner '.$data->name);
 
         $message = setDisplayMessage('success', "Success to $desc ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);

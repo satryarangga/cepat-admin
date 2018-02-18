@@ -13,6 +13,7 @@ public/images/product
 public/images/payment-method
 public/images/promo
 public/images/slider
+public/images/banner
 public/csv
 .env
 *.conf

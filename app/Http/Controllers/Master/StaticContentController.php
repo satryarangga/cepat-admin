@@ -39,7 +39,7 @@ class StaticContentController extends Controller
     public function index(Request $request)
     {
         $data = [
-            'result'    => $this->model->list(),
+            'result'    => $this->model->all(),
             'page'      => $this->page
         ];
 
@@ -75,7 +75,7 @@ class StaticContentController extends Controller
 
         $create = [
             'name' => $request->input('name'),
-            'url'  => str_replace(' ', '_', strtolower($request->input('name'))),
+            'url'  => str_replace(' ', '-', strtolower($request->input('name'))),
             'type'  => $request->input('type'),
             'content'  => ($request->input('type') == 1) ? $request->input('content_text') : $request->input('content_value'),
             'created_by'  => Auth::id(),
@@ -132,13 +132,13 @@ class StaticContentController extends Controller
 
         $update = [
             'name' => $request->input('name'),
-            'url'  => str_replace(' ', '_', strtolower($request->input('name'))),
+            'url'  => str_replace(' ', '-', strtolower($request->input('name'))),
             'type'  => $request->input('type'),
             'content'  => ($request->input('type') == 1) ? $request->input('content_text') : $request->input('content_value'),
             'created_by'  => Auth::id(),
         ];
 
-        $this->model->update($id, $update);
+        $this->model->find($id)->update($update);
 
         logUser('update Static Content '.$update['name']);
 

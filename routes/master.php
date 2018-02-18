@@ -25,3 +25,6 @@ Route::resource('master/payment-method', 'Master\PaymentMethodController');
 
 Route::get('master/slider/change-status/{id}/{status}', 'Master\SliderController@changeStatus')->name('slider.change-status');
 Route::resource('master/slider', 'Master\SliderController');
+
+Route::get('master/banner/change-status/{id}/{status}', 'Master\BannerController@changeStatus')->name('banner.change-status');
+Route::resource('master/banner', 'Master\BannerController');

@@ -66,6 +66,9 @@
               <li @if($page == 'slider') class="active" @endif>
                 <a href="{{route('slider.index')}}"><i class="fa fa-picture-o"></i> Slider Management</a>
               </li>
+              <li @if($page == 'banner') class="active" @endif>
+                <a href="{{route('banner.index')}}"><i class="fa fa-picture-o"></i> Banner Management</a>
+              </li>
               <li @if($page == 'voucher') class="active" @endif>
                 <a href="{{route('voucher.index')}}"><i class="fa fa-usd"></i> Voucher Management</a>
               </li>
