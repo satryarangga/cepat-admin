@@ -154,7 +154,7 @@ class StaticContentController extends Controller
      */
     public function destroy($id)
     {
-        $this->model->delete($id);
+        $this->model->find($id)->delete();
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }

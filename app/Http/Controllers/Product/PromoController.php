@@ -307,8 +307,9 @@ class PromoController extends Controller
     }
 
     public function deleteProduct($promoDetailId) {
-        PromoDetail::find($promoDetailId)->delete();
+        $promo = PromoDetail::find($promoDetailId);
+        $promo->delete();
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
-        return redirect(route($this->page.'.manage-product', ['id' => $promoDetailId]))->with('displayMessage', $message);
+        return redirect(route($this->page.'.manage-product', ['id' => $promo->promo_id]))->with('displayMessage', $message);
     }
 }
