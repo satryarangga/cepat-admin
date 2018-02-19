@@ -118,7 +118,7 @@ class ProductVariant extends Model
             $where[] = ['products.name', 'like', "%$keyword%"];
         }
 
-        if($user->partner_id != 1) {
+        if($user->partner_id != 1 && $user->partner_id) {
             $where[] = ['partner_id', '=', $user->partner_id];   
         }
 
