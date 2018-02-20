@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Models\InventoryLog;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MassUploadController extends Controller
@@ -69,9 +70,10 @@ class MassUploadController extends Controller
         $price = $request->input('price');
         $weight = $request->input('weight');
         $description = $request->input('description');
+        $quantity = $request->input('quantity');
 
         foreach ($name as $key => $value) {
-            Product::create([
+            $created = Product::create([
                 'name'              => $value,
                 'original_price'    => $price[$key],
                 'discount_price'    => $price[$key],
@@ -81,8 +83,22 @@ class MassUploadController extends Controller
                 'status'            => 0,
                 'has_variant'       => 0,
                 'partner_id'        => ($user->partner_id) ? $user->partner_id : 1
-            ]);                 
+            ]);
+
+            $createVariant = $this->model->insertVariantProduct($created->id, $quantity[$key]);
+
+            InventoryLog::create([
+                'product_id'    => $created->id,
+                'purchase_code' => '',
+                'user_id'       => Auth::id(),
+                'SKU'           => $createVariant->SKU,
+                'qty'           => $quantity[$key],
+                'type'          => 1,
+                'description'   => "Created",
+                'source'        => 2 // ADMIN
+            ]);
         }
+
         $message = setDisplayMessage('success', "Success to mass upload product");
         return redirect(route('product-manage.index'))->with('displayMessage', $message);
     }

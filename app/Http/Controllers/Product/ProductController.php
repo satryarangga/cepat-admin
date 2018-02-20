@@ -11,6 +11,7 @@ use App\Models\CategoryMap;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
 use App\Models\ProductSeo;
+use App\Models\InventoryLog;
 use App\Models\ProductCountdown;
 use App\Models\ProductOption;
 use App\Models\ProductOptionValue;
@@ -132,7 +133,7 @@ class ProductController extends Controller
         $options = ($request->input('options')) ? $request->input('options') : [];
         $mapProductOptions = ProductOptionMapProduct::map($created->id, $options);
 
-        if($request->input('has_variant') == 0) {
+        if($request->input('has_variant') == 0) { // NO VARIANT
             if ($request->file('image')) {
                 $x = 0;
                 foreach ($request->file('image') as $key => $value) {
@@ -154,6 +155,16 @@ class ProductController extends Controller
                 }
             }
             $createVariant = $this->model->insertVariantProduct($created->id);
+            InventoryLog::create([
+                'product_id'    => $created->id,
+                'purchase_code' => '',
+                'user_id'       => Auth::id(),
+                'SKU'           => $createVariant->SKU,
+                'qty'           => 0,
+                'type'          => 1,
+                'description'   => "Created",
+                'source'        => 2 // ADMIN
+            ]);
         }
         logUser('Create Product '.$create['name']);
 

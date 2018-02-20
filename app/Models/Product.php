@@ -57,18 +57,20 @@ class Product extends Model
         return $data;
     }
 
-    public function insertVariantProduct($productId) {
+    public function insertVariantProduct($productId, $qty = 0) {
         $variant = new ProductVariant();
         $createVariant = ProductVariant::create([
             'product_id'    => $productId,
             'color_id'      => 0,
             'size_id'       => 0,
+            'qty_order'     => $qty,
+            'qty_warehouse'     => $qty,
             'SKU'           => $variant->generateSKU($productId, $color = 0, $size = 0),
             'default'       => 1,
             'max_order_qty' => 100, // TEMPORARY, WILL CHANGE IF NEEDED BY
             'created_by'    => Auth::id()
         ]);
 
-
+        return $createVariant;
     }
 }

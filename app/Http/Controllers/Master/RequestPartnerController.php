@@ -122,7 +122,7 @@ class RequestPartnerController extends Controller
             'password'  => bcrypt($randomPass),
             'first_name'    => $data->first_name,
             'last_name'    => $data->last_name,
-            'username'      => RequestPartner::generateUsername($data->store_name),
+            'username'      => $data->email,
             'user_type'  => 2,
             'partner_id'    => $partner->id,
             'status'        => 1,

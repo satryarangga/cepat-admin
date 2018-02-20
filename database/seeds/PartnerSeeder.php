@@ -13,7 +13,7 @@ class PartnerSeeder extends Seeder
     {
         DB::table('partners')->truncate();
         DB::table('partners')->insert([
-            'id'        => 0,
+            'id'        => 1,
          	'store_name' => 'Kreatif City',
          	'owner_name' => 'Ryan',
          	'email' => 'ryan@kreatifcity.com',
