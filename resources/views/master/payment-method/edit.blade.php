@@ -55,6 +55,18 @@
 			         </div>
 
 			         <div class="form-group">
+			            <label for="use_paycode" class="col-sm-2 control-label">Use Paycode</label>
+			            <div class="col-sm-10">
+				            <label class="radio-inline">
+				            	<input @if($row->use_paycode == 0) checked="checked" @endif type="radio" value="0" name="use_paycode">No
+				            </label>
+				            <label class="radio-inline">
+				            	<input @if($row->use_paycode == 1) checked="checked" @endif type="radio" value="1" name="use_paycode">Yes
+				            </label>
+			               </div>
+			         </div>
+
+			         <div class="form-group">
 	                  <label for="name" class="col-sm-2 control-label">Minimum Payment</label>
 	                  <div class="col-sm-10">
 	                    <input type="number" class="form-control" name="minimum_payment" value="{{$row->minimum_payment}}" id="minimum_payment" placeholder="Leave blank if no minimum payment">

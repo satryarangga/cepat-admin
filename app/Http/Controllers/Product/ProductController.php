@@ -403,7 +403,7 @@ class ProductController extends Controller
 
         foreach ($data as $key => $value) {
             $product = Product::find($value->product_id);
-            $product->status = 0;
+            $product->status = 2;
             $product->save();
         }
 

@@ -26,6 +26,12 @@
     			<td colspan="3" style="text-align: right;">Biaya Pengiriman</td>
     			<td>{{moneyFormat($orderHead->shipping_cost)}}</td>
     		</tr>
+            @if($orderHead->paycode != 0)
+            <tr>
+                <td colspan="3" style="text-align: right;">Kode Unik</td>
+                <td>{{moneyFormat($orderHead->paycode)}}</td>
+            </tr>
+            @endif
     		@if($orderHead->discount != 0)
     		<tr>
     			<td colspan="3" style="text-align: right;">Potongan Voucher</td>

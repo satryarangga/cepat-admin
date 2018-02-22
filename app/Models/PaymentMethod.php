@@ -17,7 +17,7 @@ class PaymentMethod extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'logo', 'desc', 'minimum_payment', 'confirm_type', 'status', 'created_by', 'updated_by'
+        'name', 'logo', 'desc', 'minimum_payment', 'confirm_type', 'use_paycode', 'status', 'created_by', 'updated_by'
     ];
 
     /**

@@ -79,6 +79,7 @@ class PaymentMethodController extends Controller
             'name'          => $request->input('name'),
             'desc'          => $request->input('desc'),
             'minimum_payment' => $request->input('minimum_payment'),
+            'use_paycode' => $request->input('use_paycode'),
             'confirm_type' => $request->input('confirm_type'),
             'status' => 1,
             'created_by' => Auth::id()
@@ -148,6 +149,7 @@ class PaymentMethodController extends Controller
             'name'          => $request->input('name'),
             'desc'          => $request->input('desc'),
             'minimum_payment' => $request->input('minimum_payment'),
+            'use_paycode' => $request->input('use_paycode'),
             'confirm_type' => $request->input('confirm_type'),
             'updated_by' => Auth::id()
         ];
