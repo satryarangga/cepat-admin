@@ -189,7 +189,7 @@ class OrderHead extends Model
                             ->leftJoin('products', 'products.id', '=', 'order_item.product_id')
                             ->where('order_id', $orderId)->get();
 
-        $payment = OrderPayment::select(DB::raw('*, payment_method.name as payment_method_name, 
+        $payment = OrderPayment::select(DB::raw('order_payment.status, payment_method.name as payment_method_name, 
                                                 payment_method.desc as payment_method_desc'))
                                 ->leftJoin('payment_method', 'order_payment.payment_method_id', '=', 'payment_method.id')
                                 ->where('order_id', $orderId)

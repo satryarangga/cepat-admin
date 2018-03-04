@@ -63,7 +63,7 @@
 				            	<input @if(old('use_paycode') == 1) checked="checked" @endif type="radio" value="1" name="use_paycode">Yes
 				            </label>
 			               </div>
-			         </div
+			         </div>
 
 			         <div class="form-group">
 	                  <label for="name" class="col-sm-2 control-label">Minimum Payment</label>

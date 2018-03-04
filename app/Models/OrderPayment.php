@@ -17,7 +17,8 @@ class OrderPayment extends Model
      * @var array
      */
     protected $fillable = [
-        'order_id', 'payment_method_id', 'confirmed_by', 'confirmed_bank', 'confirmed_amount', 'total_amount'
+        'order_id', 'payment_method_id', 'confirmed_by', 'confirmed_bank', 'confirmed_amount', 'total_amount', 'status',
+        'xendit_cc_charge_response'
     ];
 
     /**

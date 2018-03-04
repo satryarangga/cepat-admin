@@ -2,6 +2,7 @@
     Hi {{$customer->first_name}} {{$customer->last_name}},
     <p>Berikut adalah rincian pemesanan anda</p>
     <p>Kode Pemesanan :<b>{{$orderHead->purchase_code}}</b></p>
+    <p>Status Pemesanan :<b>{{($orderPayment->status == 0) ? 'Menunggu Pembayaran' : 'Pembayaran Telah Diterima'}}</b></p>
     <table>
     	<thead>
     		<tr>
@@ -52,6 +53,8 @@
     	{{$orderPayment->payment_method_name}}<br />
     	{{$orderPayment->payment_method_desc}}
     </p>
+    @if($orderPayment->status == 0)
     <p>Pemesanan yang belum dibayar setelah dua hari akan otomatis dibatalkan</p>
+    @endif
     <p>Terima Kasih</p>
 </div>
