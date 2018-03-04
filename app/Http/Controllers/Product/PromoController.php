@@ -84,7 +84,7 @@ class PromoController extends Controller
         $time = explode(' ', $start_time);
         $hour = explode(':', $time[0]);
         if($time[1] == 'PM') {
-            $hour[0] = (int) $hour[0] + 12;
+            $hour[0] = ($hour[0] == '12') ? 00 : (int) $hour[0] + 12;
         }
         $time = $hour[0].':'.$hour[1].':00';
         $start = $start_date.' '.$time;
@@ -178,7 +178,7 @@ class PromoController extends Controller
         $time = explode(' ', $start_time);
         $hour = explode(':', $time[0]);
         if($time[1] == 'PM') {
-            $hour[0] = (int) $hour[0] + 12;
+            $hour[0] = ($hour[0] == '12') ? 00 : (int) $hour[0] + 12;
         }
         $time = $hour[0].':'.$hour[1].':00';
         $start = $start_date.' '.$time;
