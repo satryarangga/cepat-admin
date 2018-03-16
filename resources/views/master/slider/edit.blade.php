@@ -27,6 +27,18 @@
 	                  	<input type="file" name="filename">
 	                  </div>
 	                </div>
+
+	                <div class="form-group">
+	                  <label for="logo" class="col-sm-2 control-label">Position</label>
+	                  <div class="col-sm-10">
+	                  	<select class="form-control" name="type">
+	                  		<option @if($row->type == '1') selected @endif value="1">Home - Top</option>
+	                  		<option @if($row->type == '2') selected @endif value="2">Home - Middle</option>
+	                  		<option @if($row->type == '3') selected @endif value="3">Home - Bottom</option>
+	                  	</select>
+	                  </div>
+	                </div>
+
 	                <div class="form-group">
 	                  <label for="caption" class="col-sm-2 control-label">Caption</label>
 	                  <div class="col-sm-10">

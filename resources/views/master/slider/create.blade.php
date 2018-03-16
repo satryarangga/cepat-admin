@@ -28,6 +28,16 @@
 	                  </div>
 	                </div>
 	                <div class="form-group">
+	                  <label for="logo" class="col-sm-2 control-label">Position</label>
+	                  <div class="col-sm-10">
+	                  	<select class="form-control" name="type">
+	                  		<option @if(old('type') == '1') selected @endif value="1">Home - Top</option>
+	                  		<option @if(old('type') == '2') selected @endif value="2">Home - Middle</option>
+	                  		<option @if(old('type') == '3') selected @endif value="3">Home - Bottom</option>
+	                  	</select>
+	                  </div>
+	                </div>
+	                <div class="form-group">
 	                  <label for="caption" class="col-sm-2 control-label">Caption</label>
 	                  <div class="col-sm-10">
 	                    <input type="text" class="form-control" name="caption" value="{{old('caption')}}" id="caption" placeholder="Caption">

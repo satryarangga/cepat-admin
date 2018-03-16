@@ -76,10 +76,12 @@ class SliderController extends Controller
             base_path() . '/public/images/slider/', $name
         );
         $create['filename'] = $name;
+        $create['type'] = $request->input('type');
         $create['created_by'] = Auth::id();
         $create['caption'] = $request->input('caption');
         $create['link'] = $request->input('link');
         $create['target'] = $request->input('target');
+        $create['status'] = 1;
 
         $this->model->create($create);
         logUser('Create Slider '.$create['filename']);
@@ -126,10 +128,11 @@ class SliderController extends Controller
     {
         $data = $this->model->find($id);
         $update = [
-            'caption'          => $request->input('caption'),
-            'updated_by' => Auth::id(),
+            'caption'           => $request->input('caption'),
+            'updated_by'        => Auth::id(),
             'link'              => $request->input('link'),
-            'target'              => $request->input('target'),
+            'type'              => $request->input('type'),
+            'target'            => $request->input('target')
         ];
 
         if($request->file('filename')) {
