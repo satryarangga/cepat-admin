@@ -56,6 +56,56 @@
         }
   }
 
+  function formatNumber(elem) {
+      s = elem.val();
+      var parts = s.split(/,/)
+        , spaced = parts[0]
+             .split('').reverse().join('') // Reverse the string.
+             .match(/\d{1,3}/g).join(' ') // Join groups of 3 digits with spaces.
+             .split('').reverse().join(''); // Reverse it back.
+      return elem.val(spaced + (parts[1] ? ','+parts[1] : '')); // Add the fractional part.
+    }
+
+    function formatAmountNoDecimals( number ) {
+        var rgx = /(\d+)(\d{3})/;
+        while( rgx.test( number ) ) {
+            number = number.replace( rgx, '$1' + '.' + '$2' );
+        }
+        return number;
+    }
+
+function formatAmount( elem ) {
+    number = elem.val();
+
+    // remove all the characters except the numeric values
+    number = number.replace( /[^0-9]/g, '' );
+
+    // set the default value
+    if( number.length == 0 ) number = "0.00";
+    else if( number.length == 1 ) number = "0.0" + number;
+    else if( number.length == 2 ) number = "0." + number;
+    else number = number.substring( 0, number.length - 2 ) + '.' + number.substring( number.length - 2, number.length );
+
+    // set the precision
+    number = new Number( number );
+    number = number.toFixed( 2 );    // only works with the "."
+
+    // change the splitter to ","
+    number = number.replace( /\./g, ',' );
+
+    // format the amount
+    x = number.split( ',' );
+    x1 = x[0];
+    x2 = x.length > 1 ? ',' + x[1] : '';
+
+    var rgx = /(\d+)(\d{3})/;
+    while( rgx.test( x1 ) ) {
+        x1 = x1.replace( rgx, '$1' + '.' + '$2' );
+    }
+
+    elem.val( x1 + x2);
+}
+
   function removeParent(optValue) {
     $('#'+optValue).remove();
   }

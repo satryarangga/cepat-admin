@@ -45,7 +45,13 @@
                 <td>{{$val->name}}</td>
                 <td>{{moneyFormat($val->original_price)}}</td>
                 <td>{{$val->weight}} Kg</td>
-                <td>{!!setActivationStatus($val->status)!!}</td>
+                <td>
+                  @if($val->status == 2)
+                  <span class="btn btn-danger">Expired</span>
+                  @else
+                  {!!setActivationStatus($val->status)!!}
+                  @endif
+                </td>
                 <td id="countdown-{{$val->id}}">
                   @if($val->duration)
                   Starts on {{date('j F Y H:i:s', strtotime($val->start_on))}}
