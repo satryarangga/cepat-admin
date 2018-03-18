@@ -13,10 +13,11 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered table-hover table-striped">
+              <table id="example1" class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Value</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -24,6 +25,7 @@
                 @foreach($result as $key => $val)
                 <tr>
                 <td>{{$val->name}}</td>
+                <td>{{($val->type == 2) ? $val->content : substr(strip_tags($val->content), 0, 100).'...'}}</td>
                 <td>
                   <div class="btn-group">
                     <button type="button" class="btn btn-info">Action</button>

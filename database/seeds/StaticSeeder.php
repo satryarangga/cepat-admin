@@ -40,5 +40,47 @@ class StaticSeeder extends Seeder
         	'content'	=> "This is terms condition page",
         	'created_by'	=> 0,
         ]);
+        DB::table('static_content')->insert([
+            'name'  => "Call Center",
+            'url'   => "call-center",
+            'type'  => 2,
+            'content'   => "021-570182929",
+            'created_by'    => 0,
+        ]);
+        DB::table('static_content')->insert([
+            'name'  => "Company Address",
+            'url'   => "company-address",
+            'type'  => 2,
+            'content'   => "Dipo Business Center",
+            'created_by'    => 0,
+        ]);
+        DB::table('static_content')->insert([
+            'name'  => "Facebook Link",
+            'url'   => "facebook-link",
+            'type'  => 2,
+            'content'   => "http://facebook.com",
+            'created_by'    => 0,
+        ]);
+        DB::table('static_content')->insert([
+            'name'  => "Instagram Link",
+            'url'   => "instagram-link",
+            'type'  => 2,
+            'content'   => "http://instagram.com",
+            'created_by'    => 0,
+        ]);
+        DB::table('static_content')->insert([
+            'name'  => "Twitter Link",
+            'url'   => "twitter-link",
+            'type'  => 2,
+            'content'   => "http://twitter.com",
+            'created_by'    => 0,
+        ]);
+        DB::table('static_content')->insert([
+            'name'  => "Youtube Link",
+            'url'   => "youtube-link",
+            'type'  => 2,
+            'content'   => "http://youtube.com",
+            'created_by'    => 0,
+        ]);
     }
 }
