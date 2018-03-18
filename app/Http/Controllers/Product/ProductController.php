@@ -111,7 +111,9 @@ class ProductController extends Controller
             'description' => $request->input('description'),
             'created_by' => $user->id,
             'has_variant'   => $request->input('has_variant'),
-            'partner_id'    => ($user->partner_id) ? $user->partner_id : 1
+            'partner_id'    => ($user->partner_id) ? $user->partner_id : 1,
+            'guarantee_month'   => $request->input('guarantee_month'),
+            'guarantee_description'   => $request->input('guarantee_description')
         ];
 
         $created = $this->model->create($create);
@@ -237,6 +239,8 @@ class ProductController extends Controller
             'weight' => (float) str_replace(',', '.', $request->input('weight')),
             'description' => $request->input('description'),
             'has_variant'   => $request->input('has_variant'),
+            'guarantee_month'   => $request->input('guarantee_month'),
+            'guarantee_description'   => $request->input('guarantee_description'),
             'updated_by' => Auth::id(),
         ];
 

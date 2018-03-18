@@ -60,6 +60,20 @@
 	                </div>
 
 	                <div class="form-group">
+	                  <label for="guarantee_month" class="col-sm-3 control-label">Guarantee Month (Optional)</label>
+	                  <div class="col-sm-8">
+	                    <input type="text" class="form-control" name="guarantee_month" value="{{old('guarantee_month')}}" id="guarantee_month" placeholder="How many month this product have guaranteed">
+	                  </div>
+	                </div>
+
+	                <div class="form-group">
+	                  <label for="guarantee_description" class="col-sm-3 control-label">Guarantee Description</label>
+	                  <div class="col-sm-8">
+	                  	<textarea name="guarantee_description" class="form-control">{{old('guarantee_description')}}</textarea>
+	                  </div>
+	                </div>
+
+	                <div class="form-group">
 	                  <label for="description" class="col-sm-3 control-label">Description</label>
 	                  <div class="col-sm-8">
 	                  	<textarea name="description" class="form-control textarea">{{old('description')}}</textarea>

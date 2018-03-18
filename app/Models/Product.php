@@ -19,7 +19,7 @@ class Product extends Model
      */
     protected $fillable = [
         'name', 'original_price', 'discount_price', 'modal_price', 'weight', 'description', 'created_by', 'updated_by', 'status',
-        'partner_id', 'has_variant'
+        'partner_id', 'has_variant', 'guarantee_month', 'guarantee_description'
     ];
 
     /**
