@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\InventoryLog;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -48,6 +49,7 @@ class MassUploadController extends Controller
     }
 
     public function store(Request $request) {
+        $isVariant = $request->input('variant');
         if ($request->file('csv')) {
             $name = str_replace(' ', '-', $request->csv->getClientOriginalName());
             $request->csv->move(
@@ -59,7 +61,8 @@ class MassUploadController extends Controller
         }
         $data = [
             'page'  => $this->page,
-            'product'   => $upload
+            'product'   => $upload,
+            'isVariant' => $isVariant
         ];
         return view($this->module . ".mass-upload", $data);
     }
@@ -71,32 +74,78 @@ class MassUploadController extends Controller
         $weight = $request->input('weight');
         $description = $request->input('description');
         $quantity = $request->input('quantity');
+        $color = $request->input('color');
+        $size = $request->input('size');
+        $isVariant = $request->input('is_variant');
 
-        foreach ($name as $key => $value) {
-            $created = Product::create([
-                'name'              => $value,
-                'original_price'    => $price[$key],
-                'discount_price'    => $price[$key],
-                'weight'            => $weight[$key],
-                'description'       => $description[$key],
-                'created_by'        => Auth::id(),
-                'status'            => 0,
-                'has_variant'       => 0,
-                'partner_id'        => ($user->partner_id) ? $user->partner_id : 1
-            ]);
+        if(!$isVariant) {
+            foreach ($name as $key => $value) {
+                $created = Product::create([
+                    'name'              => $value,
+                    'original_price'    => $price[$key],
+                    'discount_price'    => $price[$key],
+                    'weight'            => $weight[$key],
+                    'description'       => $description[$key],
+                    'created_by'        => Auth::id(),
+                    'status'            => 0,
+                    'has_variant'       => 0,
+                    'partner_id'        => ($user->partner_id) ? $user->partner_id : 1
+                ]);
 
-            $createVariant = $this->model->insertVariantProduct($created->id, $quantity[$key]);
+                $createVariant = $this->model->insertVariantProduct($created->id, $quantity[$key]);
 
-            InventoryLog::create([
-                'product_id'    => $created->id,
-                'purchase_code' => '',
-                'user_id'       => Auth::id(),
-                'SKU'           => $createVariant->SKU,
-                'qty'           => $quantity[$key],
-                'type'          => 1,
-                'description'   => "Created",
-                'source'        => 2 // ADMIN
-            ]);
+                InventoryLog::create([
+                    'product_id'    => $created->id,
+                    'purchase_code' => '',
+                    'user_id'       => Auth::id(),
+                    'SKU'           => $createVariant->SKU,
+                    'qty'           => $quantity[$key],
+                    'type'          => 1,
+                    'description'   => "Created",
+                    'source'        => 2 // ADMIN
+                ]);
+            }
+        } else {
+            $variant = [];
+            foreach ($name as $key => $value) {
+                $variant[$value]['price'] = $price[$key];
+                $variant[$value]['weight'] = $weight[$key];
+                $variant[$value]['description'] = $description[$key];
+                $variant[$value]['variant'][] = [
+                    'color'         => $color[$key],
+                    'size'         => $size[$key],
+                    'quantity'     => $quantity[$key],
+                ];
+            }
+
+            foreach ($variant as $key => $value) {
+                $created = Product::create([
+                    'name'              => $key,
+                    'original_price'    => $value['price'],
+                    'discount_price'    => $value['price'],
+                    'weight'            => $value['weight'],
+                    'description'       => $value['description'],
+                    'created_by'        => Auth::id(),
+                    'status'            => 0,
+                    'has_variant'       => 1,
+                    'partner_id'        => ($user->partner_id) ? $user->partner_id : 1
+                ]);
+
+                foreach ($value['variant'] as $keyVariant => $valueVariant) {
+                    $createVariant = ProductVariant::insertVariantProductFromCSV($created->id, $valueVariant['quantity'], $valueVariant['color'], $valueVariant['size']);
+
+                    InventoryLog::create([
+                        'product_id'    => $created->id,
+                        'purchase_code' => '',
+                        'user_id'       => Auth::id(),
+                        'SKU'           => $createVariant->SKU,
+                        'qty'           => $valueVariant['quantity'],
+                        'type'          => 1,
+                        'description'   => "Created",
+                        'source'        => 2 // ADMIN
+                    ]);
+                }
+            }
         }
 
         $message = setDisplayMessage('success', "Success to mass upload product");

@@ -21,14 +21,20 @@
 	            	{{csrf_field()}}
 	              <div class="box-body">
 	                <div class="form-group">
+		              <label for="csv" class="col-sm-3 control-label">Product with variant</label>
+		              <div class="col-sm-8">
+		              	<label class="radio-inline"><input type="radio" @if(isset($isVariant) && $isVariant == '1')) checked @endif value="1" name="variant">Yes</label>
+		              	<label class="radio-inline"><input type="radio" @if(isset($isVariant) && $isVariant == '0')) checked @endif value="0" name="variant">No</label>
+		              </div>
+		            </div>
+		            <div class="form-group">
 		              <label for="csv" class="col-sm-3 control-label">CSV File</label>
 		              <div class="col-sm-8">
 		                <input type="file" name="csv">
 		              </div>
 		            </div>
-
 	              </div>
-	              <!-- /.box-body -->
+	              <!-- /.box-body --> 
 	              <div class="box-footer">
 	                <button type="submit" class="btn btn-info pull-right">Submit</button>
 	              </div>
@@ -38,33 +44,12 @@
 	            <h3>Review Product Inserted</h3>
 	            <form method="post" action="{{route("$page.confirm")}}">
 	            	{{csrf_field()}}
-	            	<table class="table table-bordered table-hover table-striped">
-	            		<thead>
-	            			<tr>
-	            				<th>Product Name</th>
-	            				<th>Price</th>
-	            				<th>Weight</th>
-	            				<th>Description</th>
-	            				<th>Quantity</th>
-	            			</tr>
-	            		</thead>
-	            		<tbody>
-	            			@foreach($product as $key => $val)
-	            			<tr>
-	            				<td>{{$val->productname}}</td>
-	            				<td>{{moneyFormat($val->price, false)}}</td>
-	            				<td>{{$val->weight}} Kg</td>
-	            				<td>{{$val->description}}</td>
-	            				<td>{{$val->quantity}}</td>
-	            			</tr>
-	            			<input type="hidden" name="productname[]" value="{{$val->productname}}">
-	            			<input type="hidden" name="price[]" value="{{$val->price}}">
-	            			<input type="hidden" name="weight[]" value="{{$val->weight}}">
-	            			<input type="hidden" name="description[]" value="{{$val->description}}">
-	            			<input type="hidden" name="quantity[]" value="{{$val->quantity}}">
-	            			@endforeach
-	            		</tbody>
-	            	</table>
+	            	@if($isVariant == '0')
+	            	@include('product.product-manage.mass-upload-no-variant')
+	            	@else
+	            	@include('product.product-manage.mass-upload-with-variant')
+	            	@endif
+	            	<input type="hidden" name="is_variant" value="{{$isVariant}}">
 	            	<button onclick="return confirm('Are you sure?')" class="btn btn-primary" type="submit">Upload Mass Product</button>
 	            </form>
 	            @endif

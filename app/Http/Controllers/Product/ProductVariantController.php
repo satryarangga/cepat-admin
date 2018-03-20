@@ -236,8 +236,8 @@ class ProductVariantController extends Controller
                 ]);
             }
         }
-
-        $message = setDisplayMessage('success', "Success to add image for variant color ".$dataColor->name);
+        $colorName = isset($dataColor->name) ? $dataColor->name : $colorId;
+        $message = setDisplayMessage('success', "Success to add image for variant color ".$colorName);
         return redirect(route($this->page.'.index').'?product_id='.$productId)->with('displayMessage', $message);
     }
 

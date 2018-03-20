@@ -162,4 +162,21 @@ class ProductVariant extends Model
             ]);
         }
     }
+
+    public static function insertVariantProductFromCSV($productId, $qty = 0, $colorName, $sizeName) {
+        $variant = new ProductVariant();
+        $createVariant = ProductVariant::create([
+            'product_id'    => $productId,
+            'color_id'      => $colorName,
+            'size_id'       => $sizeName,
+            'qty_order'     => $qty,
+            'qty_warehouse'     => $qty,
+            'SKU'           => $variant->generateSKU($productId, $color = 0, $size = 0),
+            'default'       => 0,
+            'max_order_qty' => 100, // TEMPORARY, WILL CHANGE IF NEEDED BY
+            'created_by'    => Auth::id()
+        ]);
+
+        return $createVariant;
+    }
 }

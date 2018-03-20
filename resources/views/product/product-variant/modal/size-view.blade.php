@@ -24,7 +24,13 @@
               @foreach($resultPerSize[$val->color_id] as $keySize => $valSize)
               @php $sizeName = getFieldOfTable('size', $valSize->size_id, 'name')  @endphp
               <tr>
-                <td>{{$sizeName}}</td>
+                <td>
+                  @if(!$sizeName)
+                  {{$valSize->size_id}}
+                  @else
+                  {{$sizeName}}
+                  @endif
+                </td>
                 <td>{{$valSize->SKU}}</td>
                 <td>{{$valSize->qty_order}}</td>
                 <td>{{$valSize->qty_warehouse}}</td>

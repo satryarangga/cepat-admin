@@ -25,7 +25,13 @@
                 <tbody>
                 @foreach($resultPerColor['data'] as $key => $val)
                 <tr id="color-{{$val->color_id}}">
-                  <td>{{getFieldOfTable('colors', $val->color_id, 'name')}}</td>
+                  <td>
+                    @if(!is_numeric($val->color_id))
+                    {{$val->color_id}}
+                    @else
+                    {{getFieldOfTable('colors', $val->color_id, 'name')}}
+                    @endif
+                  </td>
                   <td><img style="height: 150px" src="{{asset('images/product').'/'.$val->product_id.'/'.$val->color_id.'/'.$val->image}}"></td>
                   <td class="total-color">{{count($resultPerColor['total'][$val->color_id])}}</td>
                   <td>
