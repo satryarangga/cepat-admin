@@ -361,7 +361,7 @@ class ProductController extends Controller
         if($time[1] == 'PM') {
             $hour[0] = (int) $hour[0] + 12;
         }
-        $validHour = ($hour[0] == '24' && $time[1] == 'PM') ? 12 : $hour[0];
+        $validHour = ($hour[0] == '12' && $time[1] == 'AM') ? 00 : $hour[0];
         $time = $validHour.':'.$hour[1].':00';
         $start = $start_date.' '.$time;
 
