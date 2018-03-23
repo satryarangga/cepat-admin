@@ -14,7 +14,7 @@
       		<div class="box-body">
             <div class="form-group">
               <label class="label-control">Start Date</label>
-              <input type="text" name="start_date" class="form-control datepicker">
+              <input type="text" required name="start_date" class="form-control datepicker">
             </div>
             <div class="bootstrap-timepicker">
               <div class="form-group">
@@ -42,7 +42,7 @@
 	      		</div>
             <div class="form-group">
               <label class="label-control">Time Value</label>
-              <input type="number" name="value" class="form-control">
+              <input type="number" required name="value" class="form-control">
             </div>
 	      		<div class="form-group">
               <input type="hidden" name="product_id" value="{{$val->id}}">
