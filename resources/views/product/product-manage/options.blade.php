@@ -2,7 +2,7 @@
   <label for="option" class="col-sm-3 control-label">Product Option</label>
   <div class="col-sm-8">
   	<select class="form-control" id="option">
-  		<option>Select Option</option>
+  		<option value="0">Select Option</option>
   		@foreach($options as $key => $val)
   		<option value="{{$val->id}}">{{$val->name}}</option>
   		@endforeach
@@ -14,7 +14,7 @@
   <label for="option" class="col-sm-3 control-label">Option Value</label>
   <div class="col-sm-6">
   	<select class="form-control" id="option-value">
-  		<option>Select Value</option>
+  		<option value="0">Select Value</option>
   	</select>
   </div>
   <a id="add-option" style="cursor: pointer;" class="col-sm-2 btn btn-primary">Add Option Value</a>

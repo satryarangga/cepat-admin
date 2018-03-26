@@ -112,7 +112,7 @@ class ProductController extends Controller
             'created_by' => $user->id,
             'has_variant'   => $request->input('has_variant'),
             'partner_id'    => ($user->partner_id) ? $user->partner_id : 1,
-            'guarantee_month'   => $request->input('guarantee_month'),
+            'guarantee_month'   => ($request->input('guarantee_month')) ? $request->input('guarantee_month') : 0,
             'guarantee_description'   => $request->input('guarantee_description')
         ];
 
@@ -227,6 +227,7 @@ class ProductController extends Controller
         ]);
 
         $data = $this->model->find($id);
+        $oldHasVariant = $data->has_variant;
 
         $discount_price = $request->input('original_price');
         if($request->input('discount_price') && $request->input('discount_price') != '0') {
@@ -270,6 +271,35 @@ class ProductController extends Controller
                 'product_id'    => $id,
                 'meta_description' => $request->input('meta_description'),
                 'meta_keywords' => $request->input('meta_keywords')
+            ]);
+        }
+
+        // CHANGE FROM HAS VARIANT TO NO VARIANT
+        if($data->has_variant != $oldHasVariant && $data->has_variant == 0) {
+            // DELETE ALL VARIANT
+            ProductVariant::where('product_id', $id)->delete();
+            ProductImage::where('product_id', $id)->delete();
+
+            $createVariant = $this->model->insertVariantProduct($id);
+            InventoryLog::create([
+                'product_id'    => $id,
+                'purchase_code' => '',
+                'user_id'       => Auth::id(),
+                'SKU'           => $createVariant->SKU,
+                'qty'           => 0,
+                'type'          => 1,
+                'description'   => "Created",
+                'source'        => 2 // ADMIN
+            ]);
+        }
+
+        // CHANGE FROM NO VARIANT TO HAS VARIANT
+        if($data->has_variant != $oldHasVariant && $data->has_variant == 1) {
+            ProductVariant::where('product_id', $id)->delete();
+            ProductImage::where('product_id', $id)->delete();
+
+            $this->model->find($id)->update([
+                'status'    => 0
             ]);
         }
 

@@ -40,8 +40,12 @@
         let optionValue = $('#option-value').val();
         let optionValueLabel = $('#option-value option:selected').html();
 
-        let optHtml = '<tr id="'+optionValue+'"><td>'+optionLabel+'</td><td>'+optionValueLabel+'</td><td><a onclick="removeParent('+optionValue+')" class="btn btn-danger">Remove</a><input type="hidden" name="options[]" value="'+option+';'+optionValue+'" /></td></tr>';
-        $('#data-option').append(optHtml);
+        if(optionValue > 0) {
+            let optHtml = '<tr id="'+optionValue+'"><td>'+optionLabel+'</td><td>'+optionValueLabel+'</td><td><a onclick="removeParent('+optionValue+')" class="btn btn-danger">Remove</a><input type="hidden" name="options[]" value="'+option+';'+optionValue+'" /></td></tr>';
+            $('#data-option').append(optHtml);
+        } else {
+            alert('Please select option value');
+        }
     });
     
   });
