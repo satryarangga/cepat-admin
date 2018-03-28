@@ -351,6 +351,8 @@ class ProductController extends Controller
         ProductImage::where('product_id', $id)->delete();
         CategoryMap::where('product_id', $id)->delete();
         ProductSeo::where('product_id', $id)->delete();
+        ProductSeo::where('product_id', $id)->delete();
+        ProductOptionMapProduct::where('product_id', $id)->delete();
 
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }

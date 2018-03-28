@@ -13,9 +13,14 @@
 		            onCreateLi: function(node, $li) {
 			            // Append a link to the jqtree-element div.
 			            // The link has an url '#node-[id]' and a data property 'node-id'.
+			            let status = '';
+			            if(node.status == 1) {
+			            	status = '<a onclick="return confirm(\'You will hide '+node.name+', continue\')" style="margin-left:20px;margin-bottom:10px;margin-top:10px"class="btn btn-danger" href="category/change-status/'+node.id+'">Hide</a>';
+			            } else {
+			            	status = '<a onclick="return confirm(\'You will show '+node.name+', continue\')" style="margin-left:20px;margin-bottom:10px;margin-top:10px"class="btn btn-success" href="category/change-status/'+node.id+'">Show</a>';
+			            }
 			            $li.find('.jqtree-element').append(
-			                '<a style="margin-left:20px;margin-bottom:10px;margin-top:10px"class="btn btn-primary" href="category/'+node.id+'/edit">Edit</a><a onclick="return confirm(\'You will delete '+node.name+', continue\')" style="margin-left:20px;margin-bottom:10px;margin-top:10px"class="btn btn-danger" href="category/delete/'+node.id+'">Delete</a>'
-			            );
+			                '<a style="margin-left:20px;margin-bottom:10px;margin-top:10px"class="btn btn-primary" href="category/'+node.id+'/edit">Edit</a><a onclick="return confirm(\'You will delete '+node.name+', continue\')" style="margin-left:20px;margin-bottom:10px;margin-top:10px"class="btn btn-danger" href="category/delete/'+node.id+'">Delete</a> '+status+' ');
 			        }
 		        });
 

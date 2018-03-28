@@ -66,7 +66,7 @@ class ProductVariant extends Model
         return $variant;
     }
 
-    public function generateSKU($productId, $colorId, $sizeId) {
+    public function generateSKU($productId, $colorId, $sizeId, $colorName = null, $sizeName = null) {
         $product = Product::find($productId);
 
         if($colorId != 0) {
@@ -83,8 +83,8 @@ class ProductVariant extends Model
             $sizeName = str_replace($constraint, '', substr($size->url, 0, 2));
             $colorName = str_replace($constraint, '', substr($color->url, 0, 3));
         } else {
-            $sizeName = 'ns';
-            $colorName = 'ncl';
+            $sizeName = ($sizeName) ? str_replace($constraint, '', substr($sizeName, 0, 2)) : 'ns';
+            $colorName = ($colorName) ? str_replace($constraint, '', substr($colorName, 0, 3)) : 'ncl';
         }
 
         $time = substr(time(), -4);
@@ -171,7 +171,7 @@ class ProductVariant extends Model
             'size_id'       => $sizeName,
             'qty_order'     => $qty,
             'qty_warehouse'     => $qty,
-            'SKU'           => $variant->generateSKU($productId, $color = 0, $size = 0),
+            'SKU'           => $variant->generateSKU($productId, $color = 0, $size = 0, $colorName, $sizeName),
             'default'       => 0,
             'max_order_qty' => 100, // TEMPORARY, WILL CHANGE IF NEEDED BY
             'created_by'    => Auth::id()

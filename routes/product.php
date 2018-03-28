@@ -7,7 +7,7 @@ Route::resource('product/size', 'Product\SizeController');
 Route::get('product/category/delete/{id}', 'Product\CategoryController@delete')->name('category.delete');
 Route::get('product/category/format', 'Product\CategoryController@formatTree')->name('category.format-list');
 Route::get('product/category/update-state', 'Product\CategoryController@updateState')->name('category.update-state');
-Route::get('product/category/change-status/{id}/{status}', 'Product\CategoryController@changeStatus')->name('category.change-status');
+Route::get('product/category/change-status/{id}/', 'Product\CategoryController@changeStatus')->name('category.change-status');
 Route::resource('product/category', 'Product\CategoryController');
 
 Route::get('product/product-manage/mass-upload', 'Product\MassUploadController@index')->name('mass-upload.index');

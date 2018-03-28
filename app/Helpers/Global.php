@@ -160,12 +160,14 @@
                     $arr[] = [
                         'id'  =>  $category['categories'][$cat_id]['id'],
                         'name'  =>  $category['categories'][$cat_id]['name'],
+                        'status'  =>  $category['categories'][$cat_id]['status'],
                     ];
                 }
                 if (isset($category['parent_cats'][$cat_id])) {
                     $arr[] = [
                         'id'        =>  $category['categories'][$cat_id]['id'],
                         'name'      =>  $category['categories'][$cat_id]['name'],
+                        'status'  =>  $category['categories'][$cat_id]['status'],
                         'children'  => buildCategoryTreeArray($cat_id, $category)
                     ];
                 }
@@ -173,7 +175,3 @@
         }
         return $arr;
     }
-
-
-
-

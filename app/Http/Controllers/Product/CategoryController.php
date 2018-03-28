@@ -152,13 +152,15 @@ class CategoryController extends Controller
      * @param $status
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function changeStatus($id, $status) {
+    public function changeStatus($id) {
         $data = $this->model->find($id);
 
-        if($status == 1) { // ACTIVATE CUSTOMER
-            $desc = 'activate';
+        if($data->status == 1) { // ACTIVATE CUSTOMER
+            $desc = 'deactivate';
+            $status = 0;
         } else {
-            $desc = 'deacticate';
+            $desc = 'acticate';
+            $status = 1;
         }
 
         $data->status = $status;

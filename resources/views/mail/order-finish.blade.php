@@ -13,7 +13,13 @@
     		</tr>
     		@foreach($orderItem as $key => $val)
     		<tr>
-    			<td style="padding: 10px">{{$val->product_name}}</td>
+    			<td style="padding: 10px">
+                    {{$val->product_name}}
+                    @if($val->color_id)
+                    <br /><span style="font-size: 10px">Color:{{($val->color_name) ? $val->color_name : $val->color_id}}</span> 
+                    <br /><span style="font-size: 10px">Size:{{($val->size_name) ? $val->size_name : $val->size_id}}</span> 
+                    @endif
+                </td>
     			<td style="padding: 10px">{{$val->qty}}</td>
     			<td style="padding: 10px">{{moneyFormat($val->product_price)}}</td>
     			<td style="padding: 10px">{{moneyFormat($val->subtotal)}}</td>

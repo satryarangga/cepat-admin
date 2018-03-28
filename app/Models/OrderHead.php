@@ -182,8 +182,8 @@ class OrderHead extends Model
     public static function sendEmailOrder($orderId) {
         $head = parent::find($orderId);
         $customer = Customer::find($head->customer_id);
-        $item = OrderItem::select(DB::raw('product_id, color_id, size_id, product_price, qty, subtotal, colors.name, 
-                                            size.name, products.name as product_name'))
+        $item = OrderItem::select(DB::raw('product_id, color_id, size_id, product_price, qty, subtotal, colors.name as color_name, 
+                                            size.name as size_name, products.name as product_name'))
                             ->leftJoin('colors', 'colors.id', '=', 'order_item.color_id')
                             ->leftJoin('size', 'size.id', '=', 'order_item.size_id')
                             ->leftJoin('products', 'products.id', '=', 'order_item.product_id')
