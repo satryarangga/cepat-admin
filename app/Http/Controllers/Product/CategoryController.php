@@ -82,6 +82,8 @@ class CategoryController extends Controller
 
         logUser('Create Category '.$create['name']);
 
+        $this->refreshCache();
+
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
@@ -127,6 +129,8 @@ class CategoryController extends Controller
 
         logUser('Update Category '.$update['name']);
 
+        $this->refreshCache();
+
         $message = setDisplayMessage('success', "Success to update ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
@@ -144,6 +148,7 @@ class CategoryController extends Controller
         logUser('Delete Category '.$data->name);
         $data->deleted_at = date('Y-m-d H:i:s');
         $data->save();
+        $this->refreshCache();
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
 
@@ -165,6 +170,8 @@ class CategoryController extends Controller
 
         $data->status = $status;
         $data->save();
+
+        $this->refreshCache();
 
         logUser('Change Status Category '.$data->name);
 
@@ -203,6 +210,7 @@ class CategoryController extends Controller
                 'parent'    => $target
             ]);
         }
+        $this->refreshCache();
 
         echo 1; die;
     }
@@ -213,6 +221,12 @@ class CategoryController extends Controller
         logUser('Delete Category '.$data->name);
         $data->deleted_at = date('Y-m-d H:i:s');
         $data->save();
+        $this->refreshCache();
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    private function refreshCache() {
+        $url = config('cepat.front_end_host').'/dev/generate_menu';
+        file_get_contents($url);
     }
 }
