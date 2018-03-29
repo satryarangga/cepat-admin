@@ -51,17 +51,32 @@ class MassUploadController extends Controller
     public function store(Request $request) {
         $isVariant = $request->input('variant');
         if ($request->file('csv')) {
+            if($request->csv->getClientOriginalExtension() != 'csv') {
+                $message = setDisplayMessage('danger', 'Please import a csv file.');
+                return redirect(route('mass-upload.index'))->with('displayMessage', $message);
+            }
+
             $name = str_replace(' ', '-', $request->csv->getClientOriginalName());
             $request->csv->move(
                 base_path() . '/public/csv/mass-product/', $name
             );
             $file = base_path() . '/public/csv/mass-product/'.$name;
             $upload = Excel::load($file, function($reader) {
+
             })->get();
         }
+
+        $validate = $this->csvValidation($upload, $isVariant);
+        if(!$validate) {
+            $message = setDisplayMessage('danger', 'Missing required column. Please follow the example');
+            return redirect(route('mass-upload.index'))->with('displayMessage', $message);
+        }
+
+        $product = $this->distinctProduct($upload, $isVariant);
+        
         $data = [
             'page'  => $this->page,
-            'product'   => $upload,
+            'product'   => $product,
             'isVariant' => $isVariant
         ];
         return view($this->module . ".mass-upload", $data);
@@ -151,6 +166,38 @@ class MassUploadController extends Controller
         $message = setDisplayMessage('success', "Success to mass upload product");
         return redirect(route('product-manage.index'))->with('displayMessage', $message);
     }
+
+    private function csvValidation($upload = [], $variant = 0) {
+        if($variant) {
+            $required = ['productname', 'price', 'weight', 'description', 'color', 'size', 'quantity'];
+        } else {
+            $required = ['productname', 'price', 'weight', 'description', 'quantity'];
+        }
+
+        foreach ($upload as $key => $value) {
+            foreach ($required as $valColumns) {
+                if(!isset($value[$valColumns])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private function distinctProduct($upload = [], $variant = 0) {
+        $product = [];
+        if($variant) {
+            $distictColorSize = [];
+            foreach ($upload as $key => $value) {
+                $colorSize = $value['color']."-".$value['size'];
+                if(!in_array($colorSize, $distictColorSize)) {
+                    $product[] = $value;
+                    $distictColorSize[] = $colorSize;
+                }
+            }
+            return $product;
+        }
+
+        return $upload;
+    }
 }
-
-

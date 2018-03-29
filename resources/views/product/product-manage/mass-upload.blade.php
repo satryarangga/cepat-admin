@@ -12,6 +12,7 @@
 	            </div>
 	            <!-- /.box-header -->
 	            <!-- form start -->
+	            {!! session('displayMessage') !!}
 	            @foreach($errors->all() as $message)
 		            <div style="margin: 20px 0" class="alert alert-error">
 		                {{$message}}

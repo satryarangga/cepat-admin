@@ -175,3 +175,16 @@
         }
         return $arr;
     }
+
+    function formatDistinctProductCart($cart) {
+        $formatted = [];
+        foreach ($cart as $key => $value) {
+             if(!isset($formatted[$value->SKU])) {
+                $formatted[$value->SKU] =  $value;
+             } else {
+                $formatted[$value->SKU]['qty'] = $formatted[$value->SKU]['qty'] + 1;
+                $formatted[$value->SKU]['subtotal'] = $formatted[$value->SKU]['product_price'] * $formatted[$value->SKU]['qty'];
+             }
+        }
+        return $formatted;
+    }

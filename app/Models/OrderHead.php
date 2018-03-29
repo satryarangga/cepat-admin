@@ -183,7 +183,7 @@ class OrderHead extends Model
         $head = parent::find($orderId);
         $customer = Customer::find($head->customer_id);
         $item = OrderItem::select(DB::raw('product_id, color_id, size_id, product_price, qty, subtotal, colors.name as color_name, 
-                                            size.name as size_name, products.name as product_name'))
+                                            size.name as size_name, products.name as product_name, SKU'))
                             ->leftJoin('colors', 'colors.id', '=', 'order_item.color_id')
                             ->leftJoin('size', 'size.id', '=', 'order_item.size_id')
                             ->leftJoin('products', 'products.id', '=', 'order_item.product_id')
@@ -194,6 +194,8 @@ class OrderHead extends Model
                                 ->leftJoin('payment_method', 'order_payment.payment_method_id', '=', 'payment_method.id')
                                 ->where('order_id', $orderId)
                                 ->first();
+
+        $item = formatDistinctProductCart($item);
 
         Mail::to($customer->email)->send(new OrderFinish($customer, $head, $item, $payment));
     }
