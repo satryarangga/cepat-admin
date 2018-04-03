@@ -24,6 +24,16 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <style type="text/css">
+    @media print {
+      body, html, #wrapper {
+          width: 100%;
+          height: 100%;
+          overflow-y: visible;
+      }
+}
+  </style>
 </head>
 <body onload="window.print();">
 <div class="wrapper">
