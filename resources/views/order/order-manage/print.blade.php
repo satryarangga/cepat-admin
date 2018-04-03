@@ -33,7 +33,8 @@
           overflow-y: visible;
           overflow-x: hidden;
       }
-}
+      .element::-webkit-scrollbar { width: 0 !important }
+    }
   </style>
 </head>
 <body onload="window.print();">
