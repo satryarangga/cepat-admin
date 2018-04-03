@@ -27,13 +27,13 @@
 
   <style type="text/css">
     @media print {
-      body, html, #wrapper {
+      body, html, .wrapper {
           width: 100%;
           height: 100%;
-          overflow-y: visible;
-          overflow-x: hidden;
+          overflow: visible;
       }
       .element::-webkit-scrollbar { width: 0 !important }
+      .page-break  { display:block; page-break-before:always; }
     }
   </style>
 </head>
@@ -74,7 +74,6 @@
         </div>
       </div>
       <!-- /.row -->
-
       <!-- Table row -->
       <div class="row">
         <div class="col-xs-12 table-responsive">
