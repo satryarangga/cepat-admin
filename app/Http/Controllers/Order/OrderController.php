@@ -165,4 +165,32 @@ class OrderController extends Controller
         OrderHead::sendEmailOrder($orderId);
         return 'Done';
     }
+
+    public function print($orderId) {
+        $headId = $this->model->find($orderId);
+        $customer = Customer::find($headId->customer_id);
+        $items = OrderItem::getItemDetail($orderId);
+        $payment = OrderPayment::getPaymentOrder($orderId);
+        $discount = OrderDiscount::where('order_id', $orderId)->first();
+        $durationToExpired = config('cepat.order_expired_duration');
+        $dueDate = date('j F Y', strtotime($headId->date. " +$durationToExpired days"));
+        $isItemShipped = OrderItem::isItemShipped($items);
+        $delivery = OrderDelivery::where('order_id', $orderId)->first();
+
+        $data = [
+            'id'    => $orderId,
+            'page'      => $this->page,
+            'head'      => $headId,
+            'title'     => 'Purchase '.$headId->purchase_code,
+            'items'     => $items,
+            'payment'   => $payment,
+            'discount'  => $discount,
+            'delivery'  => $delivery,
+            'dueDate'   => $dueDate,
+            'customer'  => $customer,
+            'isItemShipped' => $isItemShipped,
+            'shipping_status'   => config('cepat.shipping_status')
+        ];
+        return view($this->module . ".print", $data);        
+    }
 }

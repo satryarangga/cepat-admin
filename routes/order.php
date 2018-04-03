@@ -20,4 +20,5 @@ Route::get('report/excel/sales', 'Order\ReportController@excelSales')->name('rep
 
 // RETURN
 Route::get('order/return/change-status/{id}/{status}', 'Order\ReturnController@changeStatus')->name('return.change-status');
+Route::get('order/print/{id}', 'Order\OrderController@print')->name('order.print');
 Route::resource('order/return', 'Order\ReturnController');

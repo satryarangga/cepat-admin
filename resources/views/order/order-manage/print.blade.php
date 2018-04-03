@@ -1,29 +1,41 @@
-@extends('layout.main')
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cepat Cepat E-Commerce</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{{ asset('lte') }}/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ asset('lte') }}/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{{ asset('lte') }}/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ asset('lte') }}/dist/css/AdminLTE.min.css">
 
-@section('title', 'Home')
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 
-@section('content')
-
-    <div class="pad margin no-print">
-      @if($payment->status == 2)
-      <div class="callout callout-success" style="margin-bottom: 0!important;">
-        <b style="font-size: 20px">PAID</b>
-      </div>
-      @else
-        <div class="callout callout-danger" style="margin-bottom: 0!important;">
-          <b style="font-size: 20px">UNPAID</b>
-        </div>
-      @endif
-    </div>
-
-    <!-- Main content -->
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body onload="window.print();">
+<div class="wrapper">
+  <!-- Main content -->
+  <!-- Main content -->
     <section class="invoice">
       <!-- title row -->
       <div class="row">
         <div class="col-xs-12">
           <h2 class="page-header">
-            <i class="fa fa-globe"></i> Cepat Cepat E-Commerce
-            <small class="pull-right">Date: {{date('j F Y', strtotime($head->date))}}</small>
+            <i class="fa fa-globe"></i> Invoice #{{$head->purchase_code}}
+            <small class="pull-right">Purchase Date: {{date('j F Y', strtotime($head->date))}}</small>
           </h2>
         </div>
         <!-- /.col -->
@@ -41,6 +53,13 @@
             Email: {{$customer->email}}
           </address>
         </div>
+        <div class="col-sm-6 pull-right">
+          @if($payment->status == 2)
+          <label class="label label-success" style="font-size: 28px">PAID</label>
+          @else
+          <label class="label label-danger" style="font-size: 28px">UNPAID</label>
+          @endif
+        </div>
       </div>
       <!-- /.row -->
 
@@ -56,7 +75,6 @@
               <th>Qty</th>
               <th>Shipping Status</th>
               <th>Subtotal</th>
-              <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -68,20 +86,6 @@
               <td>{{$val->qty}}</td>
               <td>{{setShippingStatus($val->shipping_status)}}</td>
               <td>{{moneyFormat($val->subtotal)}}</td>
-              <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info">Action</button>
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      @if($payment->status == 2)
-                      <li><a data-toggle="modal" style="cursor: pointer;" data-target="#modal-ship-{{$val->id}}">Set Shipment</a></li>
-                      @endif
-                    </ul>
-                </div>
-              </td>
             </tr>
             @endforeach
             <tr>
@@ -151,28 +155,9 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-
-      <!-- this row will not appear when printing -->
-      <div class="row no-print">
-        <div class="col-xs-12">
-          <a href="{{route('order.print', ['id' => $id])}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-          @if($payment->status == 2 && !$isItemShipped)
-          <a class="btn btn-danger pull-right" href="{{route('order-manage.changeStatus', ['id' => $id, 'type' => 0])}}" onclick="return confirm('You will void paid status of this order, continue?')">
-            <i class="fa fa-credit-card"></i> Void Paid
-          </a>
-          @elseif($payment->status == 1 || $payment->status == 0)
-            <a class="btn btn-success pull-right" href="{{route('order-manage.changeStatus', ['id' => $id, 'type' => 1])}}" onclick="return confirm('You will set this order to paid, continue?')">
-              <i class="fa fa-credit-card"></i> Set Paid
-            </a>
-          @endif
-          <button type="button" class="btn btn-primary pull-right hide" style="margin-right: 5px;">
-            <i class="fa fa-download"></i> Generate PDF
-          </button>
-        </div>
-      </div>
-      @include('order.order-manage.modal.ship')
+  <!-- /.content -->
     </section>
-    <!-- /.content -->
-    <div class="clearfix"></div>
-
-@endsection
+</div>
+<!-- ./wrapper -->
+</body>
+</html>
