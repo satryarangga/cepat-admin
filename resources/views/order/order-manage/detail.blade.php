@@ -9,6 +9,10 @@
       <div class="callout callout-success" style="margin-bottom: 0!important;">
         <b style="font-size: 20px">PAID</b>
       </div>
+      @elseif($payment->status == 3)
+      <div class="callout callout-info" style="margin-bottom: 0!important;">
+        <b style="font-size: 20px">CANCELLED</b>
+      </div>
       @else
         <div class="callout callout-danger" style="margin-bottom: 0!important;">
           <b style="font-size: 20px">UNPAID</b>
