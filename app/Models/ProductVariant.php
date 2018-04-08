@@ -179,4 +179,12 @@ class ProductVariant extends Model
 
         return $createVariant;
     }
+
+    public static function updateInventoryCancelOrder ($sku, $qtyOrder) {
+        $data = parent::where('SKU', $sku)->first();
+        $data->qty_order = $data->qty_order + $qtyOrder;
+        $data->status = 1;
+
+        $data->save();
+    }
 }

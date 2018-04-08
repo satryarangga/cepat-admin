@@ -142,4 +142,25 @@ class OrderItem extends Model
 
         return $data;
     }
+
+    public static function cancelOrderItem($orderId) {
+        $orderHead = OrderHead::find($orderId);
+        $data = parent::where('order_id', $orderId)
+                        ->get();
+        foreach ($data as $key => $value) {
+            ProductVariant::updateInventoryCancelOrder($value->SKU, $value->qty);
+            InventoryLog::create([
+                'product_id'    => $value->product_id,
+                'product_variant_id' => $value->product_variant_id,
+                'purchase_code'     => $orderHead->purchase_code,
+                'user_id'       => $orderHead->customer_id,
+                'order_id'      => $orderHead->id,
+                'SKU'           => $value->SKU,
+                'qty'           => $value->qty,
+                'type'          => 1,
+                'description'   => 'Product Cancelled Order',
+                'source'        => 3
+            ]);
+        }
+    }
 }

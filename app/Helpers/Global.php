@@ -149,6 +149,9 @@
           case 2:
             return 'Paid';
             break;
+          case 3:
+            return 'Cancelled';
+            break;
         }
     }
 

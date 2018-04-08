@@ -35,7 +35,7 @@ class OrderController extends Controller
 		$this->model = new OrderHead();
 		$this->module = 'order.order-manage';
 		$this->page = 'order-manage';
-        $this->middleware('auth', ['except' => ['sendEmailOrder']]);
+        $this->middleware('auth', ['except' => ['sendEmailOrder', 'jobCancel']]);
     }
 
     public function index($status, Request $request) {
@@ -192,5 +192,11 @@ class OrderController extends Controller
             'shipping_status'   => config('cepat.shipping_status')
         ];
         return view($this->module . ".print", $data);        
+    }
+
+    public function jobCancel($daysAgo) {
+        $date = date('Y-m-d H:i:s', strtotime("-$daysAgo days"));
+        $data = OrderPayment::jobCancelOrder($date);
+        echo "Success";
     }
 }

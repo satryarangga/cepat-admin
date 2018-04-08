@@ -40,4 +40,29 @@ class OrderPayment extends Model
                         ->first();
         return $data;
     }
+
+    public static function jobCancelOrder($date) {
+        $order = parent::where('created_at', '<', $date)
+                        ->whereIn('status', [0, 1])
+                        ->pluck('order_id');
+        $orderIdToCancel = $order->toArray();
+
+        foreach ($orderIdToCancel as $key => $value) {
+            // CHANGE STATUS TO CANCELLED
+            $changePaymentStatus = parent::where('order_id', $value)->update([
+                'status'    => 3
+            ]);
+
+            // UPDATE QTY AND INVENTORY LOG
+            OrderItem::cancelOrderItem($value);
+
+            // ORDER LOG
+            OrderLog::create([
+                'order_id'      => $value,
+                'source'        => 'cron',
+                'desc'          => 'Cancelled by System',
+                'done_by'       => 0
+            ]);
+        }
+    }
 }
