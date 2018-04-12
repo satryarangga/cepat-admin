@@ -9,6 +9,7 @@ use App\Models\OrderDelivery;
 use App\Models\OrderDiscount;
 use App\Models\OrderItem;
 use App\Models\OrderLog;
+use App\Models\OrderReturn;
 use App\Models\OrderPayment;
 use App\Models\ProductVariant;
 use App\Models\Customer;
@@ -153,6 +154,17 @@ class OrderController extends Controller
         ]);
 
         OrderItem::sendEmailNotifShipping($orderItemId, $status);
+
+        if($status == 4) { //
+            OrderReturn::create([
+                'order_item_id'     => $orderItemId,
+                'product_id'        => $item->product_id,
+                'product_variant_id'   => $item->product_variant_id,
+                'reason'            => $notes,
+                'status'            => 1,
+                'updated_by'        => Auth::id()
+            ]);
+        }
 
         // DEDUCT QTY WAREHOUSE
         ProductVariant::variantShipped($item->product_variant_id, $item->qty, $item->order_id, $status);
