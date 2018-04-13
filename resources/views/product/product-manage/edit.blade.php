@@ -42,7 +42,7 @@
 		                <div class="form-group">
 		                  <label for="original_price" class="col-sm-3 control-label">Price</label>
 		                  <div class="col-sm-8">
-		                    <input type="text" class="form-control" onkeyup="formatAmount($(this))" name="original_price" value="{{moneyFormat($row->original_price, false)}}" id="original_price" placeholder="Price">
+		                    <input type="text" class="form-control" onkeyup="formatMoney($(this))" name="original_price" value="{{moneyFormat($row->original_price, false)}}" id="original_price" placeholder="Price">
 		                  </div>
 		                </div>
 

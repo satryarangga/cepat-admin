@@ -86,6 +86,7 @@ class MassUploadController extends Controller
         $user = Auth::user();
         $name = $request->input('productname');
         $price = $request->input('price');
+        $discountprice = $request->input('discountprice');
         $weight = $request->input('weight');
         $description = $request->input('description');
         $quantity = $request->input('quantity');
@@ -98,7 +99,7 @@ class MassUploadController extends Controller
                 $created = Product::create([
                     'name'              => $value,
                     'original_price'    => $price[$key],
-                    'discount_price'    => $price[$key],
+                    'discount_price'    => $discountprice[$key],
                     'weight'            => $weight[$key],
                     'description'       => $description[$key],
                     'created_by'        => Auth::id(),
@@ -124,6 +125,7 @@ class MassUploadController extends Controller
             $variant = [];
             foreach ($name as $key => $value) {
                 $variant[$value]['price'] = $price[$key];
+                $variant[$value]['discountprice'] = $discountprice[$key];
                 $variant[$value]['weight'] = $weight[$key];
                 $variant[$value]['description'] = $description[$key];
                 $variant[$value]['variant'][] = [
@@ -137,7 +139,7 @@ class MassUploadController extends Controller
                 $created = Product::create([
                     'name'              => $key,
                     'original_price'    => $value['price'],
-                    'discount_price'    => $value['price'],
+                    'discount_price'    => $value['discountprice'],
                     'weight'            => $value['weight'],
                     'description'       => $value['description'],
                     'created_by'        => Auth::id(),
@@ -169,9 +171,9 @@ class MassUploadController extends Controller
 
     private function csvValidation($upload = [], $variant = 0) {
         if($variant) {
-            $required = ['productname', 'price', 'weight', 'description', 'color', 'size', 'quantity'];
+            $required = ['productname', 'price', 'discountprice', 'weight', 'description', 'color', 'size', 'quantity'];
         } else {
-            $required = ['productname', 'price', 'weight', 'description', 'quantity'];
+            $required = ['productname', 'price', 'discountprice', 'weight', 'description', 'quantity'];
         }
 
         foreach ($upload as $key => $value) {

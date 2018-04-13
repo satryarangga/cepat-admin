@@ -68,7 +68,8 @@ class Product extends Model
             'SKU'           => $variant->generateSKU($productId, $color = 0, $size = 0),
             'default'       => 1,
             'max_order_qty' => 100, // TEMPORARY, WILL CHANGE IF NEEDED BY
-            'created_by'    => Auth::id()
+            'created_by'    => Auth::id(),
+            'status'        => 1
         ]);
 
         return $createVariant;
