@@ -82,5 +82,12 @@ class StaticSeeder extends Seeder
             'content'   => "http://youtube.com",
             'created_by'    => 0,
         ]);
+        DB::table('static_content')->insert([
+            'name'  => "Unpaid Transfer Duration",
+            'url'   => "unpaid-transfer-duration",
+            'type'  => 2,
+            'content'   => "60",
+            'created_by'    => 0,
+        ]);
     }
 }
