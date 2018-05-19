@@ -43,7 +43,9 @@
 	                </div>
 
 	                <div class="form-group" id="value-content" style="@if(!isset($row['type']) || $row['type'] == 1) display: none @endif">
-	                  <label for="name" class="col-sm-2 control-label">Content</label>
+	                  <label for="name" class="col-sm-2 control-label">
+	                  	{{($row->url == 'unpaid-transfer-duration') ? 'Duration in minutes' : 'Contents'}}
+	                  </label>
 	                  <div class="col-sm-10">
 	                  	<input type="text" class="form-control" name="content_value" value="{{$row['content']}}">
 	                  </div>

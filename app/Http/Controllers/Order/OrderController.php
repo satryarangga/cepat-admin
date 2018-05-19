@@ -207,8 +207,6 @@ class OrderController extends Controller
     }
 
     public function jobCancel($daysAgo) {
-        $date = date('Y-m-d H:i:s', strtotime("-$daysAgo days"));
-        $data = OrderPayment::jobCancelOrder($date);
         echo "Success";
     }
 }

@@ -33,6 +33,8 @@ class OrderPayment extends Model
      */
     protected $dates = ['deleted_at'];
 
+    CONST UNPAID_DURATION_KEY = "unpaid-transfer-duration";
+
     public static function getPaymentOrder($orderId) {
         $data = parent::select('logo', 'name', 'desc', 'order_payment.status')
                         ->leftJoin('payment_method', 'payment_method.id', '=', 'order_payment.payment_method_id')
@@ -41,8 +43,11 @@ class OrderPayment extends Model
         return $data;
     }
 
-    public static function jobCancelOrder($date) {
-        $order = parent::where('created_at', '<', $date)
+    public static function jobCancelOrder() {
+        $getContent = StaticContent::where('url', self::UNPAID_DURATION_KEY)->first();
+        $durationUnpaid = (isset($getContent->content)) ? $getContent->content * 60 : 3600; // IN SECONDS
+        $time = date('Y-m-d H:i:s', time() - $durationUnpaid);
+        $order = parent::where('created_at', '<', $time)
                         ->whereIn('status', [0, 1])
                         ->pluck('order_id');
         $orderIdToCancel = $order->toArray();
@@ -64,5 +69,6 @@ class OrderPayment extends Model
                 'done_by'       => 0
             ]);
         }
+        return $orderIdToCancel;
     }
 }

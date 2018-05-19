@@ -109,13 +109,10 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-6">
-          <p class="lead">Amount Due <b>{{$dueDate}}</b></p>
+          <p class="lead"><b>Purchase Detail</b></p>
 
           <div class="table-responsive">
             <table class="table">
-              <tr>
-                <th colspan="2" style="font-size: 16px;background-color: #f5f5f5;border: 1px solid #e3e3e3">Purchase Detail</th>
-              </tr>
               <tr>
                 <th style="width:50%">Total Purchase:</th>
                 <td>{{moneyFormat($head->total_purchase)}}</td>
