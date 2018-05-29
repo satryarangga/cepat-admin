@@ -5,6 +5,7 @@ Route::get('order/change-status/{id}/{type}', 'Order\OrderController@changeStatu
 Route::get('order/order-manage/{status}', 'Order\OrderController@index')->name('order-manage.index');
 Route::get('order/order-detail/{id}', 'Order\OrderController@detail')->name('order-manage.detail');
 Route::get('order/send-email-finish/{orderId}', 'Order\OrderController@sendEmailOrder')->name('order-manage.sendEmailOrder');
+Route::get('order/send-email-paid/{orderId}', 'Order\OrderController@sendEmailPaidOrder')->name('order-manage.sendEmailPaidOrder');
 Route::get('ajax/graph-sales', 'Order\AjaxController@graphSales')->name('ajax.graphSales');
 
 

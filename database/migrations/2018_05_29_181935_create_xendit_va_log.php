@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableResetPasswordToken extends Migration
+class CreateXenditVaLog extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateTableResetPasswordToken extends Migration
      */
     public function up()
     {
-        Schema::create('reset_password_tokens', function (Blueprint $table) {
+        Schema::create('xendit_va_log', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id');
-            $table->string('token', 75)->unique();
-            $table->tinyInteger('status')->comment('0:not used, 1:used')->default(0);
+            $table->integer('order_id')->nullable();
+            $table->string('type', 25);
+            $table->text('payload');
             $table->timestamps();
-            $table->datetime('expired_at');
         });
     }
 
@@ -30,6 +29,6 @@ class CreateTableResetPasswordToken extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reset_password_tokens');
+        Schema::dropIfExists('xendit_va_log');
     }
 }

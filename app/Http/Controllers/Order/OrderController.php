@@ -36,7 +36,7 @@ class OrderController extends Controller
 		$this->model = new OrderHead();
 		$this->module = 'order.order-manage';
 		$this->page = 'order-manage';
-        $this->middleware('auth', ['except' => ['sendEmailOrder', 'jobCancel']]);
+        $this->middleware('auth', ['except' => ['sendEmailOrder', 'jobCancel', 'sendEmailPaidOrder']]);
     }
 
     public function index($status, Request $request) {
@@ -175,6 +175,11 @@ class OrderController extends Controller
 
     public function sendEmailOrder($orderId) {
         OrderHead::sendEmailOrder($orderId);
+        return 'Done';
+    }
+
+    public function sendEmailPaidOrder($orderId) {
+        OrderHead::sendEmailNotifPayment($orderId);
         return 'Done';
     }
 

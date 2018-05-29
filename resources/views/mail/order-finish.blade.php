@@ -58,6 +58,9 @@
     <p>
     	{{$orderPayment->payment_method_name}}<br />
     	{{$orderPayment->payment_method_desc}}
+        @if($orderPayment->xendit_va_number)
+        <br /> Virtual Account Number : {{$orderPayment->xendit_va_number}}
+        @endif
     </p>
     @if($orderPayment->status == 0)
     <p>Pemesanan yang belum dibayar setelah dua hari akan otomatis dibatalkan</p>

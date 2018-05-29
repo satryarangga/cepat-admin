@@ -82,6 +82,8 @@ class PaymentMethodController extends Controller
             'minimum_payment' => $request->input('minimum_payment'),
             'use_paycode' => $request->input('use_paycode'),
             'confirm_type' => $request->input('confirm_type'),
+            'is_virtual_account' => $request->input('is_virtual_account'),
+            'va_bank_code' => $request->input('va_bank_code'),
             'status' => 1,
             'created_by' => Auth::id()
         ];
@@ -153,6 +155,8 @@ class PaymentMethodController extends Controller
             'minimum_payment' => $request->input('minimum_payment'),
             'use_paycode' => $request->input('use_paycode'),
             'confirm_type' => ($data->confirm_type == 2) ? $data->confirm_type : $request->input('confirm_type'),
+            'is_virtual_account' => $request->input('is_virtual_account'),
+            'va_bank_code' => $request->input('va_bank_code'),
             'updated_by' => Auth::id()
         ];
 

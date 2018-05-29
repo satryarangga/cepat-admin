@@ -66,6 +66,25 @@
 			         </div>
 
 			         <div class="form-group">
+			            <label for="is_virtual_account" class="col-sm-2 control-label">Virtual Account</label>
+			            <div class="col-sm-10">
+				            <label class="radio-inline">
+				            	<input @if(old('is_virtual_account') == 0) checked="checked" @endif type="radio" value="0" name="is_virtual_account">No
+				            </label>
+				            <label class="radio-inline">
+				            	<input @if(old('is_virtual_account') == 1) checked="checked" @endif type="radio" value="1" name="is_virtual_account">Yes
+				            </label>
+			               </div>
+			         </div>
+
+			         <div class="form-group">
+	                  <label for="name" class="col-sm-2 control-label">VA Bank Code</label>
+	                  <div class="col-sm-10">
+	                    <input type="text" class="form-control" name="va_bank_code" value="{{old('va_bank_code')}}" id="name" placeholder="Fill only for virtual account. Example : BNI, MANDIRI, BRI, BCA">
+	                  </div>
+	                </div>
+
+			         <div class="form-group">
 	                  <label for="name" class="col-sm-2 control-label">Minimum Payment</label>
 	                  <div class="col-sm-10">
 	                    <input type="number" class="form-control" name="minimum_payment" value="{{old('minimum_payment')}}" id="minimum_payment" placeholder="Leave blank if no minimum payment">
