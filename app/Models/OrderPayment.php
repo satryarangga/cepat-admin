@@ -44,11 +44,9 @@ class OrderPayment extends Model
     }
 
     public static function jobCancelOrder() {
-        $getContent = StaticContent::where('url', self::UNPAID_DURATION_KEY)->first();
-        $durationUnpaid = (isset($getContent->content)) ? $getContent->content * 60 : 3600; // IN SECONDS
-        $time = date('Y-m-d H:i:s', time() - $durationUnpaid);
-        $order = parent::where('created_at', '<', $time)
-                        ->whereIn('status', [0, 1])
+        $status = [0, 1];
+        $order = parent::where('max_transfer_time', '<', date('Y-m-d H:i:s'))
+                        ->whereIn('status', $status)
                         ->pluck('order_id');
         $orderIdToCancel = $order->toArray();
 
