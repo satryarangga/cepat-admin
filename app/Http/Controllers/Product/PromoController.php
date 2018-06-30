@@ -42,7 +42,6 @@ class PromoController extends Controller
     public function index()
     {
         $showMenu = Cache::get("show_menu_promo");
-        var_dump($showMenu); die;
         $data = [
             'result'  => $this->model->all(),
             'page'    => $this->page,
