@@ -41,7 +41,8 @@ class PromoController extends Controller
      */
     public function index()
     {
-        $showMenu = Cache::get("show_menu_promo");
+        $url = config('cepat.front_end_host').'/dev/get_promo_menu';
+        $showMenu = file_get_contents($url);
         $data = [
             'result'  => $this->model->all(),
             'page'    => $this->page,
@@ -319,7 +320,8 @@ class PromoController extends Controller
     public function togglePromoMenu(Request $request) {
         $toggle = $request->input('toggle');
         $desc = ($toggle) ? "show" : "hide";
-        Cache::forever("show_menu_promo", $desc);
+        $url = config('cepat.front_end_host').'/dev/set_promo_menu/'.$desc;
+        file_get_contents($url);
         $message = setDisplayMessage('success', "Success to $desc menu on front end");
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
