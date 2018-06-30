@@ -84,6 +84,7 @@ class StaticContentController extends Controller
         $this->model->create($create);
 
         logUser('Create Static Content '.$create['name']);
+        $this->refreshCache();
 
         $message = setDisplayMessage('success', "Success to create new ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
@@ -141,9 +142,11 @@ class StaticContentController extends Controller
         $this->model->find($id)->update($update);
 
         logUser('update Static Content '.$update['name']);
+        $this->refreshCache();
 
         $message = setDisplayMessage('success', "Success to update ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+
     }
 
     /**
@@ -157,5 +160,10 @@ class StaticContentController extends Controller
         $this->model->find($id)->delete();
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
         return redirect(route($this->page.'.index'))->with('displayMessage', $message);
+    }
+
+    private function refreshCache() {
+        $url = config('cepat.front_end_host').'/dev/generate_static';
+        file_get_contents($url);
     }
 }
