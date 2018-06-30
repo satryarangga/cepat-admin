@@ -33,6 +33,7 @@ Route::resource('product/option', 'Product\OptionController');
 
 Route::get('product/promo/delete-product/{id}', 'Product\PromoController@deleteProduct')->name('promo.delete-product');
 Route::post('product/promo/add-product', 'Product\PromoController@addProduct')->name('promo.add-product');
+Route::post('product/promo/toggle-menu', 'Product\PromoController@togglePromoMenu')->name('promo.toggle-menu');
 Route::put('product/promo/update-product', 'Product\PromoController@updateProduct')->name('promo.update-product');
 Route::get('product/promo/manage-product/{id}', 'Product\PromoController@manageProduct')->name('promo.manage-product');
 Route::get('product/promo/change-status/{id}/{status}', 'Product\PromoController@changeStatus')->name('promo.change-status');

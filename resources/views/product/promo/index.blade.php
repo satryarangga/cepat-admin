@@ -9,7 +9,14 @@
     {!! session('displayMessage') !!}
     <div class="box">
             <div class="box-header">
-                <a href="{{route($page.'.create')}}" class="btn btn-info">Create {{ucwords(str_replace('-',' ', $page))}}</a>
+                <a style="float: left;" href="{{route($page.'.create')}}" class="btn btn-info">Create {{ucwords(str_replace('-',' ', $page))}}</a>
+                <div style="float: right;">
+                    <form action="{{route('promo.toggle-menu')}}" method="post">
+                      {{csrf_field()}}
+                      <input onclick="this.form.submit()" @if($showMenu == 'show') checked @endif id="hide_menu_promo" type="checkbox" name="toggle">
+                      <label for="hide_menu_promo">Show menu promo on front end</label>
+                    </form>
+                </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

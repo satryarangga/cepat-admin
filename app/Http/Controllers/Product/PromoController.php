@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Models\PromoHead;
 use App\Models\PromoDetail;
 use App\Models\Product;
@@ -40,9 +41,12 @@ class PromoController extends Controller
      */
     public function index()
     {
+        $showMenu = Cache::get("show_menu_promo");
+        var_dump($showMenu); die;
         $data = [
             'result'  => $this->model->all(),
-            'page'    => $this->page
+            'page'    => $this->page,
+            'showMenu' => $showMenu
         ];
 
         return view($this->module . ".index", $data);
@@ -311,5 +315,13 @@ class PromoController extends Controller
         $promo->delete();
         $message = setDisplayMessage('success', "Success to delete ".$this->page);
         return redirect(route($this->page.'.manage-product', ['id' => $promo->promo_id]))->with('displayMessage', $message);
+    }
+
+    public function togglePromoMenu(Request $request) {
+        $toggle = $request->input('toggle');
+        $desc = ($toggle) ? "show" : "hide";
+        Cache::forever("show_menu_promo", $desc);
+        $message = setDisplayMessage('success', "Success to $desc menu on front end");
+        return redirect(route($this->page.'.index'))->with('displayMessage', $message);
     }
 }
