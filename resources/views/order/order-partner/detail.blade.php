@@ -91,6 +91,42 @@
             </tbody>
           </table>
         </div>
+        <div class="col-xs-12 table-responsive">
+          <p class="lead"><b>Shipping Detail</b></p>
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Seller</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($shipment as $key => $val)
+              <tr>
+                <td>{{$val->partner_name}}</td>
+                <td>{{setShippingStatus($val->shipping_status)}}</td>
+                @if($payment->status == 2)
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-info">Action</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      @if($payment->status == 2)
+                      <li><a data-toggle="modal" style="cursor: pointer;" data-target="#modal-ship-{{$val->partner_id}}">Set Shipment</a></li>
+                      @endif
+                    </ul>
+                </div>
+                </td>
+                @endif
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->

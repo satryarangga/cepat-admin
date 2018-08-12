@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Partner;
 use App\Models\UserLogs;
 // use App\Role;
 // use App\RoleUser;
@@ -92,6 +93,10 @@ class UserController extends Controller
         ];
 
         $user = $this->model->create($create);
+
+        if($user->user_type == 2) {
+            
+        }
 
         logUser('Create User '.$create['first_name'].' '.$create['last_name']);
 

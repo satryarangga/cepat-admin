@@ -60,7 +60,6 @@
               <th>Qty</th>
               <th>Shipping Status</th>
               <th>Subtotal</th>
-              <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -72,20 +71,6 @@
               <td>{{$val->qty}}</td>
               <td>{{setShippingStatus($val->shipping_status)}}</td>
               <td>{{moneyFormat($val->subtotal)}}</td>
-              <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info">Action</button>
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      @if($payment->status == 2)
-                      <li><a data-toggle="modal" style="cursor: pointer;" data-target="#modal-ship-{{$val->id}}">Set Shipment</a></li>
-                      @endif
-                    </ul>
-                </div>
-              </td>
             </tr>
             @endforeach
             <tr>
@@ -102,6 +87,40 @@
       <div class="row">
         <!-- accepted payments column -->
         <div class="col-xs-6">
+          <p class="lead"><b>Shipping Detail</b></p>
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Seller</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($shipment as $key => $val)
+              <tr>
+                <td>{{$val->partner_name}}</td>
+                <td>{{setShippingStatus($val->shipping_status)}}</td>
+                @if($payment->status == 2)
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-info">Action</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      @if($payment->status == 2)
+                      <li><a data-toggle="modal" style="cursor: pointer;" data-target="#modal-ship-{{$val->partner_id}}">Set Shipment</a></li>
+                      @endif
+                    </ul>
+                </div>
+                </td>
+                @endif
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
           <p class="lead">Payment Method: {{$payment->name}}</p>
           <img style="width: 150px;height: 60px" src="{{asset('images/payment-method/'.$payment->logo)}}" alt="{{$payment->name}}">
 

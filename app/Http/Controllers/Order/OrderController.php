@@ -63,6 +63,7 @@ class OrderController extends Controller
     }
 
     public function detail($orderId) {
+        $user = Auth::user();
     	$headId = $this->model->find($orderId);
         $customer = Customer::find($headId->customer_id);
     	$items = OrderItem::getItemDetail($orderId);
@@ -72,6 +73,7 @@ class OrderController extends Controller
         $dueDate = date('j F Y', strtotime($headId->date. " +$durationToExpired days"));
         $isItemShipped = OrderItem::isItemShipped($items);
         $delivery = OrderDelivery::where('order_id', $orderId)->first();
+        $shipment = OrderItem::getShipment($orderId, 1);
 
     	$data = [
     		'id'	=> $orderId,
@@ -85,7 +87,8 @@ class OrderController extends Controller
             'dueDate'   => $dueDate,
             'customer'  => $customer,
             'isItemShipped' => $isItemShipped,
-            'shipping_status'   => config('cepat.shipping_status')
+            'shipping_status'   => config('cepat.shipping_status'),
+            'shipment'  => $shipment
     	];
     	return view($this->module . ".detail", $data);	
     }
@@ -133,44 +136,54 @@ class OrderController extends Controller
 
     public function setShipment(Request $request) {
         $resi = $request->input('resi');
-        $orderItemId = $request->input('order_item_id');
+        $partnerId = $request->input('partner_id');
+        $orderId = $request->input('order_id');
         $status = $request->input('status');
         $notes = $request->input('notes');
         $listStatus = config('cepat.shipping_status');
 
-        $item = OrderItem::find($orderItemId);
+        $getItem = OrderItem::where('order_id', $orderId)->where('partner_id', $partnerId)->get();
 
-        $item->update([
-                    'shipping_status'   => $status,
-                    'resi'              => $resi,
-                    'shipping_notes'    => $notes
-                ]);
-
-        OrderLog::create([
-            'order_id'          => $item->order_id,
-            'order_item_id'     => $orderItemId,
-            'desc'              => $listStatus[$status].' '.$notes,
-            'done_by'           => Auth::id()
-        ]);
-
-        OrderItem::sendEmailNotifShipping($orderItemId, $status);
-
-        if($status == 4) { //
-            OrderReturn::create([
-                'order_item_id'     => $orderItemId,
-                'product_id'        => $item->product_id,
-                'product_variant_id'   => $item->product_variant_id,
-                'reason'            => $notes,
-                'status'            => 1,
-                'updated_by'        => Auth::id()
+        foreach ($getItem as $key => $value) {
+            $item = OrderItem::find($value->id);
+            $item->update([
+                'shipping_status'   => $status,
+                'resi'              => $resi,
+                'shipping_notes'    => $notes
             ]);
+
+            OrderLog::create([
+                'order_id'          => $item->order_id,
+                'order_item_id'     => $item->id,
+                'desc'              => $listStatus[$status].' '.$notes,
+                'done_by'           => Auth::id()
+            ]);
+
+            OrderItem::sendEmailNotifShipping($item->id, $status);
+
+            if($status == 4) { //
+                OrderReturn::create([
+                    'order_item_id'     => $item->id,
+                    'product_id'        => $item->product_id,
+                    'product_variant_id'   => $item->product_variant_id,
+                    'reason'            => $notes,
+                    'status'            => 1,
+                    'updated_by'        => Auth::id()
+                ]);
+            }
+
+            // DEDUCT QTY WAREHOUSE
+            ProductVariant::variantShipped($item->product_variant_id, $item->qty, $item->order_id, $status);
         }
 
-        // DEDUCT QTY WAREHOUSE
-        ProductVariant::variantShipped($item->product_variant_id, $item->qty, $item->order_id, $status);
 
         $message = setDisplayMessage('success', "Success to ship order item");
-        return redirect(route($this->page.'.detail', ['id' => $item->order_id]))->with('displayMessage', $message);
+
+        if($partnerId == 1) {
+            return redirect(route($this->page.'.detail', ['id' => $orderId]))->with('displayMessage', $message);
+        } else {
+            return redirect(route('order-partner.detail', ['id' => $orderId]))->with('displayMessage', $message);
+        }
     }
 
     public function sendEmailOrder($orderId) {

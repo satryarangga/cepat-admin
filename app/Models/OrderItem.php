@@ -57,6 +57,22 @@ class OrderItem extends Model
         return $data;
     }
 
+    public static function getShipment($orderId, $partnerId = null) {
+        $where[] = ['order_id', '=', $orderId];
+
+        if($partnerId) {
+            $where[] = ['order_item.partner_id', '=', $partnerId];            
+        }
+
+        $data = parent::select('order_item.partner_id', 'partners.store_name as partner_name', 'shipping_status', 'order_id', 'resi', 'shipping_notes')
+                        ->leftJoin('partners', 'order_item.partner_id', '=', 'partners.id')
+                        ->where($where)
+                        ->groupBy('order_item.partner_id', 'store_name', 'shipping_status', 'order_id', 'resi', 'shipping_notes')
+                        ->get();
+
+        return $data;
+    }
+
     public static function isItemShipped($items) {
         $shipped = false;
         foreach ($items as $key => $value) {

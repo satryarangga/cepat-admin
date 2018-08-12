@@ -71,6 +71,7 @@ class PartnerController extends Controller
         $dueDate = date('j F Y', strtotime($headId->date. " +$durationToExpired days"));
         $isItemShipped = OrderItem::isItemShipped($items);
         $delivery = OrderDelivery::where('order_id', $orderId)->first();
+        $shipment = OrderItem::getShipment($orderId, $user->partner_id);
 
     	$data = [
     		'id'	=> $orderId,
@@ -83,7 +84,8 @@ class PartnerController extends Controller
             'delivery'  => $delivery,
             'customer'  => $customer,
             'isItemShipped' => $isItemShipped,
-            'shipping_status'   => config('cepat.shipping_status')
+            'shipping_status'   => config('cepat.shipping_status'),
+            'shipment'  => $shipment
     	];
     	return view($this->module . ".detail", $data);	
     }

@@ -1,12 +1,12 @@
-@foreach($items as $key => $val)
-<div class="modal fade" id="modal-ship-{{$val->id}}">
+@foreach($shipment as $key => $val)
+<div class="modal fade" id="modal-ship-{{$val->partner_id}}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">Set Shipment of {{$val->product_name}}. Color: {{$val->color_name}}. Size: {{$val->size_name}}</b></h4>
+        <h4 class="modal-title">Set Shipment from Seller {{$val->partner_name}}</b></h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal" method="post" action="{{route('order-manage.setShipment')}}">
@@ -33,7 +33,8 @@
               <textarea name="notes" class="form-control" rows="5">{{$val->shipping_notes}}</textarea>
             </div>
           </div>
-          <input type="hidden" name="order_item_id" value="{{$val->id}}">
+          <input type="hidden" name="partner_id" value="{{$val->partner_id}}">
+          <input type="hidden" name="order_id" value="{{$val->order_id}}">
           {{ method_field('PUT') }}
       </div>
       <div class="modal-footer">
